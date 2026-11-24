@@ -162,6 +162,36 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   padding: 0 14px;
 }
 
+@media (max-width: 639.98px) {
+  .header-action-label {
+    display: none !important;
+  }
+  .header-action-btn {
+    padding: 0 !important;
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+    border-radius: 9999px !important;
+    flex-shrink: 0 !important;
+  }
+}
+
+@media (max-width: 479.98px) {
+  .header-subtitle-text,
+  .header-sub-title {
+    display: none !important;
+  }
+  .header-title-text,
+  .header-main-title {
+    font-size: 12px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 140px !important;
+  }
+}
+
 /* Avatar Pill in Header */
 .header-avatar-pill {
   width: 36px;
@@ -355,6 +385,10 @@ body.drawer-open .sidebar-backdrop {
   display: grid !important;
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   gap: 12px !important;
+}
+
+.stat-cards-grid > div {
+  padding: 14px !important;
 }
 
 @media (max-width: 339px) {

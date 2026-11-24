@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Officer & ANO Dashboard | ITM University NCC Digital Management</title>
-  <meta name="description" content="ITM University NCC Digital Management Portal - Officer & ANO Operational Management Dashboard for Cadets, Attendance, Camps, and Approvals.">
-  
-  <!-- Shared Mobile-First Responsive Stylesheet -->
-  <link rel="stylesheet" href="responsive.css">
+  <meta name="description"
+    content="ITM University NCC Digital Management Portal - Officer & ANO Operational Management Dashboard for Cadets, Attendance, Camps, and Approvals.">
 
   <!-- Google Fonts & CDN Libraries -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
+
   <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  
+
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -103,6 +104,7 @@
     .sidebar-inactive {
       color: #475569;
     }
+
     .sidebar-inactive:hover {
       background-color: #F1F5F9;
       color: #071D3A;
@@ -112,71 +114,103 @@
       width: 6px;
       height: 6px;
     }
+
     .custom-scrollbar::-webkit-scrollbar-track {
       background: #F1F5F9;
     }
+
     .custom-scrollbar::-webkit-scrollbar-thumb {
       background: #CBD5E1;
       border-radius: 4px;
     }
 
     @media (prefers-reduced-motion: reduce) {
-      #ambient-bg { display: none; }
-      * { animation: none !important; transition: none !important; }
+      #ambient-bg {
+        display: none;
+      }
+
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
     }
   </style>
+
+  <!-- Shared Mobile-First Responsive Stylesheet (Placed after custom style & Tailwind for full specificity) -->
+  <link rel="stylesheet" href="responsive.css">
+
+  <!-- Shared Mobile-First Responsive Navigation Engine -->
+  <script src="responsive.js"></script>
 </head>
+
 <body class="relative min-h-screen custom-scrollbar flex flex-col justify-between">
 
   <!-- Ambient Animated Background Canvas -->
   <canvas id="ambient-bg"></canvas>
 
   <div class="relative z-10 flex-1 flex flex-col">
-    
+
     <!-- 1. MAIN HEADER NAVBAR -->
     <header class="app-header bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
       <div class="app-header-container max-w-7xl mx-auto">
-        
+
         <!-- Left: Hamburger (Mobile) + Logo & Title -->
         <div class="header-left-group flex items-center">
-          <button onclick="toggleMobileSidebar()" class="lg:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 focus:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center -ml-2" aria-label="Toggle navigation drawer">
+          <button id="header-hamburger-btn" data-drawer-toggle onclick="toggleMobileSidebar()"
+            class="lg:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 focus:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center -ml-2"
+            aria-label="Toggle navigation drawer">
             <i data-lucide="menu" class="w-5 h-5"></i>
           </button>
           <a href="index.html" class="flex items-center gap-2.5 shrink-0 overflow-hidden">
-            <img src="itm-logo.png" onerror="this.src='https://raw.githubusercontent.com/antigravity-assets/logos/main/itm-logo.png'" alt="ITM Logo" class="h-8 w-auto object-contain shrink-0">
-            <img src="ncc logo.png" onerror="this.src='https://raw.githubusercontent.com/antigravity-assets/logos/main/ncc-logo.png'" alt="NCC Logo" class="h-8 w-auto object-contain border-l border-slate-200 pl-2.5 shrink-0">
+            <img src="itm-logo.png"
+              onerror="this.src='https://raw.githubusercontent.com/antigravity-assets/logos/main/itm-logo.png'"
+              alt="ITM Logo" class="h-8 w-auto object-contain shrink-0">
+            <img src="ncc logo.png"
+              onerror="this.src='https://raw.githubusercontent.com/antigravity-assets/logos/main/ncc-logo.png'"
+              alt="NCC Logo" class="h-8 w-auto object-contain border-l border-slate-200 pl-2.5 shrink-0">
             <div class="header-title-block min-w-0">
-              <div class="header-title-text text-sm font-black tracking-tight text-[#071D3A] uppercase leading-none">ITM UNIVERSITY</div>
-              <div class="header-subtitle-text text-[11px] font-bold text-slate-500 tracking-wide uppercase">Officer Operational Management</div>
+              <div class="header-title-text text-sm font-black tracking-tight text-[#071D3A] uppercase leading-none">ITM
+                UNIVERSITY</div>
+              <div class="header-subtitle-text text-[11px] font-bold text-slate-500 tracking-wide uppercase">Officer
+                Operational Management</div>
             </div>
           </a>
         </div>
 
         <!-- Right: Global Search, Quick Action, Officer Profile -->
         <div class="header-right-group flex items-center">
-          
+
           <!-- Search input -->
           <div class="relative hidden sm:block">
-            <input type="text" id="officer-global-search" onkeyup="handleGlobalOfficerSearch(this.value)" placeholder="Search cadets, camps, certs..." class="w-48 lg:w-64 pl-9 pr-3 py-1.5 rounded-full border border-slate-300 text-xs focus:ring-2 focus:ring-itmblue focus:outline-none">
+            <input type="text" id="officer-global-search" onkeyup="handleGlobalOfficerSearch(this.value)"
+              placeholder="Search cadets, camps, certs..."
+              class="w-48 lg:w-64 pl-9 pr-3 py-1.5 rounded-full border border-slate-300 text-xs focus:ring-2 focus:ring-itmblue focus:outline-none">
             <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2"></i>
           </div>
 
           <!-- Quick Action Dropdown -->
           <div class="relative inline-block text-left">
-            <button onclick="toggleQuickActionMenu()" class="header-action-btn bg-[#1677FF] hover:bg-blue-600 text-white font-bold text-xs px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-xs" title="Quick Action">
+            <button onclick="toggleQuickActionMenu()"
+              class="header-action-btn bg-[#1677FF] hover:bg-blue-600 text-white font-bold text-xs px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-xs"
+              title="Quick Action">
               <i data-lucide="plus-circle" class="w-4 h-4"></i> <span class="header-action-label">Quick Action</span>
             </button>
-            <div id="quick-action-menu" class="hidden absolute right-0 mt-2 w-52 bg-white rounded-2xl shadow-xl border border-slate-200 z-50 overflow-hidden text-xs py-1">
-              <button onclick="switchOfficerSection('attendance'); toggleQuickActionMenu()" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 font-bold text-navy flex items-center gap-2 min-h-[44px]">
+            <div id="quick-action-menu"
+              class="hidden absolute right-0 mt-2 w-52 bg-white rounded-2xl shadow-xl border border-slate-200 z-50 overflow-hidden text-xs py-1">
+              <button onclick="switchOfficerSection('attendance'); toggleQuickActionMenu()"
+                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 font-bold text-navy flex items-center gap-2 min-h-[44px]">
                 <i data-lucide="calendar-check" class="w-4 h-4 text-emerald-600"></i> Mark Attendance
               </button>
-              <button onclick="openCreateCampModal(); toggleQuickActionMenu()" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 font-bold text-navy flex items-center gap-2 min-h-[44px]">
+              <button onclick="openCreateCampModal(); toggleQuickActionMenu()"
+                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 font-bold text-navy flex items-center gap-2 min-h-[44px]">
                 <i data-lucide="tent" class="w-4 h-4 text-itmblue"></i> Create New Camp
               </button>
-              <button onclick="openPublishNoticeModal(); toggleQuickActionMenu()" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 font-bold text-navy flex items-center gap-2 min-h-[44px]">
+              <button onclick="openPublishNoticeModal(); toggleQuickActionMenu()"
+                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 font-bold text-navy flex items-center gap-2 min-h-[44px]">
                 <i data-lucide="megaphone" class="w-4 h-4 text-amber-500"></i> Publish Notice
               </button>
-              <button onclick="openAddCadetModal(); toggleQuickActionMenu()" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 font-bold text-navy flex items-center gap-2 min-h-[44px]">
+              <button onclick="openAddCadetModal(); toggleQuickActionMenu()"
+                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 font-bold text-navy flex items-center gap-2 min-h-[44px]">
                 <i data-lucide="user-plus" class="w-4 h-4 text-purple-600"></i> Register New Cadet
               </button>
             </div>
@@ -184,9 +218,12 @@
 
           <!-- Officer Profile Header Chip -->
           <div class="flex items-center space-x-2 pl-2 border-l border-slate-200">
-            <img id="officer-header-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80" alt="Officer Avatar" class="header-avatar w-9 h-9 rounded-full object-cover border-2 border-navy">
+            <img id="officer-header-avatar"
+              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80"
+              alt="Officer Avatar" class="header-avatar w-9 h-9 rounded-full object-cover border-2 border-navy">
             <div class="text-left hidden md:block">
-              <div id="officer-header-name" class="text-xs font-bold text-slate-800 leading-tight">CTO Gaurav Singh</div>
+              <div id="officer-header-name" class="text-xs font-bold text-slate-800 leading-tight">CTO Gaurav Singh
+              </div>
               <div class="text-[10px] text-slate-500 font-semibold">Associate NCC Officer (ANO)</div>
             </div>
           </div>
@@ -197,15 +234,24 @@
     </header>
 
     <!-- 2. MAIN DASHBOARD BODY (SIDEBAR + CONTENT) -->
-    <div class="main-dashboard-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-1 flex flex-col lg:flex-row gap-6">
-      
+    <div
+      class="main-dashboard-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-1 flex flex-col lg:flex-row gap-6">
+
       <!-- SIDEBAR NAVIGATION (Drawer on mobile <1024px, static on >=1024px) -->
-      <aside id="officer-sidebar" class="drawer-sidebar w-full lg:w-64 shrink-0 space-y-4">
-        
-        <!-- Mobile Drawer Header -->
-        <div class="drawer-header flex items-center justify-between pb-3 border-b border-slate-200 lg:hidden">
-          <span class="text-xs font-black text-navy uppercase tracking-wider">Navigation Menu</span>
-          <button onclick="toggleMobileSidebar()" class="p-2 text-slate-400 hover:text-slate-600 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center" aria-label="Close menu">
+      <aside id="officer-sidebar" class="drawer-sidebar w-full lg:w-64 shrink-0 space-y-4" role="navigation"
+        aria-label="Officer ANO Navigation">
+
+        <!-- Mobile Drawer Header Row (Close Button) -->
+        <div class="drawer-header-row lg:hidden flex items-center justify-between pb-3 border-b border-slate-100">
+          <div class="flex items-center gap-2">
+            <div
+              class="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs">
+              ANO</div>
+            <span class="font-extrabold text-sm text-navy">Officer Navigation</span>
+          </div>
+          <button onclick="toggleMobileSidebar()"
+            class="drawer-close-btn p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100"
+            aria-label="Close drawer">
             <i data-lucide="x" class="w-5 h-5"></i>
           </button>
         </div>
@@ -213,11 +259,14 @@
         <!-- Redesigned Officer Info Card (Clean single card, no duplicate logout) -->
         <div class="drawer-profile-card bg-white p-4 rounded-3xl space-y-2 shadow-xs border border-slate-200">
           <div class="flex items-center space-x-3">
-            <img id="sidebar-officer-photo" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" alt="CTO Gaurav Singh" class="w-11 h-11 rounded-2xl object-cover border-2 border-slate-200 shadow-xs">
+            <img id="sidebar-officer-photo"
+              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80"
+              alt="CTO Gaurav Singh" class="w-11 h-11 rounded-2xl object-cover border-2 border-slate-200 shadow-xs">
             <div class="min-w-0">
               <h2 id="sidebar-officer-name" class="font-extrabold text-sm text-navy truncate">CTO Gaurav Singh</h2>
               <p class="text-[11px] text-slate-500 font-semibold truncate">ANO Officer • Army Wing</p>
-              <span class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full mt-0.5 border border-emerald-200">
+              <span
+                class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full mt-0.5 border border-emerald-200">
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Active
               </span>
             </div>
@@ -226,38 +275,54 @@
 
         <!-- Navigation Menu Links (8 Live Sections) -->
         <nav class="glass-card rounded-3xl p-3 space-y-1 text-xs">
-          <button onclick="switchOfficerSection('overview')" id="nav-btn-overview" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-active min-h-[44px]">
+          <button onclick="switchOfficerSection('overview')" id="nav-btn-overview"
+            class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-active min-h-[44px]">
             <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Command Overview
           </button>
-          <button onclick="switchOfficerSection('cadets')" id="nav-btn-cadets" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-inactive min-h-[44px]">
+          <button onclick="switchOfficerSection('cadets')" id="nav-btn-cadets"
+            class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-inactive min-h-[44px]">
             <i data-lucide="users" class="w-4 h-4"></i> Cadet Management
           </button>
-          <button onclick="switchOfficerSection('applications')" id="nav-btn-applications" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center justify-between gap-2 transition-all sidebar-inactive min-h-[44px]">
-            <span class="flex items-center gap-3"><i data-lucide="user-check" class="w-4 h-4"></i> Selection & Applications</span>
-            <span id="nav-badge-applications" class="bg-amber-500 text-white font-bold text-[9px] px-2 py-0.5 rounded-full shrink-0">18</span>
+          <button onclick="switchOfficerSection('applications')" id="nav-btn-applications"
+            class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center justify-between gap-2 transition-all sidebar-inactive min-h-[44px]">
+            <span class="flex items-center gap-3"><i data-lucide="user-check" class="w-4 h-4"></i> Selection &
+              Applications</span>
+            <span id="nav-badge-applications"
+              class="bg-amber-500 text-white font-bold text-[9px] px-2 py-0.5 rounded-full shrink-0">18</span>
           </button>
-          <button onclick="switchOfficerSection('attendance')" id="nav-btn-attendance" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-inactive min-h-[44px]">
+          <button onclick="switchOfficerSection('attendance')" id="nav-btn-attendance"
+            class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-inactive min-h-[44px]">
             <i data-lucide="calendar-check-2" class="w-4 h-4"></i> Mark Attendance
           </button>
-          <button onclick="switchOfficerSection('camps')" id="nav-btn-camps" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-inactive min-h-[44px]">
+          <button onclick="switchOfficerSection('camps')" id="nav-btn-camps"
+            class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-inactive min-h-[44px]">
             <i data-lucide="tent" class="w-4 h-4"></i> Camp Management
           </button>
-          <button onclick="switchOfficerSection('certificates')" id="nav-btn-certificates" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center justify-between gap-2 transition-all sidebar-inactive min-h-[44px]">
-            <span class="flex items-center gap-3"><i data-lucide="file-badge" class="w-4 h-4"></i> Verify Certificates</span>
-            <span id="nav-badge-certificates" class="bg-blue-500 text-white font-bold text-[9px] px-2 py-0.5 rounded-full shrink-0">12</span>
+          <button onclick="switchOfficerSection('certificates')" id="nav-btn-certificates"
+            class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center justify-between gap-2 transition-all sidebar-inactive min-h-[44px]">
+            <span class="flex items-center gap-3"><i data-lucide="file-badge" class="w-4 h-4"></i> Verify
+              Certificates</span>
+            <span id="nav-badge-certificates"
+              class="bg-blue-500 text-white font-bold text-[9px] px-2 py-0.5 rounded-full shrink-0">12</span>
           </button>
-          <button onclick="switchOfficerSection('notices')" id="nav-btn-notices" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-inactive min-h-[44px]">
+          <button onclick="switchOfficerSection('notices')" id="nav-btn-notices"
+            class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-inactive min-h-[44px]">
             <i data-lucide="megaphone" class="w-4 h-4"></i> Publish Notices
           </button>
-          <button onclick="switchOfficerSection('complaints')" id="nav-btn-complaints" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center justify-between gap-2 transition-all sidebar-inactive min-h-[44px]">
-            <span class="flex items-center gap-3"><i data-lucide="message-square" class="w-4 h-4"></i> Grievances & Helpdesk</span>
-            <span id="nav-badge-complaints" class="bg-rose-500 text-white font-bold text-[9px] px-2 py-0.5 rounded-full shrink-0">4</span>
+          <button onclick="switchOfficerSection('complaints')" id="nav-btn-complaints"
+            class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center justify-between gap-2 transition-all sidebar-inactive min-h-[44px]">
+            <span class="flex items-center gap-3"><i data-lucide="message-square" class="w-4 h-4"></i> Grievances &
+              Helpdesk</span>
+            <span id="nav-badge-complaints"
+              class="bg-rose-500 text-white font-bold text-[9px] px-2 py-0.5 rounded-full shrink-0">4</span>
           </button>
-          <button onclick="switchOfficerSection('reports')" id="nav-btn-reports" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-inactive min-h-[44px]">
+          <button onclick="switchOfficerSection('reports')" id="nav-btn-reports"
+            class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-inactive min-h-[44px]">
             <i data-lucide="bar-chart-3" class="w-4 h-4"></i> Battalion Reports
           </button>
           <div class="border-t border-slate-200 my-2 pt-2"></div>
-          <a href="login.html" onclick="if(window.NCCStore) NCCStore.logout()" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 text-red-600 hover:bg-red-50 font-bold min-h-[44px]">
+          <a href="login.html" onclick="if(window.NCCStore) NCCStore.logout()"
+            class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 text-red-600 hover:bg-red-50 font-bold min-h-[44px]">
             <i data-lucide="log-out" class="w-4 h-4"></i> Logout
           </a>
         </nav>
@@ -269,18 +334,23 @@
 
         <!-- ================= SECTION 1: OVERVIEW DASHBOARD ================= -->
         <div id="section-overview" class="space-y-6">
-          
+
           <!-- Fixed Time-Based Welcome Greeting Banner -->
-          <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div
+            class="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h1 id="officer-welcome-greeting" class="page-hero-title font-black text-navy tracking-tight">Good Morning, CTO Gaurav Singh</h1>
-              <p id="officer-welcome-date" class="text-xs text-subtext mt-1">Here is your battalion operational summary for today, 13 September 2026.</p>
+              <h1 id="officer-welcome-greeting" class="page-hero-title font-black text-navy tracking-tight">Good
+                Morning, CTO Gaurav Singh</h1>
+              <p id="officer-welcome-date" class="text-xs text-subtext mt-1">Here is your battalion operational summary
+                for today, 13 September 2026.</p>
             </div>
             <div class="flex items-center gap-2 flex-wrap">
-              <button onclick="switchOfficerSection('attendance')" class="bg-[#1677FF] hover:bg-blue-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-xs flex items-center gap-2 min-h-[44px]">
+              <button onclick="switchOfficerSection('attendance')"
+                class="bg-[#1677FF] hover:bg-blue-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-xs flex items-center gap-2 min-h-[44px]">
                 <i data-lucide="check-square" class="w-4 h-4"></i> Take Today's Attendance
               </button>
-              <button onclick="openCreateCampModal()" class="bg-navy hover:bg-navy-dark text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-xs flex items-center gap-2 min-h-[44px]">
+              <button onclick="openCreateCampModal()"
+                class="bg-navy hover:bg-navy-dark text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-xs flex items-center gap-2 min-h-[44px]">
                 <i data-lucide="tent" class="w-4 h-4"></i> + Create Camp
               </button>
             </div>
@@ -288,50 +358,66 @@
 
           <!-- 8 LARGE OPERATIONAL STATISTICS CARDS (Dynamically calculated from NCCStore) -->
           <div class="stat-cards-grid grid grid-cols-2 sm:grid-cols-4 gap-4">
-            
-            <div class="glass-card p-4 rounded-2xl border-l-4 border-l-navy hover:shadow-md transition-all cursor-pointer" onclick="switchOfficerSection('cadets')">
+
+            <div
+              class="glass-card p-4 rounded-2xl border-l-4 border-l-navy hover:shadow-md transition-all cursor-pointer"
+              onclick="switchOfficerSection('cadets')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">Total Cadets</div>
               <div id="stat-total-cadets" class="stat-card-value font-black text-navy mt-1">116</div>
               <div class="text-[10px] text-slate-400 mt-0.5">Across all 3 Units</div>
             </div>
 
-            <div class="glass-card p-4 rounded-2xl border-l-4 border-l-blue-500 hover:shadow-md transition-all cursor-pointer" onclick="filterCadetsByUnit('Army Unit')">
+            <div
+              class="glass-card p-4 rounded-2xl border-l-4 border-l-blue-500 hover:shadow-md transition-all cursor-pointer"
+              onclick="filterCadetsByUnit('Army Unit')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">Army Unit</div>
               <div id="stat-army-cadets" class="stat-card-value font-black text-blue-600 mt-1">56</div>
               <div class="text-[10px] text-slate-400 mt-0.5">8 MP Artillery Bn</div>
             </div>
 
-            <div class="glass-card p-4 rounded-2xl border-l-4 border-l-indigo-500 hover:shadow-md transition-all cursor-pointer" onclick="filterCadetsByUnit('Naval Unit')">
+            <div
+              class="glass-card p-4 rounded-2xl border-l-4 border-l-indigo-500 hover:shadow-md transition-all cursor-pointer"
+              onclick="filterCadetsByUnit('Naval Unit')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">Naval Unit</div>
               <div id="stat-naval-cadets" class="stat-card-value font-black text-indigo-600 mt-1">32</div>
               <div class="text-[10px] text-slate-400 mt-0.5">3 MP Naval Unit</div>
             </div>
 
-            <div class="glass-card p-4 rounded-2xl border-l-4 border-l-amber-500 hover:shadow-md transition-all cursor-pointer" onclick="switchOfficerSection('applications')">
+            <div
+              class="glass-card p-4 rounded-2xl border-l-4 border-l-amber-500 hover:shadow-md transition-all cursor-pointer"
+              onclick="switchOfficerSection('applications')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">Pending Regs</div>
               <div id="stat-pending-regs" class="stat-card-value font-black text-amber-600 mt-1">18</div>
               <div class="text-[10px] text-amber-600 font-bold mt-0.5">Action Required</div>
             </div>
 
-            <div class="glass-card p-4 rounded-2xl border-l-4 border-l-emerald-500 hover:shadow-md transition-all cursor-pointer" onclick="switchOfficerSection('camps')">
+            <div
+              class="glass-card p-4 rounded-2xl border-l-4 border-l-emerald-500 hover:shadow-md transition-all cursor-pointer"
+              onclick="switchOfficerSection('camps')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">Upcoming Camps</div>
               <div id="stat-upcoming-camps" class="stat-card-value font-black text-emerald-600 mt-1">6</div>
               <div class="text-[10px] text-slate-400 mt-0.5">ATC, RDC, TSC</div>
             </div>
 
-            <div class="glass-card p-4 rounded-2xl border-l-4 border-l-teal-500 hover:shadow-md transition-all cursor-pointer" onclick="switchOfficerSection('attendance')">
+            <div
+              class="glass-card p-4 rounded-2xl border-l-4 border-l-teal-500 hover:shadow-md transition-all cursor-pointer"
+              onclick="switchOfficerSection('attendance')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">Today's Attendance</div>
               <div id="stat-today-attendance" class="stat-card-value font-black text-teal-600 mt-1">91%</div>
               <div class="text-[10px] text-emerald-600 font-bold mt-0.5">High Participation</div>
             </div>
 
-            <div class="glass-card p-4 rounded-2xl border-l-4 border-l-purple-500 hover:shadow-md transition-all cursor-pointer" onclick="switchOfficerSection('certificates')">
+            <div
+              class="glass-card p-4 rounded-2xl border-l-4 border-l-purple-500 hover:shadow-md transition-all cursor-pointer"
+              onclick="switchOfficerSection('certificates')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">Pending Docs</div>
               <div id="stat-pending-docs" class="stat-card-value font-black text-purple-600 mt-1">12</div>
               <div class="text-[10px] text-slate-400 mt-0.5">Certificates to review</div>
             </div>
 
-            <div class="glass-card p-4 rounded-2xl border-l-4 border-l-rose-500 hover:shadow-md transition-all cursor-pointer" onclick="switchOfficerSection('complaints')">
+            <div
+              class="glass-card p-4 rounded-2xl border-l-4 border-l-rose-500 hover:shadow-md transition-all cursor-pointer"
+              onclick="switchOfficerSection('complaints')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">Complaints</div>
               <div id="stat-complaints" class="stat-card-value font-black text-rose-600 mt-1">4</div>
               <div class="text-[10px] text-slate-400 mt-0.5">Grievance Desk</div>
@@ -340,29 +426,35 @@
           </div>
 
           <!-- ATTENDANCE WARNING ALERT BANNER -->
-          <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+          <div
+            class="bg-amber-50 border border-amber-200 p-4 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
             <div class="flex items-center gap-3">
               <div class="p-2 bg-amber-100 text-amber-800 rounded-xl">
                 <i data-lucide="alert-triangle" class="w-5 h-5"></i>
               </div>
               <div>
                 <strong class="text-amber-900 text-sm">Attendance Alert Threshold Notice</strong>
-                <p class="text-amber-800"><span id="alert-cadets-count">12</span> Cadets are currently below the required <span id="alert-threshold-pct">75%</span> parade attendance mark for Cert B eligibility.</p>
+                <p class="text-amber-800"><span id="alert-cadets-count">12</span> Cadets are currently below the
+                  required <span id="alert-threshold-pct">75%</span> parade attendance mark for Cert B eligibility.</p>
               </div>
             </div>
-            <button onclick="filterFlaggedCadets()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold px-3.5 py-1.5 rounded-xl shrink-0 transition-colors">
+            <button onclick="filterFlaggedCadets()"
+              class="bg-amber-600 hover:bg-amber-700 text-white font-bold px-3.5 py-1.5 rounded-xl shrink-0 transition-colors">
               View Flagged Cadets
             </button>
           </div>
 
           <!-- CHARTS & QUICK TABLES -->
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            
+
             <!-- Battalion Attendance Trend Chart -->
             <div class="glass-card p-5 rounded-3xl space-y-3">
               <div class="flex items-center justify-between">
-                <h3 class="text-sm font-extrabold text-navy uppercase tracking-wider">Battalion Attendance Analytics</h3>
-                <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">Parade Trend 91%</span>
+                <h3 class="text-sm font-extrabold text-navy uppercase tracking-wider">Battalion Attendance Analytics
+                </h3>
+                <span
+                  class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">Parade
+                  Trend 91%</span>
               </div>
               <div class="h-60 w-full">
                 <canvas id="officerAttendanceChart"></canvas>
@@ -374,7 +466,9 @@
               <div>
                 <div class="flex items-center justify-between mb-3">
                   <h3 class="text-sm font-extrabold text-navy uppercase tracking-wider">New Cadet Registrations</h3>
-                  <button onclick="switchOfficerSection('applications')" class="text-xs text-itmblue font-bold hover:underline">Review All (<span id="overview-pending-count">18</span>)</button>
+                  <button onclick="switchOfficerSection('applications')"
+                    class="text-xs text-itmblue font-bold hover:underline">Review All (<span
+                      id="overview-pending-count">18</span>)</button>
                 </div>
                 <div id="overview-registrations-list" class="space-y-2 text-xs divide-y divide-slate-100">
                   <!-- Populated dynamically -->
@@ -382,7 +476,8 @@
               </div>
               <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
                 <span>Syncs live with student submissions</span>
-                <button onclick="switchOfficerSection('applications')" class="font-bold text-navy hover:underline">Go to Applications Desk &rarr;</button>
+                <button onclick="switchOfficerSection('applications')" class="font-bold text-navy hover:underline">Go to
+                  Applications Desk &rarr;</button>
               </div>
             </div>
 
@@ -396,13 +491,16 @@
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-4">
               <div>
                 <h2 class="text-xl font-extrabold text-navy">Cadet Directory Management</h2>
-                <p class="text-xs text-subtext">Search, filter, edit details, and promote cadets across all battalions</p>
+                <p class="text-xs text-subtext">Search, filter, edit details, and promote cadets across all battalions
+                </p>
               </div>
               <div class="flex items-center gap-2">
-                <button onclick="exportCadetRosterCSV()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 border border-slate-300">
+                <button onclick="exportCadetRosterCSV()"
+                  class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 border border-slate-300">
                   <i data-lucide="download" class="w-4 h-4"></i> Export CSV
                 </button>
-                <button onclick="openAddCadetModal()" class="bg-[#1677FF] hover:bg-blue-600 text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-2 shadow-xs">
+                <button onclick="openAddCadetModal()"
+                  class="bg-[#1677FF] hover:bg-blue-600 text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-2 shadow-xs">
                   <i data-lucide="user-plus" class="w-4 h-4"></i> + Add New Cadet
                 </button>
               </div>
@@ -410,20 +508,25 @@
 
             <!-- Filters Bar -->
             <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs">
-              <input type="text" id="cadet-search-input" onkeyup="renderCadetManagementTable()" placeholder="Search Name, Roll, Rank..." class="p-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-itmblue focus:outline-none">
-              <select id="cadet-unit-filter" onchange="renderCadetManagementTable()" class="p-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-itmblue focus:outline-none">
+              <input type="text" id="cadet-search-input" onkeyup="renderCadetManagementTable()"
+                placeholder="Search Name, Roll, Rank..."
+                class="p-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-itmblue focus:outline-none">
+              <select id="cadet-unit-filter" onchange="renderCadetManagementTable()"
+                class="p-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-itmblue focus:outline-none">
                 <option value="">All Units</option>
                 <option value="8 MP Artillery Battalion">8 MP Artillery Bn</option>
                 <option value="2 MP Girls Battalion">2 MP Girls Bn</option>
                 <option value="3 MP Naval Unit">3 MP Naval Unit</option>
               </select>
-              <select id="cadet-wing-filter" onchange="renderCadetManagementTable()" class="p-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-itmblue focus:outline-none">
+              <select id="cadet-wing-filter" onchange="renderCadetManagementTable()"
+                class="p-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-itmblue focus:outline-none">
                 <option value="">All Wings</option>
                 <option value="Army Wing">Army Wing</option>
                 <option value="Girls Wing">Girls Wing</option>
                 <option value="Naval Wing">Naval Wing</option>
               </select>
-              <select id="cadet-status-filter" onchange="renderCadetManagementTable()" class="p-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-itmblue focus:outline-none">
+              <select id="cadet-status-filter" onchange="renderCadetManagementTable()"
+                class="p-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-itmblue focus:outline-none">
                 <option value="">All Attendance Status</option>
                 <option value="ACTIVE">Eligible (&ge;75%)</option>
                 <option value="WARNING">Flagged (&lt;75%)</option>
@@ -460,13 +563,16 @@
                 <h2 class="text-xl font-extrabold text-navy flex items-center gap-2">
                   <i data-lucide="user-check" class="w-6 h-6 text-amber-500"></i> Selection & Applications Desk
                 </h2>
-                <p class="text-xs text-subtext">Review and approve/reject camp applications and new cadet candidate enrollments</p>
+                <p class="text-xs text-subtext">Review and approve/reject camp applications and new cadet candidate
+                  enrollments</p>
               </div>
               <div class="flex items-center gap-2">
-                <button onclick="filterApplicationsByStatus('pending')" class="bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold text-xs px-3 py-1.5 rounded-xl">
+                <button onclick="filterApplicationsByStatus('pending')"
+                  class="bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold text-xs px-3 py-1.5 rounded-xl">
                   Show Pending Only
                 </button>
-                <button onclick="filterApplicationsByStatus('all')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs px-3 py-1.5 rounded-xl">
+                <button onclick="filterApplicationsByStatus('all')"
+                  class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs px-3 py-1.5 rounded-xl">
                   Show All
                 </button>
               </div>
@@ -486,7 +592,8 @@
                     <th class="p-3.5 text-center">Decision</th>
                   </tr>
                 </thead>
-                <tbody id="applications-table-tbody" class="divide-y divide-slate-200 bg-white font-medium text-slate-700">
+                <tbody id="applications-table-tbody"
+                  class="divide-y divide-slate-200 bg-white font-medium text-slate-700">
                   <!-- Rendered dynamically -->
                 </tbody>
               </table>
@@ -502,23 +609,28 @@
                 <h2 class="text-xl font-extrabold text-navy flex items-center gap-2">
                   <i data-lucide="check-square" class="w-6 h-6 text-emerald-600"></i> Battalion Attendance Marking Desk
                 </h2>
-                <p class="text-xs text-subtext">Record parade, theory, and camp attendance in real-time (instant sync with Student & Admin portals)</p>
+                <p class="text-xs text-subtext">Record parade, theory, and camp attendance in real-time (instant sync
+                  with Student & Admin portals)</p>
               </div>
               <div class="flex items-center gap-2">
-                <button onclick="markAllAttendance('P')" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-bold text-xs px-3.5 py-2 rounded-xl transition-colors">
+                <button onclick="markAllAttendance('P')"
+                  class="bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-bold text-xs px-3.5 py-2 rounded-xl transition-colors">
                   MARK ALL PRESENT
                 </button>
-                <button onclick="saveAttendanceSession()" class="bg-[#1677FF] hover:bg-blue-600 text-white font-bold text-xs px-4 py-2 rounded-xl shadow-xs transition-colors flex items-center gap-1.5">
+                <button onclick="saveAttendanceSession()"
+                  class="bg-[#1677FF] hover:bg-blue-600 text-white font-bold text-xs px-4 py-2 rounded-xl shadow-xs transition-colors flex items-center gap-1.5">
                   <i data-lucide="save" class="w-4 h-4"></i> SAVE ATTENDANCE
                 </button>
               </div>
             </div>
 
             <!-- Session Controls -->
-            <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 text-xs bg-slate-50 p-4 rounded-2xl border border-slate-200">
+            <div
+              class="grid grid-cols-1 sm:grid-cols-4 gap-4 text-xs bg-slate-50 p-4 rounded-2xl border border-slate-200">
               <div>
                 <label class="font-bold text-slate-700 block mb-1">Select Battalion Unit</label>
-                <select id="attendance-session-unit" onchange="renderAttendanceMarkingTable()" class="w-full p-2 rounded-xl border border-slate-300 font-semibold">
+                <select id="attendance-session-unit" onchange="renderAttendanceMarkingTable()"
+                  class="w-full p-2 rounded-xl border border-slate-300 font-semibold">
                   <option value="8 MP Artillery Battalion">8 MP Artillery Battalion (Army)</option>
                   <option value="2 MP Girls Battalion">2 MP Girls Battalion</option>
                   <option value="3 MP Naval Unit">3 MP Naval Unit</option>
@@ -526,11 +638,13 @@
               </div>
               <div>
                 <label class="font-bold text-slate-700 block mb-1">Session Date</label>
-                <input type="date" id="attendance-session-date" class="w-full p-2 rounded-xl border border-slate-300 font-bold">
+                <input type="date" id="attendance-session-date"
+                  class="w-full p-2 rounded-xl border border-slate-300 font-bold">
               </div>
               <div>
                 <label class="font-bold text-slate-700 block mb-1">Session Type / Subject</label>
-                <select id="attendance-session-type" class="w-full p-2 rounded-xl border border-slate-300 font-semibold">
+                <select id="attendance-session-type"
+                  class="w-full p-2 rounded-xl border border-slate-300 font-semibold">
                   <option value="Practical Drill & Uniform Inspection">Practical Drill & Uniform Inspection</option>
                   <option value="NCC Theory & Leadership Dynamics">NCC Theory & Leadership Dynamics</option>
                   <option value="Rifle Marksmanship .22 Deluxe">Rifle Marksmanship .22 Deluxe</option>
@@ -540,7 +654,8 @@
               </div>
               <div>
                 <label class="font-bold text-slate-700 block mb-1">Instructor / ANO</label>
-                <input type="text" id="attendance-session-instructor" value="CTO Gaurav Singh Shekhawat" class="w-full p-2 rounded-xl border border-slate-300 font-semibold bg-white" readonly>
+                <input type="text" id="attendance-session-instructor" value="CTO Gaurav Singh Shekhawat"
+                  class="w-full p-2 rounded-xl border border-slate-300 font-semibold bg-white" readonly>
               </div>
             </div>
 
@@ -555,7 +670,8 @@
                     <th class="p-3.5 text-center">Attendance Choice (P / A / L)</th>
                   </tr>
                 </thead>
-                <tbody id="attendance-marking-tbody" class="divide-y divide-slate-200 bg-white font-medium text-slate-700">
+                <tbody id="attendance-marking-tbody"
+                  class="divide-y divide-slate-200 bg-white font-medium text-slate-700">
                   <!-- Populated from NCCStore cadets -->
                 </tbody>
               </table>
@@ -570,9 +686,11 @@
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-4">
               <div>
                 <h2 class="text-xl font-extrabold text-navy">Camp Management & Selection Rules</h2>
-                <p class="text-xs text-subtext">Publish new camps, configure eligibility rules, close camps, and review applicants</p>
+                <p class="text-xs text-subtext">Publish new camps, configure eligibility rules, close camps, and review
+                  applicants</p>
               </div>
-              <button onclick="openCreateCampModal()" class="bg-[#1677FF] hover:bg-blue-600 text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-2 shadow-xs">
+              <button onclick="openCreateCampModal()"
+                class="bg-[#1677FF] hover:bg-blue-600 text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-2 shadow-xs">
                 <i data-lucide="plus" class="w-4 h-4"></i> Create New Camp
               </button>
             </div>
@@ -590,7 +708,8 @@
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-4">
               <div>
                 <h2 class="text-xl font-extrabold text-navy">Certificate Verification & Endorsement Desk</h2>
-                <p class="text-xs text-subtext">Review uploaded certificates from cadets, approve to issue digital credentials, or reject with feedback</p>
+                <p class="text-xs text-subtext">Review uploaded certificates from cadets, approve to issue digital
+                  credentials, or reject with feedback</p>
               </div>
               <span class="text-xs font-bold text-blue-700 bg-blue-50 px-3 py-1.5 rounded-xl border border-blue-200">
                 Live Documents Queue
@@ -610,7 +729,8 @@
                     <th class="p-3.5 text-center">Verification Action</th>
                   </tr>
                 </thead>
-                <tbody id="certificates-verify-tbody" class="divide-y divide-slate-200 bg-white font-medium text-slate-700">
+                <tbody id="certificates-verify-tbody"
+                  class="divide-y divide-slate-200 bg-white font-medium text-slate-700">
                   <!-- Rendered dynamically from NCCStore.data.certificates -->
                 </tbody>
               </table>
@@ -623,18 +743,24 @@
           <div class="glass-card p-6 rounded-3xl space-y-6">
             <div>
               <h2 class="text-xl font-extrabold text-navy">Publish Official Battalion Notice</h2>
-              <p class="text-xs text-subtext">Broadcast announcements, uniform inspections, and examination schedules directly to student portals</p>
+              <p class="text-xs text-subtext">Broadcast announcements, uniform inspections, and examination schedules
+                directly to student portals</p>
             </div>
 
-            <form onsubmit="handlePublishNoticeSubmit(event)" class="space-y-4 text-xs bg-slate-50 p-5 rounded-2xl border border-slate-200">
+            <form onsubmit="handlePublishNoticeSubmit(event)"
+              class="space-y-4 text-xs bg-slate-50 p-5 rounded-2xl border border-slate-200">
               <div>
                 <label class="font-bold text-slate-700 block mb-1">Notice Title</label>
-                <input type="text" id="officer-notice-title" placeholder="e.g. Mandatory Uniform & Drill Inspection on Saturday" class="w-full p-3 rounded-xl border border-slate-300 font-semibold focus:ring-2 focus:ring-itmblue focus:outline-none" required>
+                <input type="text" id="officer-notice-title"
+                  placeholder="e.g. Mandatory Uniform & Drill Inspection on Saturday"
+                  class="w-full p-3 rounded-xl border border-slate-300 font-semibold focus:ring-2 focus:ring-itmblue focus:outline-none"
+                  required>
               </div>
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
                   <label class="font-bold text-slate-700 block mb-1">Target Audience</label>
-                  <select id="officer-notice-audience" class="w-full p-2.5 rounded-xl border border-slate-300 font-semibold">
+                  <select id="officer-notice-audience"
+                    class="w-full p-2.5 rounded-xl border border-slate-300 font-semibold">
                     <option value="All">All Cadets (Directorate)</option>
                     <option value="Army">8 MP Artillery Battalion (Army)</option>
                     <option value="Girls">2 MP Girls Battalion</option>
@@ -643,7 +769,8 @@
                 </div>
                 <div>
                   <label class="font-bold text-slate-700 block mb-1">Category</label>
-                  <select id="officer-notice-category" class="w-full p-2.5 rounded-xl border border-slate-300 font-semibold">
+                  <select id="officer-notice-category"
+                    class="w-full p-2.5 rounded-xl border border-slate-300 font-semibold">
                     <option value="Urgent">Urgent / Parade Order</option>
                     <option value="Camps">Camps & Expeditions</option>
                     <option value="Exams">Exams (Cert B & C)</option>
@@ -653,7 +780,8 @@
                 </div>
                 <div>
                   <label class="font-bold text-slate-700 block mb-1">Priority Level</label>
-                  <select id="officer-notice-priority" class="w-full p-2.5 rounded-xl border border-slate-300 font-semibold">
+                  <select id="officer-notice-priority"
+                    class="w-full p-2.5 rounded-xl border border-slate-300 font-semibold">
                     <option value="Urgent">URGENT</option>
                     <option value="Important">IMPORTANT</option>
                     <option value="Normal">NORMAL</option>
@@ -662,9 +790,13 @@
               </div>
               <div>
                 <label class="font-bold text-slate-700 block mb-1">Detailed Content</label>
-                <textarea id="officer-notice-content" rows="3" placeholder="Enter complete operational instructions, reporting timings, uniform code..." class="w-full p-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-itmblue focus:outline-none" required></textarea>
+                <textarea id="officer-notice-content" rows="3"
+                  placeholder="Enter complete operational instructions, reporting timings, uniform code..."
+                  class="w-full p-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-itmblue focus:outline-none"
+                  required></textarea>
               </div>
-              <button type="submit" class="bg-[#1677FF] hover:bg-blue-600 text-white font-bold py-2.5 px-6 rounded-xl flex items-center gap-2 shadow-xs transition-colors">
+              <button type="submit"
+                class="bg-[#1677FF] hover:bg-blue-600 text-white font-bold py-2.5 px-6 rounded-xl flex items-center gap-2 shadow-xs transition-colors">
                 <i data-lucide="send" class="w-4 h-4"></i> Broadcast Notice Immediately
               </button>
             </form>
@@ -684,7 +816,8 @@
                       <th class="p-3.5 text-center">Action</th>
                     </tr>
                   </thead>
-                  <tbody id="published-notices-tbody" class="divide-y divide-slate-200 bg-white font-medium text-slate-700">
+                  <tbody id="published-notices-tbody"
+                    class="divide-y divide-slate-200 bg-white font-medium text-slate-700">
                     <!-- Populated dynamically -->
                   </tbody>
                 </table>
@@ -700,9 +833,11 @@
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-4">
               <div>
                 <h2 class="text-xl font-extrabold text-navy">Cadet Grievances & Helpdesk Desk</h2>
-                <p class="text-xs text-subtext">Review service requests, attendance disputes, uniform requests, and reply directly</p>
+                <p class="text-xs text-subtext">Review service requests, attendance disputes, uniform requests, and
+                  reply directly</p>
               </div>
-              <span class="text-xs font-bold text-slate-700 bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200">
+              <span
+                class="text-xs font-bold text-slate-700 bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200">
                 Official ANO Helpdesk
               </span>
             </div>
@@ -719,13 +854,16 @@
             <div class="flex items-center justify-between border-b pb-4">
               <div>
                 <h2 class="text-xl font-extrabold text-navy">Battalion Operational Reports</h2>
-                <p class="text-xs text-subtext">Generate, print, and export official Directorate muster rolls and camp audits</p>
+                <p class="text-xs text-subtext">Generate, print, and export official Directorate muster rolls and camp
+                  audits</p>
               </div>
               <div class="flex items-center gap-2">
-                <button onclick="exportReportsCSV()" class="bg-[#1677FF] hover:bg-blue-600 text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-2 shadow-xs transition-colors">
+                <button onclick="exportReportsCSV()"
+                  class="bg-[#1677FF] hover:bg-blue-600 text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-2 shadow-xs transition-colors">
                   <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> Export CSV
                 </button>
-                <button onclick="exportReportsPDF()" class="bg-navy hover:bg-navy-dark text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-2 shadow-xs transition-colors">
+                <button onclick="exportReportsPDF()"
+                  class="bg-navy hover:bg-navy-dark text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-2 shadow-xs transition-colors">
                   <i data-lucide="download" class="w-4 h-4"></i> Export PDF Report
                 </button>
               </div>
@@ -737,8 +875,10 @@
                   <h4 class="font-extrabold text-navy text-sm">Monthly Attendance Audit</h4>
                   <i data-lucide="calendar" class="w-5 h-5 text-emerald-600"></i>
                 </div>
-                <p class="text-slate-600 leading-relaxed">Overall parade attendance standing: <strong class="text-emerald-700">91%</strong> across 8 MP Artillery Bn.</p>
-                <button onclick="downloadSpecificReport('attendance')" class="w-full text-center bg-white hover:bg-slate-100 text-slate-800 font-bold py-1.5 rounded-xl border border-slate-200 transition-colors">
+                <p class="text-slate-600 leading-relaxed">Overall parade attendance standing: <strong
+                    class="text-emerald-700">91%</strong> across 8 MP Artillery Bn.</p>
+                <button onclick="downloadSpecificReport('attendance')"
+                  class="w-full text-center bg-white hover:bg-slate-100 text-slate-800 font-bold py-1.5 rounded-xl border border-slate-200 transition-colors">
                   Download Muster Sheet &rarr;
                 </button>
               </div>
@@ -747,8 +887,10 @@
                   <h4 class="font-extrabold text-navy text-sm">Camp Participation Summary</h4>
                   <i data-lucide="tent" class="w-5 h-5 text-itmblue"></i>
                 </div>
-                <p class="text-slate-600 leading-relaxed">Active enrollments: <strong>85 Cadets</strong> registered for Annual Training Camp (ATC-102).</p>
-                <button onclick="downloadSpecificReport('camps')" class="w-full text-center bg-white hover:bg-slate-100 text-slate-800 font-bold py-1.5 rounded-xl border border-slate-200 transition-colors">
+                <p class="text-slate-600 leading-relaxed">Active enrollments: <strong>85 Cadets</strong> registered for
+                  Annual Training Camp (ATC-102).</p>
+                <button onclick="downloadSpecificReport('camps')"
+                  class="w-full text-center bg-white hover:bg-slate-100 text-slate-800 font-bold py-1.5 rounded-xl border border-slate-200 transition-colors">
                   Download Camp Nominal Roll &rarr;
                 </button>
               </div>
@@ -757,8 +899,10 @@
                   <h4 class="font-extrabold text-navy text-sm">Certificate B Eligibility</h4>
                   <i data-lucide="award" class="w-5 h-5 text-amber-500"></i>
                 </div>
-                <p class="text-slate-600 leading-relaxed">Eligible Cadets: <strong>48 Cadets</strong> meet the minimum &ge;75% parade threshold.</p>
-                <button onclick="downloadSpecificReport('certs')" class="w-full text-center bg-white hover:bg-slate-100 text-slate-800 font-bold py-1.5 rounded-xl border border-slate-200 transition-colors">
+                <p class="text-slate-600 leading-relaxed">Eligible Cadets: <strong>48 Cadets</strong> meet the minimum
+                  &ge;75% parade threshold.</p>
+                <button onclick="downloadSpecificReport('certs')"
+                  class="w-full text-center bg-white hover:bg-slate-100 text-slate-800 font-bold py-1.5 rounded-xl border border-slate-200 transition-colors">
                   Download Eligibility List &rarr;
                 </button>
               </div>
@@ -766,7 +910,8 @@
 
             <!-- Detailed Statistical Table -->
             <div class="pt-4 border-t border-slate-200">
-              <h3 class="font-bold text-sm text-navy mb-3 uppercase">Unit Strength Summary (Calculated from Central Store)</h3>
+              <h3 class="font-bold text-sm text-navy mb-3 uppercase">Unit Strength Summary (Calculated from Central
+                Store)</h3>
               <div class="overflow-x-auto rounded-2xl border border-slate-200 text-xs">
                 <table class="w-full text-left">
                   <thead class="bg-[#071D3A] text-white uppercase text-[11px]">
@@ -786,7 +931,8 @@
                       <td class="p-3.5 text-emerald-700 font-bold">89.4%</td>
                       <td class="p-3.5">4</td>
                       <td class="p-3.5">46</td>
-                      <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">Excellent</span></td>
+                      <td class="p-3.5"><span
+                          class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">Excellent</span></td>
                     </tr>
                     <tr>
                       <td class="p-3.5 font-bold">3 MP Naval Unit</td>
@@ -794,7 +940,8 @@
                       <td class="p-3.5 text-emerald-700 font-bold">92.1%</td>
                       <td class="p-3.5">2</td>
                       <td class="p-3.5">28</td>
-                      <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">Excellent</span></td>
+                      <td class="p-3.5"><span
+                          class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">Excellent</span></td>
                     </tr>
                     <tr>
                       <td class="p-3.5 font-bold">2 MP Girls Battalion</td>
@@ -802,7 +949,8 @@
                       <td class="p-3.5 text-emerald-700 font-bold">93.0%</td>
                       <td class="p-3.5">2</td>
                       <td class="p-3.5">26</td>
-                      <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">Excellent</span></td>
+                      <td class="p-3.5"><span
+                          class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">Excellent</span></td>
                     </tr>
                     <tr class="bg-slate-50 font-extrabold text-navy">
                       <td class="p-3.5">TOTAL BATTALION STRENGTH</td>
@@ -810,7 +958,8 @@
                       <td class="p-3.5 text-emerald-700">91.0%</td>
                       <td class="p-3.5">6 Camps</td>
                       <td class="p-3.5">100 Cadets</td>
-                      <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-bold">Fully Operational</span></td>
+                      <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-bold">Fully
+                          Operational</span></td>
                     </tr>
                   </tbody>
                 </table>
@@ -841,9 +990,11 @@
   <!-- ================= MODALS ================= -->
 
   <!-- Modal: Add New Cadet -->
-  <div id="modal-add-cadet" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+  <div id="modal-add-cadet"
+    class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl relative border-2 border-[#1677FF]">
-      <button onclick="closeModal('modal-add-cadet')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700">
+      <button onclick="closeModal('modal-add-cadet')"
+        class="absolute top-4 right-4 text-slate-400 hover:text-slate-700">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
       <div class="flex items-center justify-between border-b pb-3">
@@ -851,20 +1002,23 @@
           <i data-lucide="user-plus" class="w-5 h-5 text-itmblue"></i> Register Cadet / Add Person
         </h3>
       </div>
-      
+
       <form onsubmit="handleSingleAddCadet(event)" class="space-y-3 text-xs">
         <div>
           <label class="font-bold text-slate-700 block mb-1">Cadet Full Name</label>
-          <input type="text" id="add-cadet-name" placeholder="e.g. Vikramaditya Roy" class="w-full p-2.5 rounded-xl border border-slate-300" required>
+          <input type="text" id="add-cadet-name" placeholder="e.g. Vikramaditya Roy"
+            class="w-full p-2.5 rounded-xl border border-slate-300" required>
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="font-bold text-slate-700 block mb-1">Roll / Student ID</label>
-            <input type="text" id="add-cadet-roll" placeholder="e.g. 2026-CSE-109" class="w-full p-2.5 rounded-xl border border-slate-300" required>
+            <input type="text" id="add-cadet-roll" placeholder="e.g. 2026-CSE-109"
+              class="w-full p-2.5 rounded-xl border border-slate-300" required>
           </div>
           <div>
             <label class="font-bold text-slate-700 block mb-1">Course / Dept</label>
-            <input type="text" id="add-cadet-course" placeholder="e.g. B.Tech AI/ML" class="w-full p-2.5 rounded-xl border border-slate-300" required>
+            <input type="text" id="add-cadet-course" placeholder="e.g. B.Tech AI/ML"
+              class="w-full p-2.5 rounded-xl border border-slate-300" required>
           </div>
         </div>
         <div class="grid grid-cols-2 gap-3">
@@ -890,14 +1044,17 @@
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="font-bold text-slate-700 block mb-1">Phone Number</label>
-            <input type="tel" id="add-cadet-phone" placeholder="+91 98765 00000" class="w-full p-2.5 rounded-xl border border-slate-300">
+            <input type="tel" id="add-cadet-phone" placeholder="+91 98765 00000"
+              class="w-full p-2.5 rounded-xl border border-slate-300">
           </div>
           <div>
             <label class="font-bold text-slate-700 block mb-1">Email</label>
-            <input type="email" id="add-cadet-email" placeholder="cadet@itmuniversity.ac.in" class="w-full p-2.5 rounded-xl border border-slate-300">
+            <input type="email" id="add-cadet-email" placeholder="cadet@itmuniversity.ac.in"
+              class="w-full p-2.5 rounded-xl border border-slate-300">
           </div>
         </div>
-        <button type="submit" class="w-full bg-[#1677FF] hover:bg-blue-600 text-white font-bold py-2.5 rounded-xl text-xs shadow-xs transition-colors">
+        <button type="submit"
+          class="w-full bg-[#1677FF] hover:bg-blue-600 text-white font-bold py-2.5 rounded-xl text-xs shadow-xs transition-colors">
           + Add Person To Database & Attendance List
         </button>
       </form>
@@ -905,9 +1062,11 @@
   </div>
 
   <!-- Modal: Promote Cadet -->
-  <div id="modal-promote-cadet" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+  <div id="modal-promote-cadet"
+    class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-sm w-full p-6 space-y-4 shadow-2xl relative border-2 border-amber-400">
-      <button onclick="closeModal('modal-promote-cadet')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700">
+      <button onclick="closeModal('modal-promote-cadet')"
+        class="absolute top-4 right-4 text-slate-400 hover:text-slate-700">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
       <h3 class="font-extrabold text-navy text-base flex items-center gap-2">
@@ -917,11 +1076,13 @@
         <input type="hidden" id="promote-cadet-id">
         <div>
           <label class="font-bold text-slate-700 block mb-1">Cadet Name</label>
-          <input type="text" id="promote-cadet-name" class="w-full p-2.5 rounded-xl border border-slate-300 bg-slate-50 font-bold" readonly>
+          <input type="text" id="promote-cadet-name"
+            class="w-full p-2.5 rounded-xl border border-slate-300 bg-slate-50 font-bold" readonly>
         </div>
         <div>
           <label class="font-bold text-slate-700 block mb-1">Current Rank</label>
-          <input type="text" id="promote-current-rank" class="w-full p-2.5 rounded-xl border border-slate-300 bg-slate-50 font-semibold" readonly>
+          <input type="text" id="promote-current-rank"
+            class="w-full p-2.5 rounded-xl border border-slate-300 bg-slate-50 font-semibold" readonly>
         </div>
         <div>
           <label class="font-bold text-slate-700 block mb-1">Select New Rank</label>
@@ -936,7 +1097,8 @@
             <option value="Senior Under Officer (SUO)">Senior Under Officer (SUO)</option>
           </select>
         </div>
-        <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 rounded-xl text-xs transition-colors">
+        <button type="submit"
+          class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 rounded-xl text-xs transition-colors">
           Confirm Official Promotion & Order
         </button>
       </form>
@@ -944,9 +1106,11 @@
   </div>
 
   <!-- Modal: Create New Camp -->
-  <div id="modal-create-camp" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+  <div id="modal-create-camp"
+    class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl relative border-2 border-navy">
-      <button onclick="closeModal('modal-create-camp')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700">
+      <button onclick="closeModal('modal-create-camp')"
+        class="absolute top-4 right-4 text-slate-400 hover:text-slate-700">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
       <h3 class="font-extrabold text-navy text-base flex items-center gap-2">
@@ -955,7 +1119,8 @@
       <form onsubmit="handleCreateCampSubmit(event)" class="space-y-3 text-xs">
         <div>
           <label class="font-bold text-slate-700 block mb-1">Camp Name</label>
-          <input type="text" id="create-camp-name" placeholder="e.g. Combined Annual Training Camp (CATC-XV)" class="w-full p-2.5 rounded-xl border border-slate-300 font-semibold" required>
+          <input type="text" id="create-camp-name" placeholder="e.g. Combined Annual Training Camp (CATC-XV)"
+            class="w-full p-2.5 rounded-xl border border-slate-300 font-semibold" required>
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
@@ -971,32 +1136,40 @@
           </div>
           <div>
             <label class="font-bold text-slate-700 block mb-1">Maximum Slots</label>
-            <input type="number" id="create-camp-slots" value="60" min="10" max="250" class="w-full p-2.5 rounded-xl border border-slate-300 font-semibold" required>
+            <input type="number" id="create-camp-slots" value="60" min="10" max="250"
+              class="w-full p-2.5 rounded-xl border border-slate-300 font-semibold" required>
           </div>
         </div>
         <div>
           <label class="font-bold text-slate-700 block mb-1">Camp Location</label>
-          <input type="text" id="create-camp-location" placeholder="e.g. Gwalior Fort Grounds / Kamptee Nagpur" class="w-full p-2.5 rounded-xl border border-slate-300 font-semibold" required>
+          <input type="text" id="create-camp-location" placeholder="e.g. Gwalior Fort Grounds / Kamptee Nagpur"
+            class="w-full p-2.5 rounded-xl border border-slate-300 font-semibold" required>
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="font-bold text-slate-700 block mb-1">Start Date</label>
-            <input type="date" id="create-camp-start" class="w-full p-2.5 rounded-xl border border-slate-300 font-semibold" required>
+            <input type="date" id="create-camp-start"
+              class="w-full p-2.5 rounded-xl border border-slate-300 font-semibold" required>
           </div>
           <div>
             <label class="font-bold text-slate-700 block mb-1">End Date</label>
-            <input type="date" id="create-camp-end" class="w-full p-2.5 rounded-xl border border-slate-300 font-semibold" required>
+            <input type="date" id="create-camp-end"
+              class="w-full p-2.5 rounded-xl border border-slate-300 font-semibold" required>
           </div>
         </div>
         <div>
           <label class="font-bold text-slate-700 block mb-1">Eligibility Criteria</label>
-          <input type="text" id="create-camp-eligibility" value="75% Attendance Required" class="w-full p-2.5 rounded-xl border border-slate-300 font-semibold" required>
+          <input type="text" id="create-camp-eligibility" value="75% Attendance Required"
+            class="w-full p-2.5 rounded-xl border border-slate-300 font-semibold" required>
         </div>
         <div>
           <label class="font-bold text-slate-700 block mb-1">Camp Description</label>
-          <textarea id="create-camp-desc" rows="2" placeholder="Brief outline of syllabus, drill, firing, or obstacle training..." class="w-full p-2.5 rounded-xl border border-slate-300" required></textarea>
+          <textarea id="create-camp-desc" rows="2"
+            placeholder="Brief outline of syllabus, drill, firing, or obstacle training..."
+            class="w-full p-2.5 rounded-xl border border-slate-300" required></textarea>
         </div>
-        <button type="submit" class="w-full bg-navy hover:bg-navy-dark text-white font-bold py-2.5 rounded-xl text-xs transition-colors">
+        <button type="submit"
+          class="w-full bg-navy hover:bg-navy-dark text-white font-bold py-2.5 rounded-xl text-xs transition-colors">
           Publish Camp & Open Student Applications
         </button>
       </form>
@@ -1004,9 +1177,11 @@
   </div>
 
   <!-- Modal: Reply to Grievance -->
-  <div id="modal-reply-grievance" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+  <div id="modal-reply-grievance"
+    class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl relative border-2 border-[#1677FF]">
-      <button onclick="closeModal('modal-reply-grievance')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700">
+      <button onclick="closeModal('modal-reply-grievance')"
+        class="absolute top-4 right-4 text-slate-400 hover:text-slate-700">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
       <h3 class="font-extrabold text-navy text-base flex items-center gap-2">
@@ -1016,21 +1191,27 @@
         <input type="hidden" id="reply-grv-id">
         <div>
           <label class="font-bold text-slate-700 block mb-1">Ticket Number & Subject</label>
-          <input type="text" id="reply-grv-subject" class="w-full p-2.5 rounded-xl border border-slate-300 bg-slate-50 font-bold" readonly>
+          <input type="text" id="reply-grv-subject"
+            class="w-full p-2.5 rounded-xl border border-slate-300 bg-slate-50 font-bold" readonly>
         </div>
         <div>
           <label class="font-bold text-slate-700 block mb-1">Cadet Details</label>
-          <input type="text" id="reply-grv-cadet" class="w-full p-2.5 rounded-xl border border-slate-300 bg-slate-50 font-semibold" readonly>
+          <input type="text" id="reply-grv-cadet"
+            class="w-full p-2.5 rounded-xl border border-slate-300 bg-slate-50 font-semibold" readonly>
         </div>
         <div>
           <label class="font-bold text-slate-700 block mb-1">Cadet Message Details</label>
-          <div id="reply-grv-details" class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-slate-700 text-xs italic"></div>
+          <div id="reply-grv-details"
+            class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-slate-700 text-xs italic"></div>
         </div>
         <div>
           <label class="font-bold text-slate-700 block mb-1">Official ANO Resolution / Response</label>
-          <textarea id="reply-grv-message" rows="3" placeholder="Enter resolution notes, store pickup timings, or administrative correction details..." class="w-full p-2.5 rounded-xl border border-slate-300" required></textarea>
+          <textarea id="reply-grv-message" rows="3"
+            placeholder="Enter resolution notes, store pickup timings, or administrative correction details..."
+            class="w-full p-2.5 rounded-xl border border-slate-300" required></textarea>
         </div>
-        <button type="submit" class="w-full bg-[#1677FF] hover:bg-blue-600 text-white font-bold py-2.5 rounded-xl text-xs transition-colors">
+        <button type="submit"
+          class="w-full bg-[#1677FF] hover:bg-blue-600 text-white font-bold py-2.5 rounded-xl text-xs transition-colors">
           Submit Response & Mark Ticket Resolved
         </button>
       </form>
@@ -1038,7 +1219,8 @@
   </div>
 
   <!-- TOAST NOTIFICATION -->
-  <div id="toast" class="fixed bottom-6 left-6 z-50 hidden bg-[#082B57] text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-xs font-semibold animate-fadeIn border border-amber-400">
+  <div id="toast"
+    class="fixed bottom-6 left-6 z-50 hidden bg-[#082B57] text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-xs font-semibold animate-fadeIn border border-amber-400">
     <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i>
     <span id="toast-text">Action completed successfully!</span>
   </div>
@@ -1049,16 +1231,13 @@
 
     // Responsive Mobile Sidebar Toggle (delegates to responsive drawer engine)
     function toggleMobileSidebar(force) {
-      const aside = document.getElementById('officer-sidebar');
-      if (window.toggleDrawer && aside) {
+      if (window.toggleDrawer) {
         if (typeof force === 'boolean') {
-          if (force) window.openDrawer(aside);
-          else window.closeDrawer(aside);
+          if (force) window.openDrawer('officer-sidebar');
+          else window.closeDrawer('officer-sidebar');
         } else {
-          window.toggleDrawer(aside);
+          window.toggleDrawer('officer-sidebar');
         }
-      } else if (aside) {
-        aside.classList.toggle('open');
       }
     }
 
@@ -1097,12 +1276,16 @@
         if (el) el.classList.toggle('hidden', s !== secId);
         if (btn) {
           if (s === secId) {
-            btn.className = "w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-active";
+            btn.className = "w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-active min-h-[44px]";
           } else {
-            btn.className = "w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-inactive";
+            btn.className = "w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-inactive min-h-[44px]";
           }
         }
       });
+      // Auto-close drawer on mobile when switching sections
+      if (window.innerWidth < 1024 && window.closeDrawer) {
+        window.closeDrawer('officer-sidebar');
+      }
       // Scroll to top of section
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -1196,7 +1379,7 @@
 
       const apps = (NCCStore.data.camp_applications || []).filter(a => a.status === 'pending');
       const cadets = (NCCStore.data.cadets || []).filter(c => c.status === 'Pending Registration');
-      
+
       const totalPending = apps.length + cadets.length;
       if (countEl) countEl.innerText = totalPending;
 
@@ -1307,10 +1490,9 @@
           <td class="p-3.5">${a.unit || '8 MP Artillery Bn'}</td>
           <td class="p-3.5 font-mono text-slate-500">${a.appliedDate}</td>
           <td class="p-3.5">
-            <span class="px-2.5 py-0.5 rounded-full font-bold text-[10px] ${
-              a.status === 'approved' ? 'bg-emerald-100 text-emerald-800' :
-              a.status === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-amber-100 text-amber-800'
-            }">
+            <span class="px-2.5 py-0.5 rounded-full font-bold text-[10px] ${a.status === 'approved' ? 'bg-emerald-100 text-emerald-800' :
+          a.status === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-amber-100 text-amber-800'
+        }">
               ${a.status.toUpperCase()}
             </span>
           </td>
@@ -1476,10 +1658,9 @@
           <td class="p-3.5">${c.unit || '8 MP Artillery Bn'}</td>
           <td class="p-3.5 font-mono text-slate-500">${c.issueDate}</td>
           <td class="p-3.5">
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${
-              c.status === 'issued' ? 'bg-emerald-100 text-emerald-800' :
-              c.status === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-amber-100 text-amber-800'
-            }">
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${c.status === 'issued' ? 'bg-emerald-100 text-emerald-800' :
+          c.status === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-amber-100 text-amber-800'
+        }">
               ${c.status === 'issued' ? 'VERIFIED ✓' : c.status === 'rejected' ? 'REJECTED' : 'UNDER REVIEW'}
             </span>
           </td>
@@ -1515,10 +1696,9 @@
           <td class="p-3.5 font-semibold">${n.targetAudience || 'All'}</td>
           <td class="p-3.5 font-mono text-slate-500">${n.date}</td>
           <td class="p-3.5">
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${
-              n.priority === 'Urgent' ? 'bg-red-100 text-red-800' :
-              n.priority === 'Important' ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-700'
-            }">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${n.priority === 'Urgent' ? 'bg-red-100 text-red-800' :
+          n.priority === 'Important' ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-700'
+        }">
               ${n.priority || 'Normal'}
             </span>
           </td>
@@ -1572,9 +1752,8 @@
               </div>
               <p class="text-slate-500 text-xs mt-0.5">Raised by: <strong>${g.cadetName}</strong> (${g.rollNo || ''}) • ${g.unit || '8 MP Art Bn'} on ${g.date}</p>
             </div>
-            <span class="px-3 py-1 rounded-full text-[10px] font-bold self-start sm:self-auto ${
-              g.status === 'Resolved' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
-            }">
+            <span class="px-3 py-1 rounded-full text-[10px] font-bold self-start sm:self-auto ${g.status === 'Resolved' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+        }">
               ${g.status === 'Resolved' ? 'RESOLVED ✓' : 'UNDER REVIEW'}
             </span>
           </div>
@@ -1888,4 +2067,5 @@
   <!-- Shared Mobile-First Responsive JavaScript Engine -->
   <script src="responsive.js"></script>
 </body>
+
 </html>

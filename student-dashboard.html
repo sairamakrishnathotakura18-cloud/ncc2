@@ -8,9 +8,6 @@
   <meta name="description"
     content="ITM University NCC Digital Management Portal - Cadet Student Dashboard for Attendance, Camps, Certificates, and Training.">
 
-  <!-- Shared Mobile-First Responsive Stylesheet -->
-  <link rel="stylesheet" href="responsive.css">
-
   <!-- Google Fonts & CDN Libraries -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -412,6 +409,12 @@
       }
     }
   </style>
+
+  <!-- Shared Mobile-First Responsive Stylesheet (Placed after custom style & Tailwind for full specificity) -->
+  <link rel="stylesheet" href="responsive.css">
+
+  <!-- Shared Mobile-First Responsive Navigation Engine -->
+  <script src="responsive.js"></script>
 </head>
 
 <body class="relative min-h-screen custom-scrollbar flex flex-col justify-between">
@@ -424,23 +427,24 @@
     <!-- Top bar removed per specification -->
 
     <!-- 2. MAIN HEADER NAVBAR -->
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
+    <header class="app-header bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
+      <div class="app-header-container max-w-7xl mx-auto">
 
         <!-- Left: Logo & University Title -->
-        <a href="index.html" class="flex items-center gap-3 shrink-0">
-          <img src="itm-logo.png"
-            onerror="this.src='https://raw.githubusercontent.com/antigravity-assets/logos/main/itm-logo.png'"
-            alt="ITM Logo" class="h-10 sm:h-12 w-auto object-contain">
-          <img src="ncc logo.png"
-            onerror="this.src='https://raw.githubusercontent.com/antigravity-assets/logos/main/ncc-logo.png'"
-            alt="NCC Logo" class="h-10 sm:h-12 w-auto object-contain border-l border-slate-200 pl-3">
-          <div>
-            <div class="text-sm font-black tracking-tight text-[#071D3A] uppercase leading-none">ITM UNIVERSITY</div>
-            <div class="text-[11px] font-bold text-slate-500 tracking-wide uppercase">Gwalior • NCC Digital Management
+        <div class="header-left-group flex items-center">
+          <a href="index.html" class="flex items-center gap-2.5 shrink-0 overflow-hidden">
+            <img src="itm-logo.png"
+              onerror="this.src='https://raw.githubusercontent.com/antigravity-assets/logos/main/itm-logo.png'"
+              alt="ITM Logo" class="h-8 w-auto object-contain shrink-0">
+            <img src="ncc logo.png"
+              onerror="this.src='https://raw.githubusercontent.com/antigravity-assets/logos/main/ncc-logo.png'"
+              alt="NCC Logo" class="h-8 w-auto object-contain border-l border-slate-200 pl-2.5 shrink-0">
+            <div class="header-title-block min-w-0">
+              <div class="header-title-text text-sm font-black tracking-tight text-[#071D3A] uppercase leading-none">ITM UNIVERSITY</div>
+              <div class="header-subtitle-text text-[11px] font-bold text-slate-500 tracking-wide uppercase">Gwalior • NCC Digital Management</div>
             </div>
-          </div>
-        </a>
+          </a>
+        </div>
 
         <!-- Center: Desktop Pill Navigation -->
         <nav
@@ -462,22 +466,23 @@
         </nav>
 
         <!-- Right: Notifications & Profile -->
-        <div class="flex items-center space-x-3 shrink-0">
+        <div class="header-right-group flex items-center space-x-2">
 
           <!-- Search trigger -->
           <button onclick="toggleGlobalSearchModal(true)"
-            class="p-2 text-slate-500 hover:text-navy hover:bg-slate-100 rounded-full transition-colors relative"
-            title="Global Search">
+            class="p-2 text-slate-500 hover:text-navy hover:bg-slate-100 rounded-full transition-colors relative min-h-[44px] min-w-[44px] flex items-center justify-center"
+            title="Global Search" aria-label="Search">
             <i data-lucide="search" class="w-5 h-5"></i>
           </button>
 
           <!-- Notification Bell -->
           <div class="relative">
             <button onclick="toggleNotificationDropdown()"
-              class="p-2 text-slate-600 hover:text-navy hover:bg-slate-100 rounded-full transition-colors relative">
+              class="p-2 text-slate-600 hover:text-navy hover:bg-slate-100 rounded-full transition-colors relative min-h-[44px] min-w-[44px] flex items-center justify-center"
+              aria-label="Notifications">
               <i data-lucide="bell" class="w-5 h-5"></i>
               <span id="notif-badge"
-                class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full ring-2 ring-white"></span>
+                class="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 rounded-full ring-2 ring-white"></span>
             </button>
 
             <!-- Notification Dropdown -->
@@ -499,16 +504,15 @@
           <!-- User Profile Dropdown -->
           <div class="relative">
             <button onclick="toggleUserDropdown()"
-              class="flex items-center space-x-2 pl-2 pr-3 py-1 rounded-full border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all cursor-pointer">
+              class="flex items-center space-x-2 pl-1.5 pr-2 sm:pr-3 py-1 rounded-full border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all cursor-pointer min-h-[44px]">
               <img id="nav-user-photo"
                 src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
-                alt="Cadet Avatar" class="w-8 h-8 rounded-full object-cover border border-[#C9A227]">
+                alt="Cadet Avatar" class="header-avatar-pill w-8 h-8 rounded-full object-cover border border-[#C9A227]">
               <div class="text-left hidden sm:block">
-                <div id="nav-user-name" class="text-xs font-bold text-slate-800 leading-tight">Cadet Sairam Krishna
-                </div>
+                <div id="nav-user-name" class="text-xs font-bold text-slate-800 leading-tight">Cadet Sairam Krishna</div>
                 <div id="nav-user-roll" class="text-[10px] text-slate-500 font-medium">BETN1A125216</div>
               </div>
-              <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400"></i>
+              <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 hidden sm:block"></i>
             </button>
 
             <!-- User Menu Dropdown -->
@@ -524,24 +528,24 @@
               </div>
               <div class="p-2 space-y-1 text-xs">
                 <button onclick="switchTab('overview')"
-                  class="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 flex items-center gap-2 text-slate-700">
+                  class="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 flex items-center gap-2 text-slate-700 min-h-[44px]">
                   <i data-lucide="user" class="w-4 h-4 text-navy"></i> My Profile
                 </button>
                 <button onclick="openEditProfileModal()"
-                  class="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 flex items-center gap-2 text-slate-700 font-medium">
+                  class="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 flex items-center gap-2 text-slate-700 font-medium min-h-[44px]">
                   <i data-lucide="edit-3" class="w-4 h-4 text-[#C9A227]"></i> Edit Cadet Profile
                 </button>
                 <button onclick="openIDCardModal()"
-                  class="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 flex items-center gap-2 text-slate-700">
+                  class="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 flex items-center gap-2 text-slate-700 min-h-[44px]">
                   <i data-lucide="id-card" class="w-4 h-4 text-amber-600"></i> Digital Cadet ID Card
                 </button>
                 <button onclick="switchTab('certificates')"
-                  class="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 flex items-center gap-2 text-slate-700">
+                  class="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 flex items-center gap-2 text-slate-700 min-h-[44px]">
                   <i data-lucide="award" class="w-4 h-4 text-emerald-600"></i> My Certificates
                 </button>
                 <div class="border-t border-slate-100 my-1"></div>
                 <a href="login.html"
-                  class="w-full text-left px-3 py-2 rounded-lg hover:bg-red-50 text-red-600 font-semibold flex items-center gap-2">
+                  class="w-full text-left px-3 py-2 rounded-lg hover:bg-red-50 text-red-600 font-semibold flex items-center gap-2 min-h-[44px]">
                   <i data-lucide="log-out" class="w-4 h-4"></i> Logout
                 </a>
               </div>
@@ -549,7 +553,7 @@
           </div>
 
           <!-- Mobile Hamburger Menu Button -->
-          <button onclick="toggleMobileDrawer(true)" class="lg:hidden p-2 text-slate-700 hover:bg-slate-100 rounded-lg">
+          <button id="header-hamburger-btn" data-drawer-toggle onclick="toggleMobileDrawer()" class="lg:hidden p-2 text-slate-700 hover:bg-slate-100 rounded-xl min-h-[44px] min-w-[44px] flex items-center justify-center -mr-1" aria-label="Toggle navigation drawer">
             <i data-lucide="menu" class="w-6 h-6"></i>
           </button>
         </div>
@@ -558,49 +562,52 @@
     </header>
 
     <!-- MOBILE DRAWER -->
-    <div id="mobile-drawer" class="fixed inset-0 bg-slate-900/60 z-50 hidden transition-opacity">
-      <div class="fixed inset-y-0 right-0 max-w-xs w-full bg-white shadow-2xl p-6 flex flex-col justify-between">
+    <div id="mobile-drawer" onclick="if(event.target === this) toggleMobileDrawer(false)" class="fixed inset-0 bg-slate-900/60 z-50 hidden transition-opacity">
+      <div id="mobile-drawer-panel" class="fixed inset-y-0 right-0 max-w-xs w-full bg-white shadow-2xl p-6 flex flex-col justify-between overflow-y-auto">
         <div>
-          <div class="flex items-center justify-between border-b pb-4 mb-4">
-            <div class="font-bold text-navy text-sm">Navigation Menu</div>
-            <button onclick="toggleMobileDrawer(false)" class="p-1 text-slate-400 hover:text-slate-700">
-              <i data-lucide="x" class="w-6 h-6"></i>
+          <div class="drawer-header-row flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs">CDT</div>
+              <span class="font-extrabold text-sm text-navy">Cadet Navigation</span>
+            </div>
+            <button onclick="toggleMobileDrawer(false)" class="drawer-close-btn p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100" aria-label="Close drawer">
+              <i data-lucide="x" class="w-5 h-5"></i>
             </button>
           </div>
-          <div class="space-y-2 font-medium text-sm">
+          <div class="space-y-1 font-medium text-sm">
             <button onclick="switchTab('overview'); toggleMobileDrawer(false);"
-              class="w-full text-left px-4 py-2.5 rounded-xl hover:bg-slate-100 flex items-center gap-3">
+              class="w-full text-left px-4 py-2.5 rounded-xl hover:bg-slate-100 flex items-center gap-3 min-h-[44px]">
               <i data-lucide="layout-dashboard" class="w-4 h-4 text-navy"></i> Overview
             </button>
             <button onclick="switchTab('attendance'); toggleMobileDrawer(false);"
-              class="w-full text-left px-4 py-2.5 rounded-xl hover:bg-slate-100 flex items-center gap-3">
+              class="w-full text-left px-4 py-2.5 rounded-xl hover:bg-slate-100 flex items-center gap-3 min-h-[44px]">
               <i data-lucide="calendar-check" class="w-4 h-4 text-navy"></i> Attendance
             </button>
             <button onclick="switchTab('training2day'); toggleMobileDrawer(false);"
-              class="w-full text-left px-4 py-2.5 rounded-xl hover:bg-slate-100 flex items-center gap-3">
+              class="w-full text-left px-4 py-2.5 rounded-xl hover:bg-slate-100 flex items-center gap-3 min-h-[44px]">
               <i data-lucide="target" class="w-4 h-4 text-navy"></i> 2-Day Training
             </button>
             <button onclick="switchTab('camps'); toggleMobileDrawer(false);"
-              class="w-full text-left px-4 py-2.5 rounded-xl hover:bg-slate-100 flex items-center gap-3">
+              class="w-full text-left px-4 py-2.5 rounded-xl hover:bg-slate-100 flex items-center gap-3 min-h-[44px]">
               <i data-lucide="tent" class="w-4 h-4 text-navy"></i> Camps
             </button>
             <button onclick="switchTab('certificates'); toggleMobileDrawer(false);"
-              class="w-full text-left px-4 py-2.5 rounded-xl hover:bg-slate-100 flex items-center gap-3">
+              class="w-full text-left px-4 py-2.5 rounded-xl hover:bg-slate-100 flex items-center gap-3 min-h-[44px]">
               <i data-lucide="file-badge" class="w-4 h-4 text-navy"></i> Certificates
             </button>
             <button onclick="switchTab('notices'); toggleMobileDrawer(false);"
-              class="w-full text-left px-4 py-2.5 rounded-xl hover:bg-slate-100 flex items-center gap-3">
+              class="w-full text-left px-4 py-2.5 rounded-xl hover:bg-slate-100 flex items-center gap-3 min-h-[44px]">
               <i data-lucide="megaphone" class="w-4 h-4 text-navy"></i> Notices
             </button>
             <button onclick="switchTab('feedback'); toggleMobileDrawer(false);"
-              class="w-full text-left px-4 py-2.5 rounded-xl hover:bg-slate-100 flex items-center gap-3">
+              class="w-full text-left px-4 py-2.5 rounded-xl hover:bg-slate-100 flex items-center gap-3 min-h-[44px]">
               <i data-lucide="message-square" class="w-4 h-4 text-navy"></i> Helpdesk
             </button>
           </div>
         </div>
-        <div class="border-t pt-4">
+        <div class="drawer-logout-container border-t pt-4">
           <a href="login.html"
-            class="w-full bg-red-50 text-red-600 py-2.5 rounded-xl text-center font-bold text-xs flex items-center justify-center gap-2">
+            class="drawer-logout-btn w-full bg-red-50 text-red-600 py-2.5 rounded-xl text-center font-bold text-xs flex items-center justify-center gap-2 min-h-[44px]">
             <i data-lucide="log-out" class="w-4 h-4"></i> Sign Out
           </a>
         </div>
@@ -608,11 +615,11 @@
     </div>
 
     <!-- 3. MAIN DASHBOARD CONTENT AREA -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full space-y-8 flex-1">
+    <main class="main-dashboard-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full space-y-8 flex-1">
 
       <!-- ================= SECTION: TOP CADET PROFILE BANNER ================= -->
       <div
-        class="relative rounded-[20px] p-6 sm:p-8 text-white shadow-xl shadow-slate-900/15 overflow-hidden border border-white/10"
+        class="relative rounded-[20px] p-5 sm:p-8 text-white shadow-xl shadow-slate-900/15 overflow-hidden border border-white/10"
         style="background: linear-gradient(135deg, #0B1F3A 0%, #14294A 50%, #1C2B3A 100%);">
         <!-- Subtle Pattern Overlay -->
         <div
@@ -626,12 +633,12 @@
         <div class="relative z-10 flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
 
           <!-- Left: Cadet Photo + Core Data -->
-          <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 text-center sm:text-left">
+          <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 text-center sm:text-left w-full md:w-auto">
             <div class="relative shrink-0">
               <img id="banner-cadet-photo"
                 src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80"
                 alt="Cadet Sairam Krishna"
-                class="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl object-cover border-4 border-white/20 shadow-2xl transition-all duration-300">
+                class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover border-4 border-white/20 shadow-2xl transition-all duration-300">
               <!-- Active Cadet badge with soft green and small pulse dot -->
               <span
                 class="absolute -bottom-2 -right-2 bg-[#1E9E5A] text-white text-[10px] font-black px-2.5 py-0.5 rounded-full border-2 border-[#0B1F3A] flex items-center gap-1.5 shadow-md">
@@ -643,10 +650,9 @@
               </span>
             </div>
 
-            <div class="space-y-1.5">
-              <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2.5">
-                <h1 id="banner-cadet-name" class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">Cadet
-                  Sairam Krishna</h1>
+            <div class="space-y-1.5 w-full sm:w-auto">
+              <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                <h1 id="banner-cadet-name" class="cadet-banner-name font-extrabold tracking-tight text-white" style="font-size: clamp(20px, 6vw, 26px); line-height: 1.2;">Cadet Sairam Krishna</h1>
                 <span id="banner-cadet-rank-badge"
                   class="bg-[#C9A227]/15 text-[#C9A227] border border-[#C9A227]/40 text-xs font-bold px-3 py-0.5 rounded-full flex items-center gap-1 shadow-2xs">
                   <i data-lucide="shield" class="w-3.5 h-3.5"></i>
@@ -657,22 +663,19 @@
                 Course: B.Tech – AI & Machine Learning | SOECS • 3rd Semester
               </p>
 
-              <!-- Quick Info Grid -->
+              <!-- Quick Info Grid (2 columns on mobile, 4 columns on sm+) -->
               <div
-                class="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-2.5 pt-3.5 text-xs text-[#B8C2D0] border-t border-white/10 mt-3.5">
+                class="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-2.5 pt-3.5 text-xs text-[#B8C2D0] border-t border-white/10 mt-3.5">
                 <div>
-                  <span class="text-[#8E9CAE] block text-[10px] uppercase tracking-wider font-semibold">Roll
-                    Number</span>
+                  <span class="text-[#8E9CAE] block text-[10px] uppercase tracking-wider font-semibold">Roll Number</span>
                   <strong id="banner-cadet-roll" class="text-white font-mono text-xs font-bold">BETN1A125216</strong>
                 </div>
                 <div>
-                  <span class="text-[#8E9CAE] block text-[10px] uppercase tracking-wider font-semibold">NCC Battalion
-                    Unit</span>
+                  <span class="text-[#8E9CAE] block text-[10px] uppercase tracking-wider font-semibold">NCC Battalion Unit</span>
                   <strong id="banner-cadet-unit" class="text-white font-bold">8 MP Art Bn</strong>
                 </div>
                 <div>
-                  <span class="text-[#8E9CAE] block text-[10px] uppercase tracking-wider font-semibold">Enrollment
-                    Year</span>
+                  <span class="text-[#8E9CAE] block text-[10px] uppercase tracking-wider font-semibold">Enrollment Year</span>
                   <strong id="banner-cadet-year" class="text-white font-bold">2026</strong>
                 </div>
                 <div>
@@ -685,12 +688,11 @@
 
           <!-- Right: Profile Completion & Quick Actions (Glassmorphism card) -->
           <div
-            class="w-full md:w-auto bg-white/[0.07] backdrop-blur-md rounded-2xl p-5 border border-white/15 flex flex-col items-center md:items-end justify-between space-y-4 shrink-0 shadow-lg">
+            class="w-full md:w-auto bg-white/[0.07] backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/15 flex flex-col items-center md:items-end justify-between space-y-4 shrink-0 shadow-lg">
             <div class="w-full flex items-center justify-between md:justify-end gap-4 text-right">
               <div>
                 <div class="text-[11px] text-[#B8C2D0] font-semibold uppercase tracking-wider">Profile Strength</div>
-                <div id="profile-strength-val" class="text-2xl font-black text-[#C9A227] transition-all duration-500">
-                  92%</div>
+                <div id="profile-strength-val" class="text-2xl font-black text-[#C9A227] transition-all duration-500">92%</div>
               </div>
               <!-- Progress Ring with Muted Gold (#C9A227) -->
               <div class="relative w-12 h-12">
@@ -704,18 +706,18 @@
               </div>
             </div>
 
-            <!-- Profile Action Buttons with smooth hover transitions -->
+            <!-- Profile Action Buttons with smooth hover transitions & min-h-[44px] -->
             <div class="flex flex-wrap gap-2.5 w-full justify-center md:justify-end text-xs">
               <button id="btn-edit-profile-banner" onclick="openEditProfileModal()"
-                class="bg-white text-[#0B1F3A] hover:bg-slate-100 font-bold px-3.5 py-2 rounded-xl transition-all duration-200 flex items-center gap-1.5 shadow-sm hover:shadow hover:-translate-y-0.5 cursor-pointer">
+                class="bg-white text-[#0B1F3A] hover:bg-slate-100 font-bold px-3.5 py-2.5 rounded-xl transition-all duration-200 flex items-center gap-1.5 shadow-sm hover:shadow hover:-translate-y-0.5 cursor-pointer min-h-[44px]">
                 <i data-lucide="edit-3" class="w-3.5 h-3.5 text-[#0B1F3A]"></i> Edit Profile
               </button>
               <button onclick="openIDCardModal()"
-                class="bg-[#C9A227] hover:bg-[#b8921e] text-[#0B1F3A] font-bold px-3.5 py-2 rounded-xl transition-all duration-200 flex items-center gap-1.5 shadow-sm hover:shadow hover:-translate-y-0.5 cursor-pointer">
+                class="bg-[#C9A227] hover:bg-[#b8921e] text-[#0B1F3A] font-bold px-3.5 py-2.5 rounded-xl transition-all duration-200 flex items-center gap-1.5 shadow-sm hover:shadow hover:-translate-y-0.5 cursor-pointer min-h-[44px]">
                 <i data-lucide="id-card" class="w-3.5 h-3.5 text-[#0B1F3A]"></i> View ID Card
               </button>
               <button onclick="openQRModal()"
-                class="bg-transparent hover:bg-white/10 text-white font-semibold border border-white/40 hover:border-white px-3.5 py-2 rounded-xl transition-all duration-200 flex items-center gap-1.5 hover:-translate-y-0.5 cursor-pointer">
+                class="bg-transparent hover:bg-white/10 text-white font-semibold border border-white/40 hover:border-white px-3.5 py-2.5 rounded-xl transition-all duration-200 flex items-center gap-1.5 hover:-translate-y-0.5 cursor-pointer min-h-[44px]">
                 <i data-lucide="qr-code" class="w-3.5 h-3.5"></i> Scan QR
               </button>
             </div>
@@ -729,14 +731,14 @@
 
         <!-- ================= 8 COLORFUL ACADEMIC OVERVIEW CARDS ================= -->
         <div>
-          <div class="flex items-center justify-between mb-4">
-            <h2 class="text-lg font-black text-navy uppercase tracking-wider flex items-center gap-2">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-4">
+            <h2 class="page-hero-title font-black text-navy uppercase tracking-wider flex items-center gap-2">
               <i data-lucide="grid" class="w-5 h-5 text-itmblue"></i> NCC Cadet Overview
             </h2>
             <span class="text-xs text-subtext">Real-time status updated today</span>
           </div>
 
-          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div class="stat-cards-grid grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
 
             <!-- Card 1: NCC Status -->
             <div class="glass-card rounded-2xl p-4 border-l-4 border-l-emerald-500 hover:shadow-md transition-all">
@@ -2282,8 +2284,8 @@
   <!-- ================= FLOATING AI ASSISTANT CHATBOT ================= -->
   <div class="fixed bottom-6 right-6 z-50">
     <button onclick="toggleAIChatbot()"
-      class="w-14 h-14 rounded-full bg-gradient-to-r from-[#071D3A] to-[#1677FF] text-white shadow-2xl flex items-center justify-center hover:scale-105 transition-all group relative border-2 border-amber-400">
-      <i data-lucide="bot" class="w-7 h-7"></i>
+      class="floating-chatbot-btn bg-gradient-to-r from-[#071D3A] to-[#1677FF] text-white shadow-2xl flex items-center justify-center hover:scale-105 transition-all group relative border-2 border-amber-400" aria-label="Open AI Assistant">
+      <i data-lucide="bot" class="w-6 h-6"></i>
       <span
         class="absolute -top-1 -right-1 w-4 h-4 bg-amber-400 rounded-full border-2 border-white flex items-center justify-center text-[9px] font-black text-navy">AI</span>
     </button>
@@ -2862,9 +2864,17 @@
     }
 
     function toggleMobileDrawer(show) {
-      const drawer = document.getElementById('mobile-drawer');
-      if (show) drawer.classList.remove('hidden');
-      else drawer.classList.add('hidden');
+      if (window.openDrawer && window.closeDrawer) {
+        const drawer = document.getElementById('mobile-drawer');
+        if (typeof show !== 'boolean') {
+          show = drawer ? drawer.classList.contains('hidden') : false;
+        }
+        if (show) window.openDrawer('mobile-drawer');
+        else window.closeDrawer('mobile-drawer');
+      } else {
+        const drawer = document.getElementById('mobile-drawer');
+        if (drawer) drawer.classList.toggle('hidden');
+      }
     }
 
     function openIDCardModal() {

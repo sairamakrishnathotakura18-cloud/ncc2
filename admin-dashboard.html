@@ -14,9 +14,6 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- Shared Mobile-First Responsive Stylesheet -->
-  <link rel="stylesheet" href="responsive.css">
-  
   <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
   
@@ -128,6 +125,9 @@
       * { animation: none !important; transition: none !important; }
     }
   </style>
+
+  <!-- Shared Mobile-First Responsive Stylesheet (Placed after custom style & Tailwind for full specificity) -->
+  <link rel="stylesheet" href="responsive.css">
 </head>
 <body class="relative min-h-screen custom-scrollbar flex flex-col justify-between">
 

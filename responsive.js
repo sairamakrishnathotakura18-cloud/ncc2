@@ -118,31 +118,34 @@
     }
   });
 
-  // Attach auto-close on navigation item clicks
-  document.addEventListener('DOMContentLoaded', () => {
+  // Initialize responsive engine (safe against late script execution or DOMContentLoaded having already fired)
+  function initResponsive() {
     ensureBackdrop();
 
-    const drawer = getPageDrawer();
-    if (drawer) {
-      // Any link or button inside drawer navigation closes drawer on small screens
+    const drawers = document.querySelectorAll('#admin-sidebar, #officer-sidebar, #mobile-drawer-panel, #mobile-drawer');
+    drawers.forEach(drawer => {
       drawer.addEventListener('click', (e) => {
         const target = e.target.closest('button, a');
         if (target && !target.classList.contains('drawer-close-btn') && window.innerWidth < 1024) {
-          // Allow click handler to run, then close drawer
           setTimeout(() => {
             closeDrawer(drawer);
           }, 150);
         }
       });
-    }
+    });
 
-    // Refresh icons if lucide is available
     if (window.lucide && typeof window.lucide.createIcons === 'function') {
       window.lucide.createIcons();
     }
-  });
+  }
 
-  // Public Interface & Legacy Compatibility Aliases
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initResponsive);
+  } else {
+    initResponsive();
+  }
+
+  // Public Interface & Legacy Compatibility Aliases directly on window
   window.NCC_RESPONSIVE = {
     openDrawer,
     closeDrawer,
@@ -150,16 +153,35 @@
     closeAllDrawers
   };
 
-  // Backwards compatible aliases for existing dashboard buttons
-  window.toggleMobileAdminSidebar = function () {
-    toggleDrawer('admin-sidebar');
+  window.openDrawer = openDrawer;
+  window.closeDrawer = closeDrawer;
+  window.toggleDrawer = toggleDrawer;
+  window.closeAllDrawers = closeAllDrawers;
+
+  // Direct backwards-compatible aliases for existing dashboard buttons
+  window.toggleMobileAdminSidebar = function (force) {
+    if (typeof force === 'boolean') {
+      if (force) openDrawer('admin-sidebar');
+      else closeDrawer('admin-sidebar');
+    } else {
+      toggleDrawer('admin-sidebar');
+    }
   };
 
-  window.toggleMobileSidebar = function () {
-    toggleDrawer('officer-sidebar');
+  window.toggleMobileSidebar = function (force) {
+    if (typeof force === 'boolean') {
+      if (force) openDrawer('officer-sidebar');
+      else closeDrawer('officer-sidebar');
+    } else {
+      toggleDrawer('officer-sidebar');
+    }
   };
 
   window.toggleMobileDrawer = function (show) {
+    const drawer = document.getElementById('mobile-drawer');
+    if (typeof show !== 'boolean') {
+      show = drawer ? drawer.classList.contains('hidden') : false;
+    }
     if (show) {
       openDrawer('mobile-drawer');
     } else {
