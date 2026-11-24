@@ -2,7 +2,7 @@
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>System Administrator Dashboard | ITM University NCC Digital Management</title>
   <meta name="description" content="ITM University NCC Digital Management Portal - Full System Administration Dashboard with User Control, CMS, Audit Logs, and Analytics.">
   
@@ -14,6 +14,9 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   
+  <!-- Shared Mobile-First Responsive Stylesheet -->
+  <link rel="stylesheet" href="responsive.css">
+  
   <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
   
@@ -23,6 +26,9 @@
   <!-- Central Shared Data Store & REST API Client -->
   <script src="data.js"></script>
   <script src="api.js"></script>
+  
+  <!-- Shared Mobile Navigation Controller -->
+  <script src="responsive.js"></script>
 
   <script>
     tailwind.config = {
@@ -130,42 +136,43 @@
 
   <div class="relative z-10 flex-1 flex flex-col">
     
-    <!-- 1. MAIN HEADER NAVBAR (Top strip removed per user specification, header flush at top) -->
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
+    <!-- 1. MAIN HEADER NAVBAR (Responsive single-row flex header, no overlap or overflow) -->
+    <header class="app-header">
+      <div class="app-header-container">
         
-        <!-- Left: Mobile Menu + Branding -->
-        <div class="flex items-center gap-3">
-          <button onclick="toggleMobileAdminSidebar()" class="lg:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 focus:outline-none">
-            <i data-lucide="menu" class="w-5 h-5"></i>
+        <!-- Left: Hamburger (Mobile) + Branding -->
+        <div class="header-left-group">
+          <button id="header-hamburger-btn" data-drawer-toggle onclick="toggleMobileAdminSidebar()" class="touch-target lg:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 focus:outline-none" aria-label="Toggle navigation drawer" aria-expanded="false" aria-controls="admin-sidebar">
+            <i data-lucide="menu" class="w-6 h-6"></i>
           </button>
-          <a href="index.html" class="flex items-center gap-3 shrink-0">
-            <img src="itm-logo.png" onerror="this.src='https://raw.githubusercontent.com/antigravity-assets/logos/main/itm-logo.png'" alt="ITM Logo" class="h-10 sm:h-12 w-auto object-contain">
-            <img src="ncc logo.png" onerror="this.src='https://raw.githubusercontent.com/antigravity-assets/logos/main/ncc-logo.png'" alt="NCC Logo" class="h-10 sm:h-12 w-auto object-contain border-l border-slate-200 pl-3">
-            <div>
-              <div class="text-sm font-black tracking-tight text-[#071D3A] uppercase leading-none">ITM UNIVERSITY</div>
-              <div class="text-[11px] font-bold text-purple-700 tracking-wide uppercase">System Administration Hub</div>
+          <a href="index.html" class="header-brand-link">
+            <img src="itm-logo.png" onerror="this.src='https://raw.githubusercontent.com/antigravity-assets/logos/main/itm-logo.png'" alt="ITM Logo" class="header-logo-img">
+            <img src="ncc logo.png" onerror="this.src='https://raw.githubusercontent.com/antigravity-assets/logos/main/ncc-logo.png'" alt="NCC Logo" class="header-logo-img border-l border-slate-200 pl-2">
+            <div class="header-title-block">
+              <div class="header-main-title">ITM UNIVERSITY</div>
+              <div class="header-sub-title hidden sm:block">System Administration Hub</div>
             </div>
           </a>
         </div>
 
         <!-- Right Controls -->
-        <div class="flex items-center space-x-3 shrink-0">
+        <div class="header-right-group">
           
           <!-- System Search -->
           <div class="relative hidden md:block">
-            <input type="text" id="admin-global-search" onkeyup="handleAdminGlobalSearch(this.value)" placeholder="Global Admin Search (Users, Audit Logs...)" class="w-64 pl-9 pr-3 py-1.5 rounded-full border border-slate-300 text-xs focus:ring-2 focus:ring-purple-600 focus:outline-none">
+            <input type="text" id="admin-global-search" onkeyup="handleAdminGlobalSearch(this.value)" placeholder="Global Admin Search (Users, Audit Logs...)" class="w-48 lg:w-64 pl-9 pr-3 py-1.5 rounded-full border border-slate-300 text-xs focus:ring-2 focus:ring-purple-600 focus:outline-none">
             <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2"></i>
           </div>
 
-          <!-- Quick Action -->
-          <button onclick="openAddUserModal()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-xs transition-colors">
-            <i data-lucide="user-plus" class="w-4 h-4"></i> + Add User
+          <!-- Quick Action (+ Add User round icon button on mobile, full pill on sm+) -->
+          <button onclick="openAddUserModal()" class="header-action-btn bg-purple-600 hover:bg-purple-700 text-white shadow-xs transition-colors" title="Add System User" aria-label="Add System User">
+            <i data-lucide="user-plus" class="w-4 h-4"></i>
+            <span class="hidden sm:inline ml-1.5">+ Add User</span>
           </button>
 
           <!-- Admin Profile Pill -->
-          <div class="flex items-center space-x-2 pl-2 border-l border-slate-200">
-            <div class="w-9 h-9 rounded-full bg-purple-900 text-amber-300 font-black flex items-center justify-center text-xs border-2 border-amber-400">
+          <div class="flex items-center space-x-2 pl-1 sm:pl-2 border-l border-slate-200">
+            <div class="header-avatar-pill bg-purple-900 text-amber-300 font-black text-xs border-2 border-amber-400">
               ADM
             </div>
             <div class="text-left hidden md:block">
@@ -180,133 +187,139 @@
     </header>
 
     <!-- 2. MAIN DASHBOARD CONTENT AREA -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-1 flex flex-col lg:flex-row gap-6">
+    <div class="main-dashboard-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-1 flex flex-col lg:flex-row gap-6">
       
-      <!-- SIDEBAR NAVIGATION -->
-      <aside id="admin-sidebar" class="w-full lg:w-64 shrink-0 space-y-4">
+      <!-- SIDEBAR NAVIGATION (Native Off-Canvas Drawer on mobile <1024px, Fixed sidebar on desktop >=1024px) -->
+      <aside id="admin-sidebar" class="drawer-sidebar w-full lg:w-64 shrink-0 space-y-4" role="navigation" aria-label="System Admin Navigation">
         
-        <!-- Redesigned Left Admin Card (Lighter card per user specification) -->
-        <div class="bg-white p-5 rounded-3xl space-y-3 shadow-xs border border-slate-200">
+        <!-- Mobile Drawer Header Row (Close Button) -->
+        <div class="drawer-header-row lg:hidden flex items-center justify-between pb-3 border-b border-slate-100">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-xs">ADM</div>
+            <span class="font-extrabold text-sm text-navy">Admin Navigation</span>
+          </div>
+          <button onclick="toggleMobileAdminSidebar()" class="drawer-close-btn p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100" aria-label="Close drawer">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <!-- Redesigned Left Admin Card (Compact profile block, duplicate logout removed) -->
+        <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl space-y-2 sm:space-y-3 shadow-xs border border-slate-200">
           <div class="flex items-center space-x-3">
-            <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-700 font-black flex items-center justify-center text-lg border-2 border-purple-200 shadow-xs">
-              <i data-lucide="shield-check" class="w-6 h-6"></i>
+            <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-purple-50 text-purple-700 font-black flex items-center justify-center text-base sm:text-lg border-2 border-purple-200 shadow-xs shrink-0">
+              <i data-lucide="shield-check" class="w-5 h-5 sm:w-6 sm:h-6"></i>
             </div>
-            <div>
-              <h2 id="sidebar-admin-name" class="font-extrabold text-sm text-navy">System Admin</h2>
-              <p class="text-[11px] text-purple-700 font-bold uppercase">Root Access • Master Admin</p>
-              <span class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full mt-1 border border-emerald-200">
+            <div class="min-w-0 flex-1">
+              <h2 id="sidebar-admin-name" class="font-extrabold text-sm text-navy truncate">System Admin</h2>
+              <p class="text-[11px] text-purple-700 font-bold uppercase truncate">Root Access • Master Admin</p>
+              <span class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full mt-0.5 border border-emerald-200">
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> All Systems Active
               </span>
             </div>
           </div>
-          <div class="flex items-center gap-2 pt-2 border-t border-slate-100">
-            <button onclick="switchAdminSection('overview')" class="flex-1 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold text-xs py-1.5 rounded-xl border border-slate-200 flex items-center justify-center gap-1.5 transition-colors">
-              <i data-lucide="sliders" class="w-3.5 h-3.5"></i> Panel
-            </button>
-            <a href="login.html" onclick="if(window.NCCStore) NCCStore.logout()" class="flex-1 bg-red-50 hover:bg-red-100 text-red-600 font-bold text-xs py-1.5 rounded-xl border border-red-200 flex items-center justify-center gap-1.5 transition-colors">
-              <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Logout
-            </a>
-          </div>
         </div>
 
-        <!-- Sidebar Items (All 10 Sections) -->
-        <nav class="glass-card rounded-3xl p-3 space-y-1 text-xs">
-          <button onclick="switchAdminSection('overview')" id="admin-nav-overview" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all admin-nav-active">
+        <!-- Sidebar Items (All 10 Sections with min 44px tap targets) -->
+        <nav class="glass-card rounded-2xl sm:rounded-3xl p-2.5 sm:p-3 space-y-1 text-xs">
+          <button onclick="switchAdminSection('overview')" id="admin-nav-overview" class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-active">
             <i data-lucide="layout-grid" class="w-4 h-4"></i> System Overview
           </button>
-          <button onclick="switchAdminSection('users')" id="admin-nav-users" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
+          <button onclick="switchAdminSection('users')" id="admin-nav-users" class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
             <i data-lucide="users" class="w-4 h-4"></i> User Management
           </button>
-          <button onclick="switchAdminSection('officers')" id="admin-nav-officers" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
+          <button onclick="switchAdminSection('officers')" id="admin-nav-officers" class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
             <i data-lucide="user-cog" class="w-4 h-4"></i> Officer Profiles & Photos
           </button>
-          <button onclick="switchAdminSection('units')" id="admin-nav-units" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
+          <button onclick="switchAdminSection('units')" id="admin-nav-units" class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
             <i data-lucide="shield" class="w-4 h-4"></i> Unit Configuration
           </button>
-          <button onclick="switchAdminSection('attendance')" id="admin-nav-attendance" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
+          <button onclick="switchAdminSection('attendance')" id="admin-nav-attendance" class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
             <i data-lucide="calendar-check-2" class="w-4 h-4"></i> Attendance Full Control
           </button>
-          <button onclick="switchAdminSection('permissions')" id="admin-nav-permissions" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
+          <button onclick="switchAdminSection('permissions')" id="admin-nav-permissions" class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
             <i data-lucide="lock" class="w-4 h-4"></i> Role & Permissions Matrix
           </button>
-          <button onclick="switchAdminSection('cms')" id="admin-nav-cms" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
+          <button onclick="switchAdminSection('cms')" id="admin-nav-cms" class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
             <i data-lucide="globe" class="w-4 h-4"></i> Website Content CMS
           </button>
-          <button onclick="switchAdminSection('analytics')" id="admin-nav-analytics" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
+          <button onclick="switchAdminSection('analytics')" id="admin-nav-analytics" class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
             <i data-lucide="pie-chart" class="w-4 h-4"></i> System Analytics
           </button>
-          <button onclick="switchAdminSection('audit')" id="admin-nav-audit" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
+          <button onclick="switchAdminSection('audit')" id="admin-nav-audit" class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
             <i data-lucide="file-text" class="w-4 h-4"></i> System Audit Logs
           </button>
-          <button onclick="switchAdminSection('settings')" id="admin-nav-settings" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
+          <button onclick="switchAdminSection('settings')" id="admin-nav-settings" class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
             <i data-lucide="settings" class="w-4 h-4"></i> System Settings
           </button>
-          <div class="border-t border-slate-200 my-2 pt-2"></div>
-          <a href="login.html" onclick="if(window.NCCStore) NCCStore.logout()" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 text-red-600 hover:bg-red-50 font-bold">
-            <i data-lucide="log-out" class="w-4 h-4"></i> Exit System Control
-          </a>
+          
+          <!-- Single Clean Logout Button at Bottom -->
+          <div class="drawer-logout-container mt-auto pt-2 border-t border-slate-200">
+            <a href="login.html" onclick="if(window.NCCStore) NCCStore.logout()" class="drawer-logout-btn">
+              <i data-lucide="log-out" class="w-4 h-4"></i> Exit System Control
+            </a>
+          </div>
         </nav>
 
       </aside>
 
       <!-- MAIN CONTENT SECTION AREA -->
-      <main class="flex-1 space-y-6">
+      <main class="flex-1 space-y-6 min-w-0">
 
         <!-- ================= SECTION 1: OVERVIEW ================= -->
         <div id="admin-section-overview" class="space-y-6">
           
           <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h1 class="text-2xl font-black text-navy tracking-tight">System Control & Administration</h1>
+              <h1 class="page-hero-title text-2xl sm:text-3xl font-black text-navy tracking-tight">System Control & Administration</h1>
               <p class="text-xs text-subtext mt-1">Full administrative command over all users, units, camps, and audit trails.</p>
             </div>
             <div class="flex items-center gap-2">
-              <button onclick="openAddUserModal()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-xs flex items-center gap-2 transition-colors">
+              <button onclick="openAddUserModal()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl shadow-xs flex items-center gap-2 transition-colors">
                 <i data-lucide="user-plus" class="w-4 h-4"></i> + Add System User
               </button>
-              <button onclick="switchAdminSection('audit')" class="bg-navy hover:bg-navy-dark text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-xs flex items-center gap-2 transition-colors">
+              <button onclick="switchAdminSection('audit')" class="bg-navy hover:bg-navy-dark text-white font-bold text-xs px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl shadow-xs flex items-center gap-2 transition-colors">
                 <i data-lucide="file-text" class="w-4 h-4"></i> View Audit Log
               </button>
             </div>
           </div>
 
           <!-- 6 SYSTEM MASTER COUNTERS (Calculated dynamically from NCCStore) -->
-          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4">
+          <div class="stat-cards-grid grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-3 sm:gap-4">
             
-            <div class="glass-card p-4 rounded-2xl border-l-4 border-l-purple-600 hover:shadow-md transition-all cursor-pointer" onclick="switchAdminSection('users')">
+            <div class="glass-card p-3.5 sm:p-4 rounded-2xl border-l-4 border-l-purple-600 hover:shadow-md transition-all cursor-pointer" onclick="switchAdminSection('users')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">Total System Users</div>
-              <div id="admin-stat-users" class="text-2xl font-black text-purple-700 mt-1">650+</div>
-              <div class="text-[10px] text-slate-400 mt-0.5">Students, Officers & Admins</div>
+              <div id="admin-stat-users" class="stat-card-value text-xl sm:text-2xl font-black text-purple-700 mt-1">650+</div>
+              <div class="text-[10px] text-slate-400 mt-0.5 truncate">Students, Officers & Admins</div>
             </div>
 
-            <div class="glass-card p-4 rounded-2xl border-l-4 border-l-blue-600 hover:shadow-md transition-all cursor-pointer" onclick="switchAdminSection('units')">
+            <div class="glass-card p-3.5 sm:p-4 rounded-2xl border-l-4 border-l-blue-600 hover:shadow-md transition-all cursor-pointer" onclick="switchAdminSection('units')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">Enrolled Students</div>
-              <div id="admin-stat-students" class="text-2xl font-black text-navy mt-1">600+</div>
-              <div class="text-[10px] text-slate-400 mt-0.5">Active Cadet Profiles (116 Direct)</div>
+              <div id="admin-stat-students" class="stat-card-value text-xl sm:text-2xl font-black text-navy mt-1">600+</div>
+              <div class="text-[10px] text-slate-400 mt-0.5 truncate">Active Cadet Profiles (116 Direct)</div>
             </div>
 
-            <div class="glass-card p-4 rounded-2xl border-l-4 border-l-amber-500 hover:shadow-md transition-all cursor-pointer" onclick="switchAdminSection('officers')">
+            <div class="glass-card p-3.5 sm:p-4 rounded-2xl border-l-4 border-l-amber-500 hover:shadow-md transition-all cursor-pointer" onclick="switchAdminSection('officers')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">Active ANO Officers</div>
-              <div id="admin-stat-officers" class="text-2xl font-black text-amber-700 mt-1">12</div>
-              <div class="text-[10px] text-slate-400 mt-0.5">Assigned Officers</div>
+              <div id="admin-stat-officers" class="stat-card-value text-xl sm:text-2xl font-black text-amber-700 mt-1">12</div>
+              <div class="text-[10px] text-slate-400 mt-0.5 truncate">Assigned Officers</div>
             </div>
 
-            <div class="glass-card p-4 rounded-2xl border-l-4 border-l-emerald-600 hover:shadow-md transition-all cursor-pointer" onclick="switchAdminSection('units')">
+            <div class="glass-card p-3.5 sm:p-4 rounded-2xl border-l-4 border-l-emerald-600 hover:shadow-md transition-all cursor-pointer" onclick="switchAdminSection('units')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">NCC Units</div>
-              <div id="admin-stat-units" class="text-2xl font-black text-emerald-700 mt-1">3</div>
-              <div class="text-[10px] text-slate-400 mt-0.5">Army & Naval Battalions</div>
+              <div id="admin-stat-units" class="stat-card-value text-xl sm:text-2xl font-black text-emerald-700 mt-1">3</div>
+              <div class="text-[10px] text-slate-400 mt-0.5 truncate">Army & Naval Battalions</div>
             </div>
 
-            <div class="glass-card p-4 rounded-2xl border-l-4 border-l-indigo-600 hover:shadow-md transition-all cursor-pointer" onclick="switchAdminSection('analytics')">
+            <div class="glass-card p-3.5 sm:p-4 rounded-2xl border-l-4 border-l-indigo-600 hover:shadow-md transition-all cursor-pointer" onclick="switchAdminSection('analytics')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">Total Camps</div>
-              <div id="admin-stat-camps" class="text-2xl font-black text-indigo-700 mt-1">24</div>
-              <div class="text-[10px] text-slate-400 mt-0.5">National & Institutional</div>
+              <div id="admin-stat-camps" class="stat-card-value text-xl sm:text-2xl font-black text-indigo-700 mt-1">24</div>
+              <div class="text-[10px] text-slate-400 mt-0.5 truncate">National & Institutional</div>
             </div>
 
-            <div class="glass-card p-4 rounded-2xl border-l-4 border-l-sky-600 hover:shadow-md transition-all cursor-pointer" onclick="switchAdminSection('overview')">
+            <div class="glass-card p-3.5 sm:p-4 rounded-2xl border-l-4 border-l-sky-600 hover:shadow-md transition-all cursor-pointer" onclick="switchAdminSection('overview')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">Certificates Issued</div>
-              <div id="admin-stat-certs" class="text-2xl font-black text-sky-700 mt-1">428</div>
-              <div class="text-[10px] text-slate-400 mt-0.5">B & C Verified Certificates</div>
+              <div id="admin-stat-certs" class="stat-card-value text-xl sm:text-2xl font-black text-sky-700 mt-1">428</div>
+              <div class="text-[10px] text-slate-400 mt-0.5 truncate">B & C Verified Certificates</div>
             </div>
 
           </div>

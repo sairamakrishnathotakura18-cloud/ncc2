@@ -1,0 +1,462 @@
+/**
+ * ITM University Gwalior - NCC Digital Management Ecosystem
+ * Shared Responsive & Mobile-First Native Layout Stylesheet (responsive.css)
+ * 
+ * Reused across:
+ *  - System Admin Dashboard (admin-dashboard.html)
+ *  - ANO/CTO Officer Dashboard (officer-dashboard.html)
+ *  - Cadet Student Dashboard (student-dashboard.html)
+ */
+
+:root {
+  --header-height: 60px;
+  --drawer-width: min(82vw, 320px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
+}
+
+/* ================= 1. GLOBAL MOBILE RESETS & HARDENING ================= */
+*, *::before, *::after {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden !important;
+  margin: 0;
+  padding: 0;
+}
+
+/* Prevent background scroll when any mobile drawer or modal is open */
+body.drawer-open {
+  overflow: hidden !important;
+  touch-action: none;
+}
+
+/* Fix ambient background canvas overflow (prevents 100vw scrollbar bleed) */
+#ambient-bg {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Visible accessible focus rings */
+button:focus-visible, a:focus-visible, input:focus-visible {
+  outline: 2px solid #1677FF !important;
+  outline-offset: 2px !important;
+}
+
+/* Ensure 44px min touch target on all interactive controls */
+.touch-target,
+.mobile-touch-btn {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ================= 2. MOBILE HEADER (56-64px single-row flex) ================= */
+.app-header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 100 !important;
+  background-color: #FFFFFF !important;
+  border-bottom: 1px solid #E2E8F0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04);
+}
+
+.app-header-container {
+  height: var(--header-height);
+  width: 100% !important;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+}
+
+/* Header Left: Hamburger + Logos + Title */
+.header-left-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.header-brand-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  text-decoration: none;
+}
+
+.header-logo-img {
+  max-height: 32px;
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.header-title-block {
+  min-width: 0;
+  flex: 1;
+}
+
+.header-main-title {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #071D3A;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.header-sub-title {
+  font-size: 10px;
+  font-weight: 600;
+  color: #64748B;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+/* Header Right Controls */
+.header-right-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* Mobile Icon Action Button */
+.header-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 12px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  min-height: 40px;
+  min-width: 40px;
+  padding: 0 14px;
+}
+
+/* Avatar Pill in Header */
+.header-avatar-pill {
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+/* ================= 3. OFF-CANVAS SIDEBAR DRAWER (<1024px) ================= */
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+body.drawer-open .sidebar-backdrop {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+@media (max-width: 1023.98px) {
+  /* Turn Aside element into Native Drawer */
+  aside.drawer-sidebar,
+  #admin-sidebar,
+  #officer-sidebar,
+  #mobile-drawer-panel {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    width: var(--drawer-width) !important;
+    max-width: 320px !important;
+    height: 100dvh !important;
+    height: 100vh !important;
+    background-color: #FFFFFF !important;
+    z-index: 1000 !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.16) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 16px !important;
+    margin: 0 !important;
+  }
+
+  aside.drawer-sidebar.open,
+  #admin-sidebar.open,
+  #officer-sidebar.open,
+  #mobile-drawer-panel.open {
+    transform: translateX(0) !important;
+  }
+
+  /* Drawer Header with Close Button */
+  .drawer-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #F1F5F9;
+  }
+
+  .drawer-close-btn {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748B;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  .drawer-close-btn:hover {
+    background-color: #F1F5F9;
+    color: #0F172A;
+  }
+
+  /* Menu Items in Drawer */
+  .drawer-sidebar nav button,
+  .drawer-sidebar nav a,
+  #admin-sidebar nav button,
+  #admin-sidebar nav a,
+  #officer-sidebar nav button,
+  #officer-sidebar nav a,
+  #mobile-drawer-panel nav button,
+  #mobile-drawer-panel nav a {
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    font-size: 13px !important;
+    padding: 10px 14px !important;
+    margin-bottom: 4px !important;
+  }
+
+  /* Officer Menu Badges Centered Vertically & Right-Aligned */
+  .drawer-sidebar nav button span[id^="nav-badge-"],
+  #officer-sidebar nav button span[id^="nav-badge-"] {
+    margin-left: auto !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 18px !important;
+    line-height: 1 !important;
+  }
+
+  /* Single Clean Drawer Logout Button at Bottom */
+  .drawer-logout-container {
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid #F1F5F9;
+  }
+
+  .drawer-logout-btn {
+    min-height: 44px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: #FEF2F2;
+    color: #DC2626;
+    font-weight: 700;
+    font-size: 13px;
+    border-radius: 14px;
+    border: 1px solid #FEE2E2;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+  }
+
+  .drawer-logout-btn:hover {
+    background-color: #FEE2E2;
+  }
+}
+
+/* ================= 4. DESKTOP SIDEBAR PRESERVATION (>= 1024px) ================= */
+@media (min-width: 1024px) {
+  .sidebar-backdrop {
+    display: none !important;
+  }
+
+  aside.drawer-sidebar,
+  #admin-sidebar,
+  #officer-sidebar {
+    position: static !important;
+    transform: none !important;
+    width: 16rem !important;
+    height: auto !important;
+    box-shadow: none !important;
+    z-index: auto !important;
+    background-color: transparent !important;
+    padding: 0 !important;
+    display: block !important;
+  }
+
+  .drawer-close-btn {
+    display: none !important;
+  }
+}
+
+/* ================= 5. FLUID MOBILE TYPOGRAPHY & CARDS ================= */
+/* Page Titles */
+.page-hero-title {
+  font-size: clamp(22px, 6vw, 30px) !important;
+  line-height: 1.2 !important;
+  word-break: break-word;
+}
+
+/* Cadet Name on Banner */
+#banner-cadet-name {
+  font-size: clamp(20px, 6vw, 26px) !important;
+  line-height: 1.25 !important;
+}
+
+/* Stat Cards Responsive Grid (2 columns on mobile, 1 col below 340px) */
+.stat-cards-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+}
+
+@media (max-width: 339px) {
+  .stat-cards-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (min-width: 640px) {
+  .stat-cards-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .stat-cards-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 16px !important;
+  }
+}
+
+/* Responsive Stat Card Value */
+.stat-card-value {
+  font-size: clamp(18px, 5vw, 22px) !important;
+  line-height: 1.2 !important;
+  word-break: break-word;
+}
+
+/* Cadet ID Card Buttons on Small Screens */
+.cadet-banner-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+}
+
+.cadet-banner-btn {
+  min-height: 44px;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  flex: 1 1 auto;
+}
+
+@media (max-width: 480px) {
+  .cadet-banner-buttons {
+    flex-direction: column;
+  }
+  .cadet-banner-btn {
+    width: 100%;
+  }
+}
+
+/* ================= 6. FLOATING ELEMENTS & CHATBOT ================= */
+.floating-chatbot-btn {
+  position: fixed !important;
+  bottom: calc(16px + var(--safe-bottom)) !important;
+  right: 16px !important;
+  width: 52px !important;
+  height: 52px !important;
+  min-width: 52px !important;
+  min-height: 52px !important;
+  border-radius: 9999px !important;
+  z-index: 80 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Ensure main content container has 80px bottom clearance for floating elements */
+.main-dashboard-container {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding-bottom: 80px !important;
+}
+
+@media (max-width: 767px) {
+  .main-dashboard-container {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    padding-top: 16px !important;
+  }
+}
+
+/* Responsive Floating Toast Notification */
+#toast {
+  bottom: calc(16px + var(--safe-bottom)) !important;
+  left: 16px !important;
+  right: auto !important;
+  max-width: calc(100vw - 32px) !important;
+}
+
+@media (max-width: 480px) {
+  #toast {
+    right: 16px !important;
+    width: calc(100vw - 32px) !important;
+  }
+}

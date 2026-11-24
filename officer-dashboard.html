@@ -2,10 +2,13 @@
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Officer & ANO Dashboard | ITM University NCC Digital Management</title>
   <meta name="description" content="ITM University NCC Digital Management Portal - Officer & ANO Operational Management Dashboard for Cadets, Attendance, Camps, and Approvals.">
   
+  <!-- Shared Mobile-First Responsive Stylesheet -->
+  <link rel="stylesheet" href="responsive.css">
+
   <!-- Google Fonts & CDN Libraries -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -130,27 +133,27 @@
 
   <div class="relative z-10 flex-1 flex flex-col">
     
-    <!-- 1. MAIN HEADER NAVBAR (TOP FLUSH - Top bar removed per specification) -->
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
+    <!-- 1. MAIN HEADER NAVBAR -->
+    <header class="app-header bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
+      <div class="app-header-container max-w-7xl mx-auto">
         
         <!-- Left: Hamburger (Mobile) + Logo & Title -->
-        <div class="flex items-center gap-3">
-          <button onclick="toggleMobileSidebar()" class="lg:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 focus:outline-none">
+        <div class="header-left-group flex items-center">
+          <button onclick="toggleMobileSidebar()" class="lg:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 focus:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center -ml-2" aria-label="Toggle navigation drawer">
             <i data-lucide="menu" class="w-5 h-5"></i>
           </button>
-          <a href="index.html" class="flex items-center gap-3 shrink-0">
-            <img src="itm-logo.png" onerror="this.src='https://raw.githubusercontent.com/antigravity-assets/logos/main/itm-logo.png'" alt="ITM Logo" class="h-10 sm:h-12 w-auto object-contain">
-            <img src="ncc logo.png" onerror="this.src='https://raw.githubusercontent.com/antigravity-assets/logos/main/ncc-logo.png'" alt="NCC Logo" class="h-10 sm:h-12 w-auto object-contain border-l border-slate-200 pl-3">
-            <div>
-              <div class="text-sm font-black tracking-tight text-[#071D3A] uppercase leading-none">ITM UNIVERSITY</div>
-              <div class="text-[11px] font-bold text-slate-500 tracking-wide uppercase">Officer Operational Management</div>
+          <a href="index.html" class="flex items-center gap-2.5 shrink-0 overflow-hidden">
+            <img src="itm-logo.png" onerror="this.src='https://raw.githubusercontent.com/antigravity-assets/logos/main/itm-logo.png'" alt="ITM Logo" class="h-8 w-auto object-contain shrink-0">
+            <img src="ncc logo.png" onerror="this.src='https://raw.githubusercontent.com/antigravity-assets/logos/main/ncc-logo.png'" alt="NCC Logo" class="h-8 w-auto object-contain border-l border-slate-200 pl-2.5 shrink-0">
+            <div class="header-title-block min-w-0">
+              <div class="header-title-text text-sm font-black tracking-tight text-[#071D3A] uppercase leading-none">ITM UNIVERSITY</div>
+              <div class="header-subtitle-text text-[11px] font-bold text-slate-500 tracking-wide uppercase">Officer Operational Management</div>
             </div>
           </a>
         </div>
 
         <!-- Right: Global Search, Quick Action, Officer Profile -->
-        <div class="flex items-center space-x-3 shrink-0">
+        <div class="header-right-group flex items-center">
           
           <!-- Search input -->
           <div class="relative hidden sm:block">
@@ -160,20 +163,20 @@
 
           <!-- Quick Action Dropdown -->
           <div class="relative inline-block text-left">
-            <button onclick="toggleQuickActionMenu()" class="bg-[#1677FF] hover:bg-blue-600 text-white font-bold text-xs px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-xs">
-              <i data-lucide="plus-circle" class="w-4 h-4"></i> Quick Action
+            <button onclick="toggleQuickActionMenu()" class="header-action-btn bg-[#1677FF] hover:bg-blue-600 text-white font-bold text-xs px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-xs" title="Quick Action">
+              <i data-lucide="plus-circle" class="w-4 h-4"></i> <span class="header-action-label">Quick Action</span>
             </button>
             <div id="quick-action-menu" class="hidden absolute right-0 mt-2 w-52 bg-white rounded-2xl shadow-xl border border-slate-200 z-50 overflow-hidden text-xs py-1">
-              <button onclick="switchOfficerSection('attendance'); toggleQuickActionMenu()" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 font-bold text-navy flex items-center gap-2">
+              <button onclick="switchOfficerSection('attendance'); toggleQuickActionMenu()" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 font-bold text-navy flex items-center gap-2 min-h-[44px]">
                 <i data-lucide="calendar-check" class="w-4 h-4 text-emerald-600"></i> Mark Attendance
               </button>
-              <button onclick="openCreateCampModal(); toggleQuickActionMenu()" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 font-bold text-navy flex items-center gap-2">
+              <button onclick="openCreateCampModal(); toggleQuickActionMenu()" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 font-bold text-navy flex items-center gap-2 min-h-[44px]">
                 <i data-lucide="tent" class="w-4 h-4 text-itmblue"></i> Create New Camp
               </button>
-              <button onclick="openPublishNoticeModal(); toggleQuickActionMenu()" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 font-bold text-navy flex items-center gap-2">
+              <button onclick="openPublishNoticeModal(); toggleQuickActionMenu()" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 font-bold text-navy flex items-center gap-2 min-h-[44px]">
                 <i data-lucide="megaphone" class="w-4 h-4 text-amber-500"></i> Publish Notice
               </button>
-              <button onclick="openAddCadetModal(); toggleQuickActionMenu()" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 font-bold text-navy flex items-center gap-2">
+              <button onclick="openAddCadetModal(); toggleQuickActionMenu()" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 font-bold text-navy flex items-center gap-2 min-h-[44px]">
                 <i data-lucide="user-plus" class="w-4 h-4 text-purple-600"></i> Register New Cadet
               </button>
             </div>
@@ -181,7 +184,7 @@
 
           <!-- Officer Profile Header Chip -->
           <div class="flex items-center space-x-2 pl-2 border-l border-slate-200">
-            <img id="officer-header-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80" alt="Officer Avatar" class="w-9 h-9 rounded-full object-cover border-2 border-navy">
+            <img id="officer-header-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80" alt="Officer Avatar" class="header-avatar w-9 h-9 rounded-full object-cover border-2 border-navy">
             <div class="text-left hidden md:block">
               <div id="officer-header-name" class="text-xs font-bold text-slate-800 leading-tight">CTO Gaurav Singh</div>
               <div class="text-[10px] text-slate-500 font-semibold">Associate NCC Officer (ANO)</div>
@@ -194,67 +197,67 @@
     </header>
 
     <!-- 2. MAIN DASHBOARD BODY (SIDEBAR + CONTENT) -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-1 flex flex-col lg:flex-row gap-6">
+    <div class="main-dashboard-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-1 flex flex-col lg:flex-row gap-6">
       
-      <!-- SIDEBAR NAVIGATION -->
-      <aside id="officer-sidebar" class="w-full lg:w-64 shrink-0 space-y-4">
+      <!-- SIDEBAR NAVIGATION (Drawer on mobile <1024px, static on >=1024px) -->
+      <aside id="officer-sidebar" class="drawer-sidebar w-full lg:w-64 shrink-0 space-y-4">
         
-        <!-- Redesigned Officer Info Card (Lighter card per user specification) -->
-        <div class="bg-white p-5 rounded-3xl space-y-3 shadow-xs border border-slate-200">
+        <!-- Mobile Drawer Header -->
+        <div class="drawer-header flex items-center justify-between pb-3 border-b border-slate-200 lg:hidden">
+          <span class="text-xs font-black text-navy uppercase tracking-wider">Navigation Menu</span>
+          <button onclick="toggleMobileSidebar()" class="p-2 text-slate-400 hover:text-slate-600 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center" aria-label="Close menu">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <!-- Redesigned Officer Info Card (Clean single card, no duplicate logout) -->
+        <div class="drawer-profile-card bg-white p-4 rounded-3xl space-y-2 shadow-xs border border-slate-200">
           <div class="flex items-center space-x-3">
-            <img id="sidebar-officer-photo" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" alt="CTO Gaurav Singh" class="w-12 h-12 rounded-2xl object-cover border-2 border-slate-200 shadow-xs">
-            <div>
-              <h2 id="sidebar-officer-name" class="font-extrabold text-sm text-navy">CTO Gaurav Singh</h2>
-              <p class="text-[11px] text-slate-500 font-semibold">ANO Officer • Army Wing</p>
-              <span class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full mt-1 border border-emerald-200">
+            <img id="sidebar-officer-photo" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" alt="CTO Gaurav Singh" class="w-11 h-11 rounded-2xl object-cover border-2 border-slate-200 shadow-xs">
+            <div class="min-w-0">
+              <h2 id="sidebar-officer-name" class="font-extrabold text-sm text-navy truncate">CTO Gaurav Singh</h2>
+              <p class="text-[11px] text-slate-500 font-semibold truncate">ANO Officer • Army Wing</p>
+              <span class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full mt-0.5 border border-emerald-200">
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Active
               </span>
             </div>
-          </div>
-          <div class="flex items-center gap-2 pt-2 border-t border-slate-100">
-            <button onclick="switchOfficerSection('overview')" class="flex-1 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold text-xs py-1.5 rounded-xl border border-slate-200 flex items-center justify-center gap-1.5 transition-colors">
-              <i data-lucide="user" class="w-3.5 h-3.5"></i> Profile
-            </button>
-            <a href="login.html" onclick="if(window.NCCStore) NCCStore.logout()" class="flex-1 bg-red-50 hover:bg-red-100 text-red-600 font-bold text-xs py-1.5 rounded-xl border border-red-200 flex items-center justify-center gap-1.5 transition-colors">
-              <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Logout
-            </a>
           </div>
         </div>
 
         <!-- Navigation Menu Links (8 Live Sections) -->
         <nav class="glass-card rounded-3xl p-3 space-y-1 text-xs">
-          <button onclick="switchOfficerSection('overview')" id="nav-btn-overview" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-active">
+          <button onclick="switchOfficerSection('overview')" id="nav-btn-overview" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-active min-h-[44px]">
             <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Command Overview
           </button>
-          <button onclick="switchOfficerSection('cadets')" id="nav-btn-cadets" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-inactive">
+          <button onclick="switchOfficerSection('cadets')" id="nav-btn-cadets" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-inactive min-h-[44px]">
             <i data-lucide="users" class="w-4 h-4"></i> Cadet Management
           </button>
-          <button onclick="switchOfficerSection('applications')" id="nav-btn-applications" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-inactive">
-            <i data-lucide="user-check" class="w-4 h-4"></i> Selection & Applications
-            <span id="nav-badge-applications" class="ml-auto bg-amber-500 text-white font-bold text-[9px] px-2 py-0.5 rounded-full">18</span>
+          <button onclick="switchOfficerSection('applications')" id="nav-btn-applications" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center justify-between gap-2 transition-all sidebar-inactive min-h-[44px]">
+            <span class="flex items-center gap-3"><i data-lucide="user-check" class="w-4 h-4"></i> Selection & Applications</span>
+            <span id="nav-badge-applications" class="bg-amber-500 text-white font-bold text-[9px] px-2 py-0.5 rounded-full shrink-0">18</span>
           </button>
-          <button onclick="switchOfficerSection('attendance')" id="nav-btn-attendance" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-inactive">
+          <button onclick="switchOfficerSection('attendance')" id="nav-btn-attendance" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-inactive min-h-[44px]">
             <i data-lucide="calendar-check-2" class="w-4 h-4"></i> Mark Attendance
           </button>
-          <button onclick="switchOfficerSection('camps')" id="nav-btn-camps" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-inactive">
+          <button onclick="switchOfficerSection('camps')" id="nav-btn-camps" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-inactive min-h-[44px]">
             <i data-lucide="tent" class="w-4 h-4"></i> Camp Management
           </button>
-          <button onclick="switchOfficerSection('certificates')" id="nav-btn-certificates" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-inactive">
-            <i data-lucide="file-badge" class="w-4 h-4"></i> Verify Certificates
-            <span id="nav-badge-certificates" class="ml-auto bg-blue-500 text-white font-bold text-[9px] px-2 py-0.5 rounded-full">12</span>
+          <button onclick="switchOfficerSection('certificates')" id="nav-btn-certificates" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center justify-between gap-2 transition-all sidebar-inactive min-h-[44px]">
+            <span class="flex items-center gap-3"><i data-lucide="file-badge" class="w-4 h-4"></i> Verify Certificates</span>
+            <span id="nav-badge-certificates" class="bg-blue-500 text-white font-bold text-[9px] px-2 py-0.5 rounded-full shrink-0">12</span>
           </button>
-          <button onclick="switchOfficerSection('notices')" id="nav-btn-notices" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-inactive">
+          <button onclick="switchOfficerSection('notices')" id="nav-btn-notices" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-inactive min-h-[44px]">
             <i data-lucide="megaphone" class="w-4 h-4"></i> Publish Notices
           </button>
-          <button onclick="switchOfficerSection('complaints')" id="nav-btn-complaints" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-inactive">
-            <i data-lucide="message-square" class="w-4 h-4"></i> Grievances & Helpdesk
-            <span id="nav-badge-complaints" class="ml-auto bg-rose-500 text-white font-bold text-[9px] px-2 py-0.5 rounded-full">4</span>
+          <button onclick="switchOfficerSection('complaints')" id="nav-btn-complaints" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center justify-between gap-2 transition-all sidebar-inactive min-h-[44px]">
+            <span class="flex items-center gap-3"><i data-lucide="message-square" class="w-4 h-4"></i> Grievances & Helpdesk</span>
+            <span id="nav-badge-complaints" class="bg-rose-500 text-white font-bold text-[9px] px-2 py-0.5 rounded-full shrink-0">4</span>
           </button>
-          <button onclick="switchOfficerSection('reports')" id="nav-btn-reports" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-inactive">
+          <button onclick="switchOfficerSection('reports')" id="nav-btn-reports" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-inactive min-h-[44px]">
             <i data-lucide="bar-chart-3" class="w-4 h-4"></i> Battalion Reports
           </button>
           <div class="border-t border-slate-200 my-2 pt-2"></div>
-          <a href="login.html" onclick="if(window.NCCStore) NCCStore.logout()" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 text-red-600 hover:bg-red-50 font-bold">
+          <a href="login.html" onclick="if(window.NCCStore) NCCStore.logout()" class="w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 text-red-600 hover:bg-red-50 font-bold min-h-[44px]">
             <i data-lucide="log-out" class="w-4 h-4"></i> Logout
           </a>
         </nav>
@@ -270,67 +273,67 @@
           <!-- Fixed Time-Based Welcome Greeting Banner -->
           <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h1 id="officer-welcome-greeting" class="text-2xl font-black text-navy tracking-tight">Good Morning, CTO Gaurav Singh</h1>
+              <h1 id="officer-welcome-greeting" class="page-hero-title font-black text-navy tracking-tight">Good Morning, CTO Gaurav Singh</h1>
               <p id="officer-welcome-date" class="text-xs text-subtext mt-1">Here is your battalion operational summary for today, 13 September 2026.</p>
             </div>
-            <div class="flex items-center gap-2">
-              <button onclick="switchOfficerSection('attendance')" class="bg-[#1677FF] hover:bg-blue-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-xs flex items-center gap-2">
+            <div class="flex items-center gap-2 flex-wrap">
+              <button onclick="switchOfficerSection('attendance')" class="bg-[#1677FF] hover:bg-blue-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-xs flex items-center gap-2 min-h-[44px]">
                 <i data-lucide="check-square" class="w-4 h-4"></i> Take Today's Attendance
               </button>
-              <button onclick="openCreateCampModal()" class="bg-navy hover:bg-navy-dark text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-xs flex items-center gap-2">
+              <button onclick="openCreateCampModal()" class="bg-navy hover:bg-navy-dark text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-xs flex items-center gap-2 min-h-[44px]">
                 <i data-lucide="tent" class="w-4 h-4"></i> + Create Camp
               </button>
             </div>
           </div>
 
           <!-- 8 LARGE OPERATIONAL STATISTICS CARDS (Dynamically calculated from NCCStore) -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div class="stat-cards-grid grid grid-cols-2 sm:grid-cols-4 gap-4">
             
             <div class="glass-card p-4 rounded-2xl border-l-4 border-l-navy hover:shadow-md transition-all cursor-pointer" onclick="switchOfficerSection('cadets')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">Total Cadets</div>
-              <div id="stat-total-cadets" class="text-2xl font-black text-navy mt-1">116</div>
+              <div id="stat-total-cadets" class="stat-card-value font-black text-navy mt-1">116</div>
               <div class="text-[10px] text-slate-400 mt-0.5">Across all 3 Units</div>
             </div>
 
             <div class="glass-card p-4 rounded-2xl border-l-4 border-l-blue-500 hover:shadow-md transition-all cursor-pointer" onclick="filterCadetsByUnit('Army Unit')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">Army Unit</div>
-              <div id="stat-army-cadets" class="text-2xl font-black text-blue-600 mt-1">56</div>
+              <div id="stat-army-cadets" class="stat-card-value font-black text-blue-600 mt-1">56</div>
               <div class="text-[10px] text-slate-400 mt-0.5">8 MP Artillery Bn</div>
             </div>
 
             <div class="glass-card p-4 rounded-2xl border-l-4 border-l-indigo-500 hover:shadow-md transition-all cursor-pointer" onclick="filterCadetsByUnit('Naval Unit')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">Naval Unit</div>
-              <div id="stat-naval-cadets" class="text-2xl font-black text-indigo-600 mt-1">32</div>
+              <div id="stat-naval-cadets" class="stat-card-value font-black text-indigo-600 mt-1">32</div>
               <div class="text-[10px] text-slate-400 mt-0.5">3 MP Naval Unit</div>
             </div>
 
             <div class="glass-card p-4 rounded-2xl border-l-4 border-l-amber-500 hover:shadow-md transition-all cursor-pointer" onclick="switchOfficerSection('applications')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">Pending Regs</div>
-              <div id="stat-pending-regs" class="text-2xl font-black text-amber-600 mt-1">18</div>
+              <div id="stat-pending-regs" class="stat-card-value font-black text-amber-600 mt-1">18</div>
               <div class="text-[10px] text-amber-600 font-bold mt-0.5">Action Required</div>
             </div>
 
             <div class="glass-card p-4 rounded-2xl border-l-4 border-l-emerald-500 hover:shadow-md transition-all cursor-pointer" onclick="switchOfficerSection('camps')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">Upcoming Camps</div>
-              <div id="stat-upcoming-camps" class="text-2xl font-black text-emerald-600 mt-1">6</div>
+              <div id="stat-upcoming-camps" class="stat-card-value font-black text-emerald-600 mt-1">6</div>
               <div class="text-[10px] text-slate-400 mt-0.5">ATC, RDC, TSC</div>
             </div>
 
             <div class="glass-card p-4 rounded-2xl border-l-4 border-l-teal-500 hover:shadow-md transition-all cursor-pointer" onclick="switchOfficerSection('attendance')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">Today's Attendance</div>
-              <div id="stat-today-attendance" class="text-2xl font-black text-teal-600 mt-1">91%</div>
+              <div id="stat-today-attendance" class="stat-card-value font-black text-teal-600 mt-1">91%</div>
               <div class="text-[10px] text-emerald-600 font-bold mt-0.5">High Participation</div>
             </div>
 
             <div class="glass-card p-4 rounded-2xl border-l-4 border-l-purple-500 hover:shadow-md transition-all cursor-pointer" onclick="switchOfficerSection('certificates')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">Pending Docs</div>
-              <div id="stat-pending-docs" class="text-2xl font-black text-purple-600 mt-1">12</div>
+              <div id="stat-pending-docs" class="stat-card-value font-black text-purple-600 mt-1">12</div>
               <div class="text-[10px] text-slate-400 mt-0.5">Certificates to review</div>
             </div>
 
             <div class="glass-card p-4 rounded-2xl border-l-4 border-l-rose-500 hover:shadow-md transition-all cursor-pointer" onclick="switchOfficerSection('complaints')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">Complaints</div>
-              <div id="stat-complaints" class="text-2xl font-black text-rose-600 mt-1">4</div>
+              <div id="stat-complaints" class="stat-card-value font-black text-rose-600 mt-1">4</div>
               <div class="text-[10px] text-slate-400 mt-0.5">Grievance Desk</div>
             </div>
 
@@ -1044,10 +1047,19 @@
   <script>
     lucide.createIcons();
 
-    // Responsive Mobile Sidebar Toggle
-    function toggleMobileSidebar() {
+    // Responsive Mobile Sidebar Toggle (delegates to responsive drawer engine)
+    function toggleMobileSidebar(force) {
       const aside = document.getElementById('officer-sidebar');
-      aside.classList.toggle('hidden');
+      if (window.toggleDrawer && aside) {
+        if (typeof force === 'boolean') {
+          if (force) window.openDrawer(aside);
+          else window.closeDrawer(aside);
+        } else {
+          window.toggleDrawer(aside);
+        }
+      } else if (aside) {
+        aside.classList.toggle('open');
+      }
     }
 
     // Dynamic Time-Based Greeting & Date Function
@@ -1873,5 +1885,7 @@
       }
     });
   </script>
+  <!-- Shared Mobile-First Responsive JavaScript Engine -->
+  <script src="responsive.js"></script>
 </body>
 </html>
