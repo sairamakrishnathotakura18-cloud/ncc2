@@ -118,10 +118,8 @@
     }
   });
 
-  // Initialize responsive engine (safe against late script execution or DOMContentLoaded having already fired)
+  // Initialize responsive engine
   function initResponsive() {
-    ensureBackdrop();
-
     const drawers = document.querySelectorAll('#admin-sidebar, #officer-sidebar, #mobile-drawer-panel, #mobile-drawer');
     drawers.forEach(drawer => {
       drawer.addEventListener('click', (e) => {

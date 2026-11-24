@@ -1,29 +1,33 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>System Administrator Dashboard | ITM University NCC Digital Management</title>
-  <meta name="description" content="ITM University NCC Digital Management Portal - Full System Administration Dashboard with User Control, CMS, Audit Logs, and Analytics.">
-  
+  <meta name="description"
+    content="ITM University NCC Digital Management Portal - Full System Administration Dashboard with User Control, CMS, Audit Logs, and Analytics.">
+
   <!-- Google Fonts & CDN Libraries -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
+
   <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  
+
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <!-- Central Shared Data Store & REST API Client -->
   <script src="data.js"></script>
   <script src="api.js"></script>
-  
+
   <!-- Shared Mobile Navigation Controller -->
   <script src="responsive.js"></script>
 
@@ -103,6 +107,7 @@
     .admin-nav-inactive {
       color: #475569;
     }
+
     .admin-nav-inactive:hover {
       background-color: #F1F5F9;
       color: #071D3A;
@@ -112,42 +117,52 @@
       width: 6px;
       height: 6px;
     }
+
     .custom-scrollbar::-webkit-scrollbar-track {
       background: #F1F5F9;
     }
+
     .custom-scrollbar::-webkit-scrollbar-thumb {
       background: #CBD5E1;
       border-radius: 4px;
     }
 
     @media (prefers-reduced-motion: reduce) {
-      #ambient-bg { display: none; }
-      * { animation: none !important; transition: none !important; }
+      #ambient-bg {
+        display: none;
+      }
+
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
     }
   </style>
 
   <!-- Shared Mobile-First Responsive Stylesheet (Placed after custom style & Tailwind for full specificity) -->
   <link rel="stylesheet" href="responsive.css">
 </head>
+
 <body class="relative min-h-screen custom-scrollbar flex flex-col justify-between">
 
   <!-- Ambient Background Canvas -->
   <canvas id="ambient-bg"></canvas>
 
   <div class="relative flex-1 flex flex-col">
-    
+
     <!-- 1. MAIN HEADER NAVBAR (Responsive single-row flex header, no overlap or overflow) -->
     <header class="app-header">
       <div class="app-header-container">
-        
-        <!-- Left: Hamburger (Mobile) + Branding -->
+
+        <!-- Left: Branding -->
         <div class="header-left-group">
-          <button id="header-hamburger-btn" data-drawer-toggle onclick="toggleMobileAdminSidebar()" class="touch-target lg:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 focus:outline-none" aria-label="Toggle navigation drawer" aria-expanded="false" aria-controls="admin-sidebar">
-            <i data-lucide="menu" class="w-6 h-6"></i>
-          </button>
           <a href="index.html" class="header-brand-link">
-            <img src="itm-logo.png" onerror="this.src='https://raw.githubusercontent.com/antigravity-assets/logos/main/itm-logo.png'" alt="ITM Logo" class="header-logo-img">
-            <img src="ncc logo.png" onerror="this.src='https://raw.githubusercontent.com/antigravity-assets/logos/main/ncc-logo.png'" alt="NCC Logo" class="header-logo-img border-l border-slate-200 pl-2">
+            <img src="itm-logo.png"
+              onerror="this.src='https://raw.githubusercontent.com/antigravity-assets/logos/main/itm-logo.png'"
+              alt="ITM Logo" class="header-logo-img">
+            <img src="ncc logo.png"
+              onerror="this.src='https://raw.githubusercontent.com/antigravity-assets/logos/main/ncc-logo.png'"
+              alt="NCC Logo" class="header-logo-img border-l border-slate-200 pl-2">
             <div class="header-title-block">
               <div class="header-main-title">ITM UNIVERSITY</div>
               <div class="header-sub-title hidden sm:block">System Administration Hub</div>
@@ -157,15 +172,19 @@
 
         <!-- Right Controls -->
         <div class="header-right-group">
-          
+
           <!-- System Search -->
           <div class="relative hidden md:block">
-            <input type="text" id="admin-global-search" onkeyup="handleAdminGlobalSearch(this.value)" placeholder="Global Admin Search (Users, Audit Logs...)" class="w-48 lg:w-64 pl-9 pr-3 py-1.5 rounded-full border border-slate-300 text-xs focus:ring-2 focus:ring-purple-600 focus:outline-none">
+            <input type="text" id="admin-global-search" onkeyup="handleAdminGlobalSearch(this.value)"
+              placeholder="Global Admin Search (Users, Audit Logs...)"
+              class="w-48 lg:w-64 pl-9 pr-3 py-1.5 rounded-full border border-slate-300 text-xs focus:ring-2 focus:ring-purple-600 focus:outline-none">
             <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2"></i>
           </div>
 
           <!-- Quick Action (+ Add User round icon button on mobile, full pill on sm+) -->
-          <button onclick="openAddUserModal()" class="header-action-btn bg-purple-600 hover:bg-purple-700 text-white shadow-xs transition-colors" title="Add System User" aria-label="Add System User">
+          <button onclick="openAddUserModal()"
+            class="header-action-btn bg-purple-600 hover:bg-purple-700 text-white shadow-xs transition-colors"
+            title="Add System User" aria-label="Add System User">
             <i data-lucide="user-plus" class="w-4 h-4"></i>
             <span class="hidden sm:inline ml-1.5">+ Add User</span>
           </button>
@@ -186,67 +205,76 @@
       </div>
     </header>
 
-    <!-- HORIZONTAL SCROLLING PILL BAR (Mobile Parakh Native Nav <1024px) -->
-    <nav class="mobile-pill-nav lg:hidden" aria-label="Admin Quick Navigation">
-      <button onclick="switchAdminSection('overview')" id="mobile-admin-pill-overview" class="mobile-pill-btn active" aria-selected="true">
-        <i data-lucide="layout-grid" class="w-4 h-4"></i> Overview
+    <!-- Mobile Horizontal Tab Bar (Visible on <1024px, modeled directly after ITM Parakh mobile horizontal pill row) -->
+    <nav class="mobile-tab-scroll-bar lg:hidden" aria-label="Admin Mobile Navigation">
+      <button onclick="switchAdminSection('overview')" id="admin-mobile-tab-overview" class="mobile-pill-btn active">
+        <i data-lucide="layout-dashboard" class="w-4 h-4"></i> System Overview
       </button>
-      <button onclick="switchAdminSection('users')" id="mobile-admin-pill-users" class="mobile-pill-btn inactive" aria-selected="false">
-        <i data-lucide="users" class="w-4 h-4"></i> Users
+      <button onclick="switchAdminSection('users')" id="admin-mobile-tab-users" class="mobile-pill-btn">
+        <i data-lucide="users" class="w-4 h-4"></i> User Management
       </button>
-      <button onclick="switchAdminSection('officers')" id="mobile-admin-pill-officers" class="mobile-pill-btn inactive" aria-selected="false">
-        <i data-lucide="user-cog" class="w-4 h-4"></i> Officers
+      <button onclick="switchAdminSection('officers')" id="admin-mobile-tab-officers" class="mobile-pill-btn">
+        <i data-lucide="user-check" class="w-4 h-4"></i> Officer Profiles
       </button>
-      <button onclick="switchAdminSection('units')" id="mobile-admin-pill-units" class="mobile-pill-btn inactive" aria-selected="false">
-        <i data-lucide="shield" class="w-4 h-4"></i> Units
+      <button onclick="switchAdminSection('units')" id="admin-mobile-tab-units" class="mobile-pill-btn">
+        <i data-lucide="shield" class="w-4 h-4"></i> Unit Configuration
       </button>
-      <button onclick="switchAdminSection('attendance')" id="mobile-admin-pill-attendance" class="mobile-pill-btn inactive" aria-selected="false">
-        <i data-lucide="calendar-check-2" class="w-4 h-4"></i> Attendance
+      <button onclick="switchAdminSection('attendance')" id="admin-mobile-tab-attendance" class="mobile-pill-btn">
+        <i data-lucide="calendar" class="w-4 h-4"></i> Attendance Control
       </button>
-      <button onclick="switchAdminSection('permissions')" id="mobile-admin-pill-permissions" class="mobile-pill-btn inactive" aria-selected="false">
-        <i data-lucide="lock" class="w-4 h-4"></i> Permissions
+      <button onclick="switchAdminSection('permissions')" id="admin-mobile-tab-permissions" class="mobile-pill-btn">
+        <i data-lucide="lock" class="w-4 h-4"></i> Roles & Perms
       </button>
-      <button onclick="switchAdminSection('cms')" id="mobile-admin-pill-cms" class="mobile-pill-btn inactive" aria-selected="false">
-        <i data-lucide="globe" class="w-4 h-4"></i> CMS
+      <button onclick="switchAdminSection('cms')" id="admin-mobile-tab-cms" class="mobile-pill-btn">
+        <i data-lucide="globe" class="w-4 h-4"></i> Website CMS
       </button>
-      <button onclick="switchAdminSection('analytics')" id="mobile-admin-pill-analytics" class="mobile-pill-btn inactive" aria-selected="false">
-        <i data-lucide="pie-chart" class="w-4 h-4"></i> Analytics
+      <button onclick="switchAdminSection('analytics')" id="admin-mobile-tab-analytics" class="mobile-pill-btn">
+        <i data-lucide="activity" class="w-4 h-4"></i> Analytics
       </button>
-      <button onclick="switchAdminSection('audit')" id="mobile-admin-pill-audit" class="mobile-pill-btn inactive" aria-selected="false">
+      <button onclick="switchAdminSection('audit')" id="admin-mobile-tab-audit" class="mobile-pill-btn">
         <i data-lucide="file-text" class="w-4 h-4"></i> Audit Logs
       </button>
-      <button onclick="switchAdminSection('settings')" id="mobile-admin-pill-settings" class="mobile-pill-btn inactive" aria-selected="false">
+      <button onclick="switchAdminSection('settings')" id="admin-mobile-tab-settings" class="mobile-pill-btn">
         <i data-lucide="settings" class="w-4 h-4"></i> Settings
       </button>
     </nav>
 
     <!-- 2. MAIN DASHBOARD CONTENT AREA -->
-    <div class="main-dashboard-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-1 flex flex-col lg:flex-row gap-6">
-      
+    <div
+      class="main-dashboard-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-1 flex flex-col lg:flex-row gap-6">
+
       <!-- SIDEBAR NAVIGATION (Native Off-Canvas Drawer on mobile <1024px, Fixed sidebar on desktop >=1024px) -->
-      <aside id="admin-sidebar" class="drawer-sidebar w-full lg:w-64 shrink-0 space-y-4" role="navigation" aria-label="System Admin Navigation">
-        
+      <aside id="admin-sidebar" class="drawer-sidebar w-full lg:w-64 shrink-0 space-y-4" role="navigation"
+        aria-label="System Admin Navigation">
+
         <!-- Mobile Drawer Header Row (Close Button) -->
         <div class="drawer-header-row lg:hidden flex items-center justify-between pb-3 border-b border-slate-100">
           <div class="flex items-center gap-2">
-            <div class="w-8 h-8 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-xs">ADM</div>
+            <div
+              class="w-8 h-8 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-xs">
+              ADM</div>
             <span class="font-extrabold text-sm text-navy">Admin Navigation</span>
           </div>
-          <button onclick="toggleMobileAdminSidebar()" class="drawer-close-btn p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100" aria-label="Close drawer">
+          <button onclick="toggleMobileAdminSidebar()"
+            class="drawer-close-btn p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100"
+            aria-label="Close drawer">
             <i data-lucide="x" class="w-5 h-5"></i>
           </button>
         </div>
 
         <!-- Redesigned Left Admin Card (Compact profile block, duplicate logout removed) -->
-        <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl space-y-2 sm:space-y-3 shadow-xs border border-slate-200">
+        <div
+          class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl space-y-2 sm:space-y-3 shadow-xs border border-slate-200">
           <div class="flex items-center space-x-3">
-            <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-purple-50 text-purple-700 font-black flex items-center justify-center text-base sm:text-lg border-2 border-purple-200 shadow-xs shrink-0">
+            <div
+              class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-purple-50 text-purple-700 font-black flex items-center justify-center text-base sm:text-lg border-2 border-purple-200 shadow-xs shrink-0">
               <i data-lucide="shield-check" class="w-5 h-5 sm:w-6 sm:h-6"></i>
             </div>
             <div class="min-w-0 flex-1">
               <h2 id="sidebar-admin-name" class="font-extrabold text-sm text-navy truncate">System Admin</h2>
               <p class="text-[11px] text-purple-700 font-bold uppercase truncate">Root Access • Master Admin</p>
-              <span class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full mt-0.5 border border-emerald-200">
+              <span
+                class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full mt-0.5 border border-emerald-200">
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> All Systems Active
               </span>
             </div>
@@ -255,37 +283,47 @@
 
         <!-- Sidebar Items (All 10 Sections with min 44px tap targets) -->
         <nav class="glass-card rounded-2xl sm:rounded-3xl p-2.5 sm:p-3 space-y-1 text-xs">
-          <button onclick="switchAdminSection('overview')" id="admin-nav-overview" class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-active">
+          <button onclick="switchAdminSection('overview')" id="admin-nav-overview"
+            class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-active">
             <i data-lucide="layout-grid" class="w-4 h-4"></i> System Overview
           </button>
-          <button onclick="switchAdminSection('users')" id="admin-nav-users" class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
+          <button onclick="switchAdminSection('users')" id="admin-nav-users"
+            class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
             <i data-lucide="users" class="w-4 h-4"></i> User Management
           </button>
-          <button onclick="switchAdminSection('officers')" id="admin-nav-officers" class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
+          <button onclick="switchAdminSection('officers')" id="admin-nav-officers"
+            class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
             <i data-lucide="user-cog" class="w-4 h-4"></i> Officer Profiles & Photos
           </button>
-          <button onclick="switchAdminSection('units')" id="admin-nav-units" class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
+          <button onclick="switchAdminSection('units')" id="admin-nav-units"
+            class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
             <i data-lucide="shield" class="w-4 h-4"></i> Unit Configuration
           </button>
-          <button onclick="switchAdminSection('attendance')" id="admin-nav-attendance" class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
+          <button onclick="switchAdminSection('attendance')" id="admin-nav-attendance"
+            class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
             <i data-lucide="calendar-check-2" class="w-4 h-4"></i> Attendance Full Control
           </button>
-          <button onclick="switchAdminSection('permissions')" id="admin-nav-permissions" class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
+          <button onclick="switchAdminSection('permissions')" id="admin-nav-permissions"
+            class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
             <i data-lucide="lock" class="w-4 h-4"></i> Role & Permissions Matrix
           </button>
-          <button onclick="switchAdminSection('cms')" id="admin-nav-cms" class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
+          <button onclick="switchAdminSection('cms')" id="admin-nav-cms"
+            class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
             <i data-lucide="globe" class="w-4 h-4"></i> Website Content CMS
           </button>
-          <button onclick="switchAdminSection('analytics')" id="admin-nav-analytics" class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
+          <button onclick="switchAdminSection('analytics')" id="admin-nav-analytics"
+            class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
             <i data-lucide="pie-chart" class="w-4 h-4"></i> System Analytics
           </button>
-          <button onclick="switchAdminSection('audit')" id="admin-nav-audit" class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
+          <button onclick="switchAdminSection('audit')" id="admin-nav-audit"
+            class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
             <i data-lucide="file-text" class="w-4 h-4"></i> System Audit Logs
           </button>
-          <button onclick="switchAdminSection('settings')" id="admin-nav-settings" class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
+          <button onclick="switchAdminSection('settings')" id="admin-nav-settings"
+            class="w-full text-left px-4 py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive">
             <i data-lucide="settings" class="w-4 h-4"></i> System Settings
           </button>
-          
+
           <!-- Single Clean Logout Button at Bottom -->
           <div class="drawer-logout-container mt-auto pt-2 border-t border-slate-200">
             <a href="login.html" onclick="if(window.NCCStore) NCCStore.logout()" class="drawer-logout-btn">
@@ -302,131 +340,21 @@
         <!-- ================= SECTION 1: OVERVIEW ================= -->
         <div id="admin-section-overview" class="space-y-6">
 
-          <!-- ================= ITM PARAKH NATIVE MOBILE BENTO LAYOUT (<1024px) ================= -->
-          <div class="parakh-mobile-layout lg:hidden space-y-3.5">
-
-            <!-- 1. Admin Parakh Hero Card -->
-            <div class="parakh-hero-card">
-              <div class="flex items-start justify-between gap-3">
-                <div class="space-y-1 min-w-0">
-                  <span class="text-xs font-semibold text-slate-500">Welcome back,</span>
-                  <h2 id="parakh-admin-name" class="text-base sm:text-lg font-black text-[#0F172A] leading-snug">
-                    System Administrator
-                  </h2>
-                  <div class="pt-0.5">
-                    <span class="parakh-role-badge">
-                      <span>🛡️</span> Master Admin
-                    </span>
-                  </div>
-                </div>
-                <div class="parakh-hero-avatar bg-purple-900 text-amber-300 font-black text-sm border-2 border-amber-400 flex items-center justify-center">
-                  ADM
-                </div>
-              </div>
-
-              <div class="mt-3 pt-3 border-t border-slate-200/80 space-y-1.5 text-xs text-slate-600">
-                <div class="flex items-center gap-2">
-                  <i data-lucide="shield-check" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
-                  <span class="truncate font-medium">Root Access • Master Admin Hub</span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <i data-lucide="key" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
-                  <span class="truncate font-medium">Admin ID: <strong class="font-bold text-slate-800">ADM/ITM/NCC/01</strong> | Status: Online</span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <i data-lucide="database" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
-                  <span class="truncate font-medium">Database: <strong class="font-bold text-emerald-600">Active Sync ✓</strong> | 3 Units</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- 2. Database & System Status Strip -->
-            <div class="parakh-status-strip">
-              <div class="parakh-status-ring">
-                <span>100%</span>
-              </div>
-              <div class="min-w-0 flex-1">
-                <div class="font-black text-sm text-[#064E3B] leading-tight">System & Database Sync</div>
-                <div class="text-xs font-semibold text-[#059669] mt-0.5">Active central store • All services operational</div>
-              </div>
-            </div>
-
-            <!-- 3. Bento Grid Row 1 (2 Columns) -->
-            <div class="parakh-bento-row1">
-              <!-- Total System Users Pastel Card -->
-              <div class="parakh-pastel-card" onclick="switchAdminSection('users')">
-                <div class="flex items-center justify-between">
-                  <div class="parakh-pastel-icon">👥</div>
-                  <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">SYSTEM</span>
-                </div>
-                <div>
-                  <div class="text-xs font-bold text-slate-600">Total System Users</div>
-                  <div id="parakh-admin-stat-users" class="text-xl font-black text-purple-700 leading-tight mt-0.5">650+</div>
-                </div>
-                <div class="text-[10px] font-semibold text-slate-500 leading-tight">
-                  600 Cadets <span class="text-slate-400">•</span> 12 Officers
-                </div>
-              </div>
-
-              <!-- Solid Blue Action Card: Add User -->
-              <button onclick="openAddUserModal()" class="parakh-action-card" aria-label="Add System User">
-                <div class="parakh-action-icon-box">
-                  <i data-lucide="user-plus" class="w-5 h-5"></i>
-                </div>
-                <div>
-                  <div class="text-[11px] text-blue-100 font-semibold uppercase tracking-wider">Access Control</div>
-                  <div class="text-base font-black text-white leading-tight mt-0.5">+ Add User</div>
-                </div>
-              </button>
-            </div>
-
-            <!-- 4. Bento Grid Row 2 (3 Columns) -->
-            <div class="parakh-bento-row2">
-              <button onclick="switchAdminSection('officers')" class="parakh-quick-card" aria-label="Officer Profiles">
-                <i data-lucide="user-cog" class="parakh-quick-icon"></i>
-                <span class="parakh-quick-label">Officers</span>
-              </button>
-              <button onclick="switchAdminSection('units')" class="parakh-quick-card" aria-label="Unit Configuration">
-                <i data-lucide="shield" class="parakh-quick-icon"></i>
-                <span class="parakh-quick-label">Units (3)</span>
-              </button>
-              <button onclick="switchAdminSection('attendance')" class="parakh-quick-card" aria-label="Attendance Control">
-                <i data-lucide="calendar-check-2" class="parakh-quick-icon"></i>
-                <span class="parakh-quick-label">Attendance</span>
-              </button>
-            </div>
-
-            <!-- 5. Bento Grid Row 3 (3 Columns) -->
-            <div class="parakh-bento-row3">
-              <button onclick="switchAdminSection('settings')" class="parakh-quick-card" aria-label="System Settings">
-                <i data-lucide="settings" class="parakh-quick-icon"></i>
-                <span class="parakh-quick-label">Settings</span>
-              </button>
-              <button onclick="switchAdminSection('audit')" class="parakh-announcement-card" aria-label="Audit Logs">
-                <span class="text-[10px] font-black tracking-tight text-blue-900 uppercase">AUDIT LOGS</span>
-                <span class="text-[9px] font-semibold text-slate-500">DBMS Active</span>
-              </button>
-              <button onclick="switchAdminSection('cms')" class="parakh-gold-card" aria-label="Website CMS">
-                <span class="text-[10px] font-black text-amber-900 uppercase">WEBSITE CMS</span>
-                <span class="text-[9px] font-bold text-amber-700">Manage Content</span>
-              </button>
-            </div>
-
-          </div>
-
-          <!-- ================= DESKTOP OVERVIEW (>=1024px) ================= -->
-          <div class="hidden lg:block space-y-6">
-
-            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div
+            class="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h1 class="page-hero-title text-2xl sm:text-3xl font-black text-navy tracking-tight">System Control & Administration</h1>
-              <p class="text-xs text-subtext mt-1">Full administrative command over all users, units, camps, and audit trails.</p>
+              <h1 class="page-hero-title text-2xl sm:text-3xl font-black text-navy tracking-tight">System Control &
+                Administration</h1>
+              <p class="text-xs text-subtext mt-1">Full administrative command over all users, units, camps, and audit
+                trails.</p>
             </div>
             <div class="flex items-center gap-2">
-              <button onclick="openAddUserModal()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl shadow-xs flex items-center gap-2 transition-colors">
+              <button onclick="openAddUserModal()"
+                class="bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl shadow-xs flex items-center gap-2 transition-colors">
                 <i data-lucide="user-plus" class="w-4 h-4"></i> + Add System User
               </button>
-              <button onclick="switchAdminSection('audit')" class="bg-navy hover:bg-navy-dark text-white font-bold text-xs px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl shadow-xs flex items-center gap-2 transition-colors">
+              <button onclick="switchAdminSection('audit')"
+                class="bg-navy hover:bg-navy-dark text-white font-bold text-xs px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl shadow-xs flex items-center gap-2 transition-colors">
                 <i data-lucide="file-text" class="w-4 h-4"></i> View Audit Log
               </button>
             </div>
@@ -434,40 +362,58 @@
 
           <!-- 6 SYSTEM MASTER COUNTERS (Calculated dynamically from NCCStore) -->
           <div class="stat-cards-grid grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-3 sm:gap-4">
-            
-            <div class="glass-card p-3.5 sm:p-4 rounded-2xl border-l-4 border-l-purple-600 hover:shadow-md transition-all cursor-pointer" onclick="switchAdminSection('users')">
+
+            <div
+              class="glass-card p-3.5 sm:p-4 rounded-2xl border-l-4 border-l-purple-600 hover:shadow-md transition-all cursor-pointer"
+              onclick="switchAdminSection('users')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">Total System Users</div>
-              <div id="admin-stat-users" class="stat-card-value text-xl sm:text-2xl font-black text-purple-700 mt-1">650+</div>
+              <div id="admin-stat-users" class="stat-card-value text-xl sm:text-2xl font-black text-purple-700 mt-1">
+                650+</div>
               <div class="text-[10px] text-slate-400 mt-0.5 truncate">Students, Officers & Admins</div>
             </div>
 
-            <div class="glass-card p-3.5 sm:p-4 rounded-2xl border-l-4 border-l-blue-600 hover:shadow-md transition-all cursor-pointer" onclick="switchAdminSection('units')">
+            <div
+              class="glass-card p-3.5 sm:p-4 rounded-2xl border-l-4 border-l-blue-600 hover:shadow-md transition-all cursor-pointer"
+              onclick="switchAdminSection('units')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">Enrolled Students</div>
-              <div id="admin-stat-students" class="stat-card-value text-xl sm:text-2xl font-black text-navy mt-1">600+</div>
+              <div id="admin-stat-students" class="stat-card-value text-xl sm:text-2xl font-black text-navy mt-1">600+
+              </div>
               <div class="text-[10px] text-slate-400 mt-0.5 truncate">Active Cadet Profiles (116 Direct)</div>
             </div>
 
-            <div class="glass-card p-3.5 sm:p-4 rounded-2xl border-l-4 border-l-amber-500 hover:shadow-md transition-all cursor-pointer" onclick="switchAdminSection('officers')">
+            <div
+              class="glass-card p-3.5 sm:p-4 rounded-2xl border-l-4 border-l-amber-500 hover:shadow-md transition-all cursor-pointer"
+              onclick="switchAdminSection('officers')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">Active ANO Officers</div>
-              <div id="admin-stat-officers" class="stat-card-value text-xl sm:text-2xl font-black text-amber-700 mt-1">12</div>
+              <div id="admin-stat-officers" class="stat-card-value text-xl sm:text-2xl font-black text-amber-700 mt-1">
+                12</div>
               <div class="text-[10px] text-slate-400 mt-0.5 truncate">Assigned Officers</div>
             </div>
 
-            <div class="glass-card p-3.5 sm:p-4 rounded-2xl border-l-4 border-l-emerald-600 hover:shadow-md transition-all cursor-pointer" onclick="switchAdminSection('units')">
+            <div
+              class="glass-card p-3.5 sm:p-4 rounded-2xl border-l-4 border-l-emerald-600 hover:shadow-md transition-all cursor-pointer"
+              onclick="switchAdminSection('units')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">NCC Units</div>
-              <div id="admin-stat-units" class="stat-card-value text-xl sm:text-2xl font-black text-emerald-700 mt-1">3</div>
+              <div id="admin-stat-units" class="stat-card-value text-xl sm:text-2xl font-black text-emerald-700 mt-1">3
+              </div>
               <div class="text-[10px] text-slate-400 mt-0.5 truncate">Army & Naval Battalions</div>
             </div>
 
-            <div class="glass-card p-3.5 sm:p-4 rounded-2xl border-l-4 border-l-indigo-600 hover:shadow-md transition-all cursor-pointer" onclick="switchAdminSection('analytics')">
+            <div
+              class="glass-card p-3.5 sm:p-4 rounded-2xl border-l-4 border-l-indigo-600 hover:shadow-md transition-all cursor-pointer"
+              onclick="switchAdminSection('analytics')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">Total Camps</div>
-              <div id="admin-stat-camps" class="stat-card-value text-xl sm:text-2xl font-black text-indigo-700 mt-1">24</div>
+              <div id="admin-stat-camps" class="stat-card-value text-xl sm:text-2xl font-black text-indigo-700 mt-1">24
+              </div>
               <div class="text-[10px] text-slate-400 mt-0.5 truncate">National & Institutional</div>
             </div>
 
-            <div class="glass-card p-3.5 sm:p-4 rounded-2xl border-l-4 border-l-sky-600 hover:shadow-md transition-all cursor-pointer" onclick="switchAdminSection('overview')">
+            <div
+              class="glass-card p-3.5 sm:p-4 rounded-2xl border-l-4 border-l-sky-600 hover:shadow-md transition-all cursor-pointer"
+              onclick="switchAdminSection('overview')">
               <div class="text-[11px] font-bold text-slate-500 uppercase">Certificates Issued</div>
-              <div id="admin-stat-certs" class="stat-card-value text-xl sm:text-2xl font-black text-sky-700 mt-1">428</div>
+              <div id="admin-stat-certs" class="stat-card-value text-xl sm:text-2xl font-black text-sky-700 mt-1">428
+              </div>
               <div class="text-[10px] text-slate-400 mt-0.5 truncate">B & C Verified Certificates</div>
             </div>
 
@@ -475,11 +421,12 @@
 
           <!-- SYSTEM AUDIT PREVIEW & USER MATRIX -->
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            
+
             <div class="glass-card p-5 rounded-3xl space-y-4">
               <div class="flex items-center justify-between">
                 <h3 class="text-sm font-extrabold text-navy uppercase">Recent System Audit Log (DBMS)</h3>
-                <button onclick="switchAdminSection('audit')" class="text-xs font-bold text-purple-700 hover:underline">View All Logs</button>
+                <button onclick="switchAdminSection('audit')"
+                  class="text-xs font-bold text-purple-700 hover:underline">View All Logs</button>
               </div>
               <div id="admin-overview-audit-list" class="space-y-2 text-xs divide-y divide-slate-100">
                 <!-- Rendered dynamically from NCCStore.data.audit_logs -->
@@ -490,7 +437,9 @@
             <div class="glass-card p-5 rounded-3xl space-y-3">
               <div class="flex items-center justify-between">
                 <h3 class="text-sm font-extrabold text-navy uppercase">Cadet Enrollment Distribution</h3>
-                <span class="text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full border border-purple-200">Total: 116 Cadets</span>
+                <span
+                  class="text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full border border-purple-200">Total:
+                  116 Cadets</span>
               </div>
               <div class="h-56 w-full">
                 <canvas id="adminEnrollmentChart"></canvas>
@@ -499,33 +448,37 @@
 
           </div>
 
-        </div> <!-- end hidden lg:block desktop overview -->
+        </div>
 
-      </div>
-
-      <!-- ================= SECTION 2: USER MANAGEMENT ================= -->
+        <!-- ================= SECTION 2: USER MANAGEMENT ================= -->
         <div id="admin-section-users" class="hidden space-y-6">
           <div class="glass-card p-6 rounded-3xl space-y-4">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-4">
               <div>
                 <h2 class="text-xl font-extrabold text-navy">Master User Management</h2>
-                <p class="text-xs text-subtext">Manage accounts, roles, access permissions, and authentication credentials</p>
+                <p class="text-xs text-subtext">Manage accounts, roles, access permissions, and authentication
+                  credentials</p>
               </div>
-              <button onclick="openAddUserModal()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-2 shadow-xs transition-colors">
+              <button onclick="openAddUserModal()"
+                class="bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-2 shadow-xs transition-colors">
                 <i data-lucide="user-plus" class="w-4 h-4"></i> + Create New User
               </button>
             </div>
 
             <!-- Users Filters -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-              <input type="text" id="admin-user-search" onkeyup="renderAdminUsersTable()" placeholder="Search Name, Email, or Role..." class="p-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-purple-600 focus:outline-none">
-              <select id="admin-user-role-filter" onchange="renderAdminUsersTable()" class="p-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-purple-600 focus:outline-none">
+              <input type="text" id="admin-user-search" onkeyup="renderAdminUsersTable()"
+                placeholder="Search Name, Email, or Role..."
+                class="p-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-purple-600 focus:outline-none">
+              <select id="admin-user-role-filter" onchange="renderAdminUsersTable()"
+                class="p-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-purple-600 focus:outline-none">
                 <option value="">All Roles</option>
                 <option value="ADMIN">ADMIN</option>
                 <option value="OFFICER">OFFICER</option>
                 <option value="STUDENT">STUDENT</option>
               </select>
-              <select id="admin-user-unit-filter" onchange="renderAdminUsersTable()" class="p-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-purple-600 focus:outline-none">
+              <select id="admin-user-unit-filter" onchange="renderAdminUsersTable()"
+                class="p-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-purple-600 focus:outline-none">
                 <option value="">All Units</option>
                 <option value="8 MP Artillery Battalion">8 MP Artillery Battalion</option>
                 <option value="3 MP Naval Unit">3 MP Naval Unit</option>
@@ -545,7 +498,8 @@
                     <th class="p-3.5 text-center">Action</th>
                   </tr>
                 </thead>
-                <tbody id="admin-users-table-tbody" class="divide-y divide-slate-200 bg-white font-medium text-slate-700">
+                <tbody id="admin-users-table-tbody"
+                  class="divide-y divide-slate-200 bg-white font-medium text-slate-700">
                   <!-- Populated from NCCStore.data.users -->
                 </tbody>
               </table>
@@ -559,7 +513,8 @@
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-4">
               <div>
                 <h2 class="text-xl font-extrabold text-navy">Officer Profiles & Operational Appointments</h2>
-                <p class="text-xs text-subtext">Directory of Associate NCC Officers (ANOs), Head Drill Instructors, and Quartermasters</p>
+                <p class="text-xs text-subtext">Directory of Associate NCC Officers (ANOs), Head Drill Instructors, and
+                  Quartermasters</p>
               </div>
               <span class="text-xs font-bold text-amber-800 bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-200">
                 12 Assigned Officers
@@ -578,7 +533,8 @@
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-4">
               <div>
                 <h2 class="text-xl font-extrabold text-navy">Battalion Unit Configuration</h2>
-                <p class="text-xs text-subtext">Configure unit quotas, assigned ANO in-charge, and verify exact cadet enrollments</p>
+                <p class="text-xs text-subtext">Configure unit quotas, assigned ANO in-charge, and verify exact cadet
+                  enrollments</p>
               </div>
               <span class="text-xs font-bold text-blue-800 bg-blue-50 px-3 py-1.5 rounded-xl border border-blue-200">
                 Total Cadets: 116 (Consistent Across Portals)
@@ -597,16 +553,20 @@
             <div class="flex items-center justify-between border-b pb-4">
               <div>
                 <h2 class="text-xl font-extrabold text-navy">Attendance Administrative Control & Override</h2>
-                <p class="text-xs text-subtext">Manual correction requires reason input and logs to system audit trail</p>
+                <p class="text-xs text-subtext">Manual correction requires reason input and logs to system audit trail
+                </p>
               </div>
-              <button onclick="showToast('Exporting Attendance Ledger...')" class="bg-[#1677FF] hover:bg-blue-600 text-white font-bold text-xs px-3.5 py-2 rounded-xl transition-colors">
+              <button onclick="showToast('Exporting Attendance Ledger...')"
+                class="bg-[#1677FF] hover:bg-blue-600 text-white font-bold text-xs px-3.5 py-2 rounded-xl transition-colors">
                 Export Ledger
               </button>
             </div>
 
-            <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200 text-xs text-amber-900 flex items-center gap-3">
+            <div
+              class="bg-amber-50 p-4 rounded-2xl border border-amber-200 text-xs text-amber-900 flex items-center gap-3">
               <i data-lucide="shield-alert" class="w-5 h-5 text-amber-600 shrink-0"></i>
-              <span><strong>DBMS Governance Rule:</strong> Any manual attendance correction made by Admin will automatically generate an immutable entry in the System Audit Log.</span>
+              <span><strong>DBMS Governance Rule:</strong> Any manual attendance correction made by Admin will
+                automatically generate an immutable entry in the System Audit Log.</span>
             </div>
 
             <div class="overflow-x-auto rounded-2xl border border-slate-200 text-xs">
@@ -620,7 +580,8 @@
                     <th class="p-3.5 text-center">Action</th>
                   </tr>
                 </thead>
-                <tbody id="admin-attendance-control-tbody" class="divide-y divide-slate-200 bg-white font-medium text-slate-700">
+                <tbody id="admin-attendance-control-tbody"
+                  class="divide-y divide-slate-200 bg-white font-medium text-slate-700">
                   <!-- Populated from NCCStore.data.attendance -->
                 </tbody>
               </table>
@@ -634,9 +595,11 @@
             <div class="flex items-center justify-between border-b pb-4">
               <div>
                 <h2 class="text-xl font-extrabold text-navy">Role & Permission Control Matrix</h2>
-                <p class="text-xs text-subtext">Access control policies governing Student, ANO Officer, and Administrator privileges</p>
+                <p class="text-xs text-subtext">Access control policies governing Student, ANO Officer, and
+                  Administrator privileges</p>
               </div>
-              <span class="text-xs font-bold text-emerald-800 bg-emerald-50 px-3 py-1 rounded-xl border border-emerald-200">
+              <span
+                class="text-xs font-bold text-emerald-800 bg-emerald-50 px-3 py-1 rounded-xl border border-emerald-200">
                 RBAC Active
               </span>
             </div>
@@ -713,20 +676,25 @@
             <form onsubmit="handleCMSSave(event)" class="space-y-4 text-xs">
               <div>
                 <label class="font-bold text-slate-700 block mb-1">Homepage Ticker Announcement Text</label>
-                <input type="text" id="cms-ticker-input" value="🔴 NCC Admissions Open for 2026-27 Academic Batch • Report to ANO Office for Physical Trials" class="w-full p-2.5 rounded-xl border border-slate-300 font-semibold focus:ring-2 focus:ring-purple-600 focus:outline-none">
+                <input type="text" id="cms-ticker-input"
+                  value="🔴 NCC Admissions Open for 2026-27 Academic Batch • Report to ANO Office for Physical Trials"
+                  class="w-full p-2.5 rounded-xl border border-slate-300 font-semibold focus:ring-2 focus:ring-purple-600 focus:outline-none">
               </div>
               <div>
                 <label class="font-bold text-slate-700 block mb-1">About ITM NCC Mission & Vision</label>
-                <textarea id="cms-about-input" rows="3" class="w-full p-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-purple-600 focus:outline-none">ITM University NCC wing aims at developing character, comradeship, discipline, a secular outlook, the spirit of adventure, and ideals of selfless service among young cadets.</textarea>
+                <textarea id="cms-about-input" rows="3"
+                  class="w-full p-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-purple-600 focus:outline-none">ITM University NCC wing aims at developing character, comradeship, discipline, a secular outlook, the spirit of adventure, and ideals of selfless service among young cadets.</textarea>
               </div>
               <div>
                 <label class="font-bold text-slate-700 block mb-1">Official Contact Desk Phone & Email</label>
                 <div class="grid grid-cols-2 gap-3">
                   <input type="text" value="+91 18002700031" class="w-full p-2.5 rounded-xl border border-slate-300">
-                  <input type="text" value="ncc@itmuniversity.ac.in" class="w-full p-2.5 rounded-xl border border-slate-300">
+                  <input type="text" value="ncc@itmuniversity.ac.in"
+                    class="w-full p-2.5 rounded-xl border border-slate-300">
                 </div>
               </div>
-              <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 px-6 rounded-xl transition-colors shadow-xs">
+              <button type="submit"
+                class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 px-6 rounded-xl transition-colors shadow-xs">
                 Save & Broadcast Website Changes
               </button>
             </form>
@@ -739,9 +707,11 @@
             <div class="flex items-center justify-between border-b pb-4">
               <div>
                 <h2 class="text-xl font-extrabold text-navy">System Analytics & Battalion Metrics</h2>
-                <p class="text-xs text-subtext">Deep-dive intelligence on recruitment ratios, parade attendance, and camp certifications</p>
+                <p class="text-xs text-subtext">Deep-dive intelligence on recruitment ratios, parade attendance, and
+                  camp certifications</p>
               </div>
-              <button onclick="showToast('Exporting Analytics Data...')" class="bg-purple-600 text-white font-bold text-xs px-3.5 py-2 rounded-xl">
+              <button onclick="showToast('Exporting Analytics Data...')"
+                class="bg-purple-600 text-white font-bold text-xs px-3.5 py-2 rounded-xl">
                 Export Analytics
               </button>
             </div>
@@ -808,23 +778,29 @@
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-4">
               <div>
                 <h2 class="text-xl font-extrabold text-navy">System Audit Trail Log (DBMS)</h2>
-                <p class="text-xs text-subtext">Immutable log of all administrative and operational changes across all 3 portals</p>
+                <p class="text-xs text-subtext">Immutable log of all administrative and operational changes across all 3
+                  portals</p>
               </div>
-              <button onclick="exportAuditLogCSV()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-2 shadow-xs transition-colors">
+              <button onclick="exportAuditLogCSV()"
+                class="bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-2 shadow-xs transition-colors">
                 <i data-lucide="download" class="w-4 h-4"></i> Export Audit Log (CSV)
               </button>
             </div>
 
             <!-- Audit Filter -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-              <input type="text" id="audit-search-input" onkeyup="renderAdminAuditTable()" placeholder="Search action, actor, or module..." class="p-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-purple-600 focus:outline-none">
-              <select id="audit-role-filter" onchange="renderAdminAuditTable()" class="p-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-purple-600 focus:outline-none">
+              <input type="text" id="audit-search-input" onkeyup="renderAdminAuditTable()"
+                placeholder="Search action, actor, or module..."
+                class="p-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-purple-600 focus:outline-none">
+              <select id="audit-role-filter" onchange="renderAdminAuditTable()"
+                class="p-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-purple-600 focus:outline-none">
                 <option value="">All Roles</option>
                 <option value="ADMIN">ADMIN</option>
                 <option value="OFFICER">OFFICER</option>
                 <option value="STUDENT">STUDENT</option>
               </select>
-              <select id="audit-module-filter" onchange="renderAdminAuditTable()" class="p-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-purple-600 focus:outline-none">
+              <select id="audit-module-filter" onchange="renderAdminAuditTable()"
+                class="p-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-purple-600 focus:outline-none">
                 <option value="">All Modules</option>
                 <option value="Attendance">Attendance Control</option>
                 <option value="Camp">Camp Management</option>
@@ -846,7 +822,8 @@
                     <th class="p-3.5">Change Record Details</th>
                   </tr>
                 </thead>
-                <tbody id="admin-audit-table-tbody" class="divide-y divide-slate-200 bg-white font-medium text-slate-700">
+                <tbody id="admin-audit-table-tbody"
+                  class="divide-y divide-slate-200 bg-white font-medium text-slate-700">
                   <!-- Populated from NCCStore.data.audit_logs -->
                 </tbody>
               </table>
@@ -859,7 +836,8 @@
           <div class="glass-card p-6 rounded-3xl space-y-6">
             <div class="border-b pb-4">
               <h2 class="text-xl font-extrabold text-navy">System Governance & Policy Settings</h2>
-              <p class="text-xs text-subtext">Manage core parameters including minimum attendance eligibility thresholds</p>
+              <p class="text-xs text-subtext">Manage core parameters including minimum attendance eligibility thresholds
+              </p>
             </div>
 
             <form onsubmit="handleSaveSettings(event)" class="space-y-4 text-xs max-w-xl">
@@ -868,14 +846,18 @@
                   Minimum Attendance Threshold (% for Cert B & Camps)
                 </label>
                 <div class="flex items-center gap-3">
-                  <input type="number" id="setting-min-attendance" min="50" max="95" value="75" class="w-32 p-2.5 rounded-xl border border-slate-300 font-extrabold text-navy text-base focus:ring-2 focus:ring-purple-600 focus:outline-none" required>
-                  <span class="text-slate-500 font-medium">Default: 75%. Changing this will immediately update Officer threshold alerts and Cadet eligibility warnings!</span>
+                  <input type="number" id="setting-min-attendance" min="50" max="95" value="75"
+                    class="w-32 p-2.5 rounded-xl border border-slate-300 font-extrabold text-navy text-base focus:ring-2 focus:ring-purple-600 focus:outline-none"
+                    required>
+                  <span class="text-slate-500 font-medium">Default: 75%. Changing this will immediately update Officer
+                    threshold alerts and Cadet eligibility warnings!</span>
                 </div>
               </div>
 
               <div>
                 <label class="font-bold text-slate-700 block mb-1">Current Academic Session</label>
-                <input type="text" id="setting-academic-year" value="2026-27" class="w-full p-2.5 rounded-xl border border-slate-300 font-semibold focus:ring-2 focus:ring-purple-600 focus:outline-none">
+                <input type="text" id="setting-academic-year" value="2026-27"
+                  class="w-full p-2.5 rounded-xl border border-slate-300 font-semibold focus:ring-2 focus:ring-purple-600 focus:outline-none">
               </div>
 
               <div>
@@ -887,7 +869,8 @@
                 </select>
               </div>
 
-              <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 px-6 rounded-xl transition-colors shadow-xs">
+              <button type="submit"
+                class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 px-6 rounded-xl transition-colors shadow-xs">
                 Save & Apply Settings Across Ecosystem
               </button>
             </form>
@@ -915,7 +898,8 @@
   <!-- ================= MODALS ================= -->
 
   <!-- Modal: Add New System User -->
-  <div id="modal-add-user" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+  <div id="modal-add-user"
+    class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl relative border-2 border-purple-600">
       <button onclick="closeModal('modal-add-user')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700">
         <i data-lucide="x" class="w-5 h-5"></i>
@@ -926,11 +910,13 @@
       <form onsubmit="handleCreateUserSubmit(event)" class="space-y-3 text-xs">
         <div>
           <label class="font-bold text-slate-700 block mb-1">Full Name</label>
-          <input type="text" id="add-user-name" placeholder="e.g. Lt. Arvind Saxena" class="w-full p-2.5 rounded-xl border border-slate-300" required>
+          <input type="text" id="add-user-name" placeholder="e.g. Lt. Arvind Saxena"
+            class="w-full p-2.5 rounded-xl border border-slate-300" required>
         </div>
         <div>
           <label class="font-bold text-slate-700 block mb-1">Email Address (Login ID)</label>
-          <input type="email" id="add-user-email" placeholder="e.g. arvind.s@itmuniversity.ac.in" class="w-full p-2.5 rounded-xl border border-slate-300" required>
+          <input type="email" id="add-user-email" placeholder="e.g. arvind.s@itmuniversity.ac.in"
+            class="w-full p-2.5 rounded-xl border border-slate-300" required>
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
@@ -953,9 +939,11 @@
         </div>
         <div>
           <label class="font-bold text-slate-700 block mb-1">Initial Password</label>
-          <input type="password" id="add-user-password" value="password123" class="w-full p-2.5 rounded-xl border border-slate-300 font-mono" required>
+          <input type="password" id="add-user-password" value="password123"
+            class="w-full p-2.5 rounded-xl border border-slate-300 font-mono" required>
         </div>
-        <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 rounded-xl text-xs transition-colors shadow-xs">
+        <button type="submit"
+          class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 rounded-xl text-xs transition-colors shadow-xs">
           + Add User to Central Store
         </button>
       </form>
@@ -963,9 +951,11 @@
   </div>
 
   <!-- Modal: Attendance Manual Correction -->
-  <div id="modal-att-correction" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+  <div id="modal-att-correction"
+    class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl relative border-2 border-purple-600">
-      <button onclick="closeModal('modal-att-correction')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700">
+      <button onclick="closeModal('modal-att-correction')"
+        class="absolute top-4 right-4 text-slate-400 hover:text-slate-700">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
       <h3 class="font-extrabold text-navy text-lg flex items-center gap-2">
@@ -976,20 +966,25 @@
         <input type="hidden" id="corr-session-id">
         <div>
           <label class="font-bold text-slate-700 block mb-1">Cadet Name & Roll</label>
-          <input type="text" id="corr-cadet-name" class="w-full p-2.5 rounded-xl border border-slate-300 bg-slate-100 font-bold" readonly>
+          <input type="text" id="corr-cadet-name"
+            class="w-full p-2.5 rounded-xl border border-slate-300 bg-slate-100 font-bold" readonly>
         </div>
         <div>
           <label class="font-bold text-slate-700 block mb-1">New Attendance Status Choice</label>
           <div class="grid grid-cols-2 gap-2 pt-1">
-            <label class="flex items-center gap-2 p-2.5 rounded-xl border border-emerald-300 bg-emerald-50 text-emerald-800 font-bold cursor-pointer">
-              <input type="radio" name="admin-att-choice" value="P" checked class="w-4 h-4 text-emerald-600 focus:ring-emerald-500">
+            <label
+              class="flex items-center gap-2 p-2.5 rounded-xl border border-emerald-300 bg-emerald-50 text-emerald-800 font-bold cursor-pointer">
+              <input type="radio" name="admin-att-choice" value="P" checked
+                class="w-4 h-4 text-emerald-600 focus:ring-emerald-500">
               <span>✓ Present</span>
             </label>
-            <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 font-bold cursor-pointer hover:bg-red-50 hover:text-red-700">
+            <label
+              class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 font-bold cursor-pointer hover:bg-red-50 hover:text-red-700">
               <input type="radio" name="admin-att-choice" value="A" class="w-4 h-4 text-red-600 focus:ring-red-500">
               <span>✗ Absent</span>
             </label>
-            <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 font-bold cursor-pointer hover:bg-amber-50 hover:text-amber-700">
+            <label
+              class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 font-bold cursor-pointer hover:bg-amber-50 hover:text-amber-700">
               <input type="radio" name="admin-att-choice" value="L" class="w-4 h-4 text-amber-600 focus:ring-amber-500">
               <span>🕒 Late / Leave</span>
             </label>
@@ -997,9 +992,12 @@
         </div>
         <div>
           <label class="font-bold text-slate-700 block mb-1">Reason For Correction (Mandatory for DBMS Audit)</label>
-          <textarea id="corr-reason" rows="3" placeholder="State reason (e.g. Cadet was on University duty at main gate, marked absent by mistake)" class="w-full p-2.5 rounded-xl border border-slate-300" required></textarea>
+          <textarea id="corr-reason" rows="3"
+            placeholder="State reason (e.g. Cadet was on University duty at main gate, marked absent by mistake)"
+            class="w-full p-2.5 rounded-xl border border-slate-300" required></textarea>
         </div>
-        <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 rounded-xl text-xs transition-colors">
+        <button type="submit"
+          class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 rounded-xl text-xs transition-colors">
           Confirm Correction & Record in Audit Log
         </button>
       </form>
@@ -1007,7 +1005,8 @@
   </div>
 
   <!-- TOAST NOTIFICATION -->
-  <div id="toast" class="fixed bottom-6 left-6 z-50 hidden bg-[#082B57] text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-xs font-semibold animate-fadeIn border border-amber-400">
+  <div id="toast"
+    class="fixed bottom-6 left-6 z-50 hidden bg-[#082B57] text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-xs font-semibold animate-fadeIn border border-amber-400">
     <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i>
     <span id="toast-text">Action completed successfully!</span>
   </div>
@@ -1026,7 +1025,7 @@
       secs.forEach(s => {
         const el = document.getElementById(`admin-section-${s}`);
         const btn = document.getElementById(`admin-nav-${s}`);
-        const mobPill = document.getElementById(`mobile-admin-pill-${s}`);
+        const mBtn = document.getElementById(`admin-mobile-tab-${s}`);
         if (el) el.classList.toggle('hidden', s !== secId);
         if (btn) {
           if (s === secId) {
@@ -1035,23 +1034,15 @@
             btn.className = "w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all admin-nav-inactive";
           }
         }
-        if (mobPill) {
+        if (mBtn) {
           if (s === secId) {
-            mobPill.className = "mobile-pill-btn active";
-            mobPill.setAttribute('aria-selected', 'true');
-            if (typeof mobPill.scrollIntoView === 'function') {
-              mobPill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-            }
+            mBtn.classList.add('active');
+            mBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
           } else {
-            mobPill.className = "mobile-pill-btn inactive";
-            mobPill.setAttribute('aria-selected', 'false');
+            mBtn.classList.remove('active');
           }
         }
       });
-      // Auto-close drawer on mobile when switching sections
-      if (window.innerWidth < 1024 && window.closeDrawer) {
-        window.closeDrawer('admin-sidebar');
-      }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -1161,10 +1152,9 @@
           <td class="p-3.5 font-mono text-slate-600">${u.email}</td>
           <td class="p-3.5 font-semibold text-slate-700">${u.unit || 'All Units'}</td>
           <td class="p-3.5">
-            <span class="px-2 py-0.5 rounded font-bold text-[10px] ${
-              u.role === 'ADMIN' ? 'bg-purple-100 text-purple-800' :
-              u.role === 'OFFICER' ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'
-            }">
+            <span class="px-2 py-0.5 rounded font-bold text-[10px] ${u.role === 'ADMIN' ? 'bg-purple-100 text-purple-800' :
+          u.role === 'OFFICER' ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'
+        }">
               ${u.role}
             </span>
           </td>
@@ -1304,10 +1294,9 @@
               </td>
               <td class="p-3.5">${unit}</td>
               <td class="p-3.5">
-                <span class="px-2.5 py-1 rounded-xl font-bold text-xs inline-flex items-center gap-1 ${
-                  st === 'P' ? 'bg-emerald-100 text-emerald-800' :
-                  st === 'A' ? 'bg-red-100 text-red-800' : 'bg-amber-100 text-amber-800'
-                }">
+                <span class="px-2.5 py-1 rounded-xl font-bold text-xs inline-flex items-center gap-1 ${st === 'P' ? 'bg-emerald-100 text-emerald-800' :
+              st === 'A' ? 'bg-red-100 text-red-800' : 'bg-amber-100 text-amber-800'
+            }">
                   ${st === 'P' ? '✓ Present' : st === 'A' ? '✗ Absent' : '🕒 Late'}
                 </span>
               </td>
@@ -1390,10 +1379,9 @@
           <td class="p-3.5 font-mono text-slate-500 text-[11px]">${l.timestamp}</td>
           <td class="p-3.5 font-bold text-slate-900">${l.who}</td>
           <td class="p-3.5">
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${
-              l.role === 'ADMIN' ? 'bg-purple-100 text-purple-800' :
-              l.role === 'OFFICER' ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'
-            }">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${l.role === 'ADMIN' ? 'bg-purple-100 text-purple-800' :
+          l.role === 'OFFICER' ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'
+        }">
               ${l.role}
             </span>
           </td>
@@ -1537,4 +1525,5 @@
     });
   </script>
 </body>
+
 </html>

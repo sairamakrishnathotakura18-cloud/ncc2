@@ -154,13 +154,8 @@
     <header class="app-header bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
       <div class="app-header-container max-w-7xl mx-auto">
 
-        <!-- Left: Hamburger (Mobile) + Logo & Title -->
+        <!-- Left: Branding & University Title -->
         <div class="header-left-group flex items-center">
-          <button id="header-hamburger-btn" data-drawer-toggle onclick="toggleMobileSidebar()"
-            class="lg:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 focus:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center -ml-2"
-            aria-label="Toggle navigation drawer">
-            <i data-lucide="menu" class="w-5 h-5"></i>
-          </button>
           <a href="index.html" class="flex items-center gap-2.5 shrink-0 overflow-hidden">
             <img src="itm-logo.png"
               onerror="this.src='https://raw.githubusercontent.com/antigravity-assets/logos/main/itm-logo.png'"
@@ -233,34 +228,37 @@
       </div>
     </header>
 
-    <!-- HORIZONTAL SCROLLING PILL BAR (Mobile Parakh Native Nav <1024px) -->
-    <nav class="mobile-pill-nav lg:hidden" aria-label="Officer Quick Navigation">
-      <button onclick="switchOfficerSection('overview')" id="mobile-officer-pill-overview" class="mobile-pill-btn active" aria-selected="true">
-        <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Overview
+    <!-- Mobile Horizontal Tab Bar (Visible on <1024px, modeled directly after ITM Parakh mobile horizontal pill row) -->
+    <nav class="mobile-tab-scroll-bar lg:hidden" aria-label="Officer Mobile Navigation">
+      <button onclick="switchOfficerSection('overview')" id="officer-mobile-tab-overview" class="mobile-pill-btn active">
+        <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Command Overview
       </button>
-      <button onclick="switchOfficerSection('cadets')" id="mobile-officer-pill-cadets" class="mobile-pill-btn inactive" aria-selected="false">
-        <i data-lucide="users" class="w-4 h-4"></i> Cadets
+      <button onclick="switchOfficerSection('cadets')" id="officer-mobile-tab-cadets" class="mobile-pill-btn">
+        <i data-lucide="users" class="w-4 h-4"></i> Cadet Management
       </button>
-      <button onclick="switchOfficerSection('applications')" id="mobile-officer-pill-applications" class="mobile-pill-btn inactive" aria-selected="false">
-        <i data-lucide="user-check" class="w-4 h-4"></i> Applications <span class="bg-amber-500 text-white font-bold text-[9px] px-1.5 py-0.5 rounded-full">18</span>
+      <button onclick="switchOfficerSection('applications')" id="officer-mobile-tab-applications" class="mobile-pill-btn">
+        <i data-lucide="user-check" class="w-4 h-4"></i> Selection & Apps
+        <span id="officer-mobile-badge-apps" class="mobile-pill-badge bg-amber-500 text-white hidden"></span>
       </button>
-      <button onclick="switchOfficerSection('attendance')" id="mobile-officer-pill-attendance" class="mobile-pill-btn inactive" aria-selected="false">
-        <i data-lucide="calendar-check-2" class="w-4 h-4"></i> Attendance
+      <button onclick="switchOfficerSection('attendance')" id="officer-mobile-tab-attendance" class="mobile-pill-btn">
+        <i data-lucide="calendar-check" class="w-4 h-4"></i> Mark Attendance
       </button>
-      <button onclick="switchOfficerSection('camps')" id="mobile-officer-pill-camps" class="mobile-pill-btn inactive" aria-selected="false">
-        <i data-lucide="tent" class="w-4 h-4"></i> Camps
+      <button onclick="switchOfficerSection('camps')" id="officer-mobile-tab-camps" class="mobile-pill-btn">
+        <i data-lucide="tent" class="w-4 h-4"></i> Camp Management
       </button>
-      <button onclick="switchOfficerSection('certificates')" id="mobile-officer-pill-certificates" class="mobile-pill-btn inactive" aria-selected="false">
-        <i data-lucide="file-badge" class="w-4 h-4"></i> Certificates <span class="bg-blue-600 text-white font-bold text-[9px] px-1.5 py-0.5 rounded-full">12</span>
+      <button onclick="switchOfficerSection('certificates')" id="officer-mobile-tab-certificates" class="mobile-pill-btn">
+        <i data-lucide="award" class="w-4 h-4"></i> Verify Certificates
+        <span id="officer-mobile-badge-certs" class="mobile-pill-badge bg-blue-600 text-white hidden"></span>
       </button>
-      <button onclick="switchOfficerSection('notices')" id="mobile-officer-pill-notices" class="mobile-pill-btn inactive" aria-selected="false">
-        <i data-lucide="megaphone" class="w-4 h-4"></i> Notices
+      <button onclick="switchOfficerSection('notices')" id="officer-mobile-tab-notices" class="mobile-pill-btn">
+        <i data-lucide="megaphone" class="w-4 h-4"></i> Publish Notices
       </button>
-      <button onclick="switchOfficerSection('complaints')" id="mobile-officer-pill-complaints" class="mobile-pill-btn inactive" aria-selected="false">
-        <i data-lucide="message-square" class="w-4 h-4"></i> Grievances <span class="bg-rose-500 text-white font-bold text-[9px] px-1.5 py-0.5 rounded-full">4</span>
+      <button onclick="switchOfficerSection('complaints')" id="officer-mobile-tab-complaints" class="mobile-pill-btn">
+        <i data-lucide="message-square" class="w-4 h-4"></i> Grievances & Helpdesk
+        <span id="officer-mobile-badge-complaints" class="mobile-pill-badge bg-red-600 text-white hidden"></span>
       </button>
-      <button onclick="switchOfficerSection('reports')" id="mobile-officer-pill-reports" class="mobile-pill-btn inactive" aria-selected="false">
-        <i data-lucide="bar-chart-3" class="w-4 h-4"></i> Reports
+      <button onclick="switchOfficerSection('reports')" id="officer-mobile-tab-reports" class="mobile-pill-btn">
+        <i data-lucide="bar-chart-3" class="w-4 h-4"></i> Battalion Reports
       </button>
     </nav>
 
@@ -366,123 +364,7 @@
         <!-- ================= SECTION 1: OVERVIEW DASHBOARD ================= -->
         <div id="section-overview" class="space-y-6">
 
-          <!-- ================= ITM PARAKH NATIVE MOBILE BENTO LAYOUT (<1024px) ================= -->
-          <div class="parakh-mobile-layout lg:hidden space-y-3.5">
-
-            <!-- 1. Officer Parakh Hero Card -->
-            <div class="parakh-hero-card">
-              <div class="flex items-start justify-between gap-3">
-                <div class="space-y-1 min-w-0">
-                  <span class="text-xs font-semibold text-slate-500">Welcome back,</span>
-                  <h2 id="parakh-officer-name" class="text-base sm:text-lg font-black text-[#0F172A] leading-snug">
-                    CTO Gaurav Singh
-                  </h2>
-                  <div class="pt-0.5">
-                    <span class="parakh-role-badge">
-                      <span>🎖️</span> ANO Officer
-                    </span>
-                  </div>
-                </div>
-                <img id="parakh-officer-photo" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" alt="Officer Avatar" class="parakh-hero-avatar">
-              </div>
-
-              <div class="mt-3 pt-3 border-t border-slate-200/80 space-y-1.5 text-xs text-slate-600">
-                <div class="flex items-center gap-2">
-                  <i data-lucide="shield-check" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
-                  <span class="truncate font-medium">Associate NCC Officer • Army Wing</span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <i data-lucide="award" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
-                  <span class="truncate font-medium">Officer ID: <strong class="font-bold text-slate-800">ANO/ITM/2026/04</strong> | Rank: CTO</span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <i data-lucide="building-2" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
-                  <span class="truncate font-medium">Battalion: <strong class="font-bold text-slate-800">8 MP Artillery Bn</strong> | 116 Cadets</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- 2. Battalion Parade Readiness Banner Strip -->
-            <div class="parakh-status-strip">
-              <div class="parakh-status-ring">
-                <span id="parakh-officer-attendance-ring">91%</span>
-              </div>
-              <div class="min-w-0 flex-1">
-                <div class="font-black text-sm text-[#064E3B] leading-tight">Battalion Parade Readiness</div>
-                <div class="text-xs font-semibold text-[#059669] mt-0.5">Today's attendance 91% • High participation</div>
-              </div>
-            </div>
-
-            <!-- 3. Bento Grid Row 1 (2 Columns) -->
-            <div class="parakh-bento-row1">
-              <!-- Battalion Strength Pastel Card -->
-              <div class="parakh-pastel-card" onclick="switchOfficerSection('cadets')">
-                <div class="flex items-center justify-between">
-                  <div class="parakh-pastel-icon">👥</div>
-                  <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">BATTALION</span>
-                </div>
-                <div>
-                  <div class="text-xs font-bold text-slate-600">Total Cadets</div>
-                  <div id="parakh-officer-stat-cadets" class="text-xl font-black text-emerald-600 leading-tight mt-0.5">116</div>
-                </div>
-                <div class="text-[10px] font-semibold text-slate-500 leading-tight">
-                  8 MP Art: 56 <span class="text-slate-400">•</span> Naval: 32
-                </div>
-              </div>
-
-              <!-- Solid Blue Action Card: Take Attendance -->
-              <button onclick="switchOfficerSection('attendance')" class="parakh-action-card" aria-label="Take Today's Attendance">
-                <div class="parakh-action-icon-box">
-                  <i data-lucide="check-square" class="w-5 h-5"></i>
-                </div>
-                <div>
-                  <div class="text-[11px] text-blue-100 font-semibold uppercase tracking-wider">Parade Operations</div>
-                  <div class="text-base font-black text-white leading-tight mt-0.5">Take Attendance</div>
-                </div>
-              </button>
-            </div>
-
-            <!-- 4. Bento Grid Row 2 (3 Columns) -->
-            <div class="parakh-bento-row2">
-              <button onclick="switchOfficerSection('cadets')" class="parakh-quick-card" aria-label="Cadet Directory">
-                <i data-lucide="users" class="parakh-quick-icon"></i>
-                <span class="parakh-quick-label">Cadet List</span>
-              </button>
-              <button onclick="switchOfficerSection('applications')" class="parakh-quick-card relative" aria-label="Pending Applications">
-                <span class="absolute top-1.5 right-1.5 bg-amber-500 text-white font-black text-[9px] px-1.5 py-0.2 rounded-full">18</span>
-                <i data-lucide="user-check" class="parakh-quick-icon"></i>
-                <span class="parakh-quick-label">Pending Regs</span>
-              </button>
-              <button onclick="switchOfficerSection('certificates')" class="parakh-quick-card relative" aria-label="Verify Documents">
-                <span class="absolute top-1.5 right-1.5 bg-blue-600 text-white font-black text-[9px] px-1.5 py-0.2 rounded-full">12</span>
-                <i data-lucide="file-check" class="parakh-quick-icon"></i>
-                <span class="parakh-quick-label">Verify Docs</span>
-              </button>
-            </div>
-
-            <!-- 5. Bento Grid Row 3 (3 Columns) -->
-            <div class="parakh-bento-row3">
-              <button onclick="openPublishNoticeModal()" class="parakh-quick-card" aria-label="Publish Notice">
-                <i data-lucide="megaphone" class="parakh-quick-icon"></i>
-                <span class="parakh-quick-label">Publish Notice</span>
-              </button>
-              <button onclick="switchOfficerSection('complaints')" class="parakh-announcement-card relative" aria-label="Grievances">
-                <span class="absolute top-1.5 right-1.5 bg-rose-500 text-white font-black text-[9px] px-1.5 py-0.2 rounded-full">4</span>
-                <span class="text-[10px] font-black tracking-tight text-blue-900 uppercase">GRIEVANCES</span>
-                <span class="text-[9px] font-semibold text-slate-500">4 Active</span>
-              </button>
-              <button onclick="switchOfficerSection('reports')" class="parakh-gold-card" aria-label="Battalion Reports">
-                <span class="text-[10px] font-black text-amber-900 uppercase">REPORTS</span>
-                <span class="text-[9px] font-bold text-amber-700">Open & Export</span>
-              </button>
-            </div>
-
-          </div>
-
-          <!-- ================= DESKTOP OVERVIEW (>=1024px) ================= -->
-          <div class="hidden lg:block space-y-6">
-
-            <!-- Fixed Time-Based Welcome Greeting Banner -->
+          <!-- Fixed Time-Based Welcome Greeting Banner -->
           <div
             class="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
@@ -630,11 +512,9 @@
 
           </div>
 
-        </div> <!-- end hidden lg:block desktop overview -->
+        </div>
 
-      </div>
-
-      <!-- ================= SECTION 2: CADET MANAGEMENT ================= -->
+        <!-- ================= SECTION 2: CADET MANAGEMENT ================= -->
         <div id="section-cadets" class="hidden space-y-6">
           <div class="glass-card p-6 rounded-3xl space-y-4">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-4">
@@ -1416,13 +1296,13 @@
       }
     }
 
-    // Sidebar Section Switcher
+    // Sidebar & Mobile Section Switcher
     function switchOfficerSection(secId) {
       const secs = ['overview', 'cadets', 'applications', 'attendance', 'camps', 'certificates', 'notices', 'complaints', 'reports'];
       secs.forEach(s => {
         const el = document.getElementById(`section-${s}`);
         const btn = document.getElementById(`nav-btn-${s}`);
-        const mobPill = document.getElementById(`mobile-officer-pill-${s}`);
+        const mBtn = document.getElementById(`officer-mobile-tab-${s}`);
         if (el) el.classList.toggle('hidden', s !== secId);
         if (btn) {
           if (s === secId) {
@@ -1431,23 +1311,15 @@
             btn.className = "w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all sidebar-inactive min-h-[44px]";
           }
         }
-        if (mobPill) {
+        if (mBtn) {
           if (s === secId) {
-            mobPill.className = "mobile-pill-btn active";
-            mobPill.setAttribute('aria-selected', 'true');
-            if (typeof mobPill.scrollIntoView === 'function') {
-              mobPill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-            }
+            mBtn.classList.add('active');
+            mBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
           } else {
-            mobPill.className = "mobile-pill-btn inactive";
-            mobPill.setAttribute('aria-selected', 'false');
+            mBtn.classList.remove('active');
           }
         }
       });
-      // Auto-close drawer on mobile when switching sections
-      if (window.innerWidth < 1024 && window.closeDrawer) {
-        window.closeDrawer('officer-sidebar');
-      }
       // Scroll to top of section
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -1502,15 +1374,30 @@
       const complaintsEl = document.getElementById('stat-complaints');
       if (complaintsEl) complaintsEl.innerText = stats.openComplaintsCount;
 
-      // Update Badges
+      // Update Badges (Desktop & Mobile)
       const badgeApp = document.getElementById('nav-badge-applications');
       if (badgeApp) badgeApp.innerText = stats.totalPendingRegs;
+      const mBadgeApp = document.getElementById('officer-mobile-badge-apps');
+      if (mBadgeApp) {
+        mBadgeApp.innerText = stats.totalPendingRegs;
+        mBadgeApp.classList.toggle('hidden', !stats.totalPendingRegs || stats.totalPendingRegs === 0);
+      }
 
       const badgeCert = document.getElementById('nav-badge-certificates');
       if (badgeCert) badgeCert.innerText = stats.pendingDocsCount;
+      const mBadgeCert = document.getElementById('officer-mobile-badge-certs');
+      if (mBadgeCert) {
+        mBadgeCert.innerText = stats.pendingDocsCount;
+        mBadgeCert.classList.toggle('hidden', !stats.pendingDocsCount || stats.pendingDocsCount === 0);
+      }
 
       const badgeComplaints = document.getElementById('nav-badge-complaints');
       if (badgeComplaints) badgeComplaints.innerText = stats.openComplaintsCount;
+      const mBadgeComplaints = document.getElementById('officer-mobile-badge-complaints');
+      if (mBadgeComplaints) {
+        mBadgeComplaints.innerText = stats.openComplaintsCount;
+        mBadgeComplaints.classList.toggle('hidden', !stats.openComplaintsCount || stats.openComplaintsCount === 0);
+      }
 
       // Update Attendance Threshold Alert Banner
       const alertCadets = document.getElementById('alert-cadets-count');

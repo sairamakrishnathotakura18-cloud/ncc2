@@ -204,162 +204,114 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   overflow: hidden;
 }
 
-/* ================= 3. OFF-CANVAS SIDEBAR DRAWER (<1024px) ================= */
-.sidebar-backdrop {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.45);
-  z-index: 999;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+/* Hide Hamburger Buttons Across All Screen Sizes (Replaced by Native Horizontal Tab Row) */
+#header-hamburger-btn,
+[data-drawer-toggle] {
+  display: none !important;
 }
 
-body.drawer-open .sidebar-backdrop {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
+/* ================= 2.5 MOBILE HORIZONTAL SCROLLING PILL TAB ROW (<1024px) ================= */
+.mobile-tab-scroll-bar {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto !important;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  padding: 8px 12px !important;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #E2E8F0;
+  position: sticky;
+  top: var(--header-height, 60px);
+  z-index: 90;
+  width: 100%;
 }
 
-@media (max-width: 1023.98px) {
-  /* Prevent parent stacking context from trapping the drawer behind backdrop */
-  body > div.relative,
-  div.relative.z-10 {
-    z-index: auto !important;
+.mobile-tab-scroll-bar::-webkit-scrollbar {
+  display: none !important;
+}
+
+.mobile-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid #E2E8F0;
+  background-color: #FFFFFF;
+  color: #475569;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 38px;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.mobile-pill-btn:hover {
+  background-color: #F8FAFC;
+  color: #071D3A;
+  border-color: #CBD5E1;
+}
+
+.mobile-pill-btn.active {
+  background-color: #071D3A !important;
+  color: #FFFFFF !important;
+  border-color: #071D3A !important;
+  box-shadow: 0 2px 8px rgba(7, 29, 58, 0.25) !important;
+}
+
+.mobile-pill-btn.active i,
+.mobile-pill-btn.active svg {
+  color: #FFFFFF !important;
+}
+
+.mobile-pill-btn i,
+.mobile-pill-btn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.mobile-pill-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1px 6px;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-left: 2px;
+}
+
+@media (min-width: 1024px) {
+  .mobile-tab-scroll-bar {
+    display: none !important;
   }
+}
 
-  /* Turn Aside element into Native Drawer (Above backdrop with z-index 1000) */
+/* ================= 3. MOBILE NAVIGATION ARCHITECTURE (<1024px) ================= */
+@media (max-width: 1023.98px) {
+  /* Hide sidebars, backdrop and drawer elements on mobile - horizontal pill row handles 100% of mobile navigation */
   aside.drawer-sidebar,
   #admin-sidebar,
   #officer-sidebar,
-  #mobile-drawer-panel {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    bottom: 0 !important;
-    width: var(--drawer-width) !important;
-    max-width: 320px !important;
-    height: 100dvh !important;
-    height: 100vh !important;
-    background-color: #FFFFFF !important;
-    z-index: 1000 !important;
-    transform: translateX(-100%) !important;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.16) !important;
-    display: flex !important;
-    flex-direction: column !important;
-    padding: 16px !important;
-    margin: 0 !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
+  #mobile-drawer,
+  #mobile-drawer-panel,
+  .sidebar-backdrop {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
   }
 
-  /* Eliminate any backdrop-filter inside the drawer to prevent Android/Chrome GPU blur bugs */
-  aside.drawer-sidebar nav,
-  aside.drawer-sidebar .glass-card,
-  #admin-sidebar nav,
-  #admin-sidebar .glass-card,
-  #officer-sidebar nav,
-  #officer-sidebar .glass-card,
-  #mobile-drawer-panel nav,
-  #mobile-drawer-panel .glass-card {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    background: #FFFFFF !important;
-  }
-
-  aside.drawer-sidebar.open,
-  #admin-sidebar.open,
-  #officer-sidebar.open,
-  #mobile-drawer-panel.open {
-    transform: translateX(0) !important;
-  }
-
-  /* Drawer Header with Close Button */
-  .drawer-header-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-bottom: 12px;
-    margin-bottom: 12px;
-    border-bottom: 1px solid #F1F5F9;
-  }
-
-  .drawer-close-btn {
-    min-width: 44px;
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: #64748B;
-    border-radius: 10px;
-    cursor: pointer;
-  }
-
-  .drawer-close-btn:hover {
-    background-color: #F1F5F9;
-    color: #0F172A;
-  }
-
-  /* Menu Items in Drawer */
-  .drawer-sidebar nav button,
-  .drawer-sidebar nav a,
-  #admin-sidebar nav button,
-  #admin-sidebar nav a,
-  #officer-sidebar nav button,
-  #officer-sidebar nav a,
-  #mobile-drawer-panel nav button,
-  #mobile-drawer-panel nav a {
-    min-height: 44px !important;
-    display: flex !important;
-    align-items: center !important;
-    font-size: 13px !important;
-    padding: 10px 14px !important;
-    margin-bottom: 4px !important;
-  }
-
-  /* Officer Menu Badges Centered Vertically & Right-Aligned */
-  .drawer-sidebar nav button span[id^="nav-badge-"],
-  #officer-sidebar nav button span[id^="nav-badge-"] {
-    margin-left: auto !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    height: 18px !important;
-    line-height: 1 !important;
-  }
-
-  /* Single Clean Drawer Logout Button at Bottom */
-  .drawer-logout-container {
-    margin-top: auto;
-    padding-top: 14px;
-    border-top: 1px solid #F1F5F9;
-  }
-
-  .drawer-logout-btn {
-    min-height: 44px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background-color: #FEF2F2;
-    color: #DC2626;
-    font-weight: 700;
-    font-size: 13px;
-    border-radius: 14px;
-    border: 1px solid #FEE2E2;
-    text-decoration: none;
-    transition: background-color 0.2s ease;
-  }
-
-  .drawer-logout-btn:hover {
-    background-color: #FEE2E2;
+  body > div.relative,
+  div.relative.z-10 {
+    z-index: auto !important;
   }
 }
 
@@ -516,275 +468,3 @@ body.drawer-open .sidebar-backdrop {
     width: calc(100vw - 32px) !important;
   }
 }
-
-/* ================= 7. ITM PARAKH NATIVE MOBILE BENTO SYSTEM (<1024px) ================= */
-.mobile-pill-nav {
-  display: flex !important;
-  align-items: center;
-  gap: 8px;
-  overflow-x: auto !important;
-  -webkit-overflow-scrolling: touch;
-  padding: 8px 12px !important;
-  background-color: #FFFFFF !important;
-  border-bottom: 1px solid #E2E8F0 !important;
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
-  position: sticky !important;
-  top: var(--header-height) !important;
-  z-index: 35 !important;
-}
-
-.mobile-pill-nav::-webkit-scrollbar {
-  display: none !important;
-  width: 0 !important;
-  height: 0 !important;
-}
-
-.mobile-pill-btn {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 6px !important;
-  padding: 7px 14px !important;
-  border-radius: 9999px !important;
-  font-size: 12px !important;
-  font-weight: 700 !important;
-  white-space: nowrap !important;
-  flex-shrink: 0 !important;
-  cursor: pointer !important;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  min-height: 38px !important;
-  text-decoration: none !important;
-}
-
-.mobile-pill-btn.active,
-.mobile-pill-btn[aria-selected="true"] {
-  background-color: #071D3A !important;
-  color: #FFFFFF !important;
-  border: 1px solid #071D3A !important;
-  box-shadow: 0 2px 8px rgba(7, 29, 58, 0.25) !important;
-}
-
-.mobile-pill-btn.inactive,
-.mobile-pill-btn[aria-selected="false"] {
-  background-color: #FFFFFF !important;
-  color: #334155 !important;
-  border: 1px solid #E2E8F0 !important;
-}
-
-.mobile-pill-btn.inactive:hover {
-  background-color: #F8FAFC !important;
-  color: #071D3A !important;
-}
-
-/* Parakh Hero Profile Card */
-.parakh-hero-card {
-  position: relative !important;
-  border-radius: 24px !important;
-  overflow: hidden !important;
-  padding: 18px 16px !important;
-  border: 1px solid #E2E8F0 !important;
-  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.06) !important;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.82) 0%, rgba(248, 250, 252, 0.96) 100%),
-              url('https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=800&q=80') center/cover no-repeat !important;
-}
-
-.parakh-hero-avatar {
-  width: 58px !important;
-  height: 58px !important;
-  border-radius: 9999px !important;
-  object-fit: cover !important;
-  border: 3px solid #FFFFFF !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
-  flex-shrink: 0 !important;
-}
-
-.parakh-role-badge {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 4px !important;
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  padding: 3px 10px !important;
-  border-radius: 9999px !important;
-  background-color: #EFF6FF !important;
-  color: #1D4ED8 !important;
-  border: 1px solid #DBEAFE !important;
-}
-
-/* Parakh Mint Completion / Readiness Strip */
-.parakh-status-strip {
-  background-color: #E8F8F0 !important;
-  border: 1px solid #DCFCE7 !important;
-  border-radius: 20px !important;
-  padding: 12px 16px !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 14px !important;
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.05) !important;
-}
-
-.parakh-status-ring {
-  width: 48px !important;
-  height: 48px !important;
-  border-radius: 9999px !important;
-  border: 4px solid #10B981 !important;
-  background-color: #FFFFFF !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  font-weight: 900 !important;
-  font-size: 12px !important;
-  color: #047857 !important;
-  flex-shrink: 0 !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04) !important;
-}
-
-/* Parakh Bento Grid Cards */
-.parakh-bento-row1 {
-  display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
-  gap: 12px !important;
-}
-
-.parakh-pastel-card {
-  background-color: #FFF5F5 !important;
-  border: 1px solid #FFE4E6 !important;
-  border-radius: 20px !important;
-  padding: 14px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: space-between !important;
-  min-height: 120px !important;
-}
-
-.parakh-pastel-icon {
-  width: 30px !important;
-  height: 30px !important;
-  border-radius: 9999px !important;
-  background-color: #FEE2E2 !important;
-  color: #E11D48 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  font-weight: 800 !important;
-  font-size: 13px !important;
-}
-
-.parakh-action-card {
-  background-color: #1677FF !important;
-  border-radius: 20px !important;
-  padding: 14px !important;
-  color: #FFFFFF !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: space-between !important;
-  min-height: 120px !important;
-  box-shadow: 0 4px 14px rgba(22, 119, 255, 0.28) !important;
-  cursor: pointer !important;
-  border: none !important;
-  text-align: left !important;
-  transition: transform 0.15s ease, box-shadow 0.15s ease !important;
-}
-
-.parakh-action-card:active {
-  transform: scale(0.98) !important;
-}
-
-.parakh-action-icon-box {
-  width: 34px !important;
-  height: 34px !important;
-  border-radius: 10px !important;
-  background-color: rgba(255, 255, 255, 0.22) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  color: #FFFFFF !important;
-}
-
-.parakh-bento-row2,
-.parakh-bento-row3 {
-  display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  gap: 10px !important;
-}
-
-.parakh-quick-card {
-  background-color: #FFFFFF !important;
-  border: 1px solid #E2E8F0 !important;
-  border-radius: 18px !important;
-  padding: 12px 6px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  text-align: center !important;
-  justify-content: center !important;
-  gap: 6px !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
-  cursor: pointer !important;
-  min-height: 92px !important;
-  transition: all 0.15s ease !important;
-  text-decoration: none !important;
-}
-
-.parakh-quick-card:active {
-  transform: scale(0.97) !important;
-  background-color: #F8FAFC !important;
-}
-
-.parakh-quick-icon {
-  width: 22px !important;
-  height: 22px !important;
-  color: #334155 !important;
-}
-
-.parakh-quick-label {
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  color: #0F172A !important;
-  line-height: 1.2 !important;
-}
-
-.parakh-announcement-card {
-  background-color: #FFFFFF !important;
-  border: 1.5px solid #93C5FD !important;
-  border-radius: 18px !important;
-  padding: 12px 6px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  text-align: center !important;
-  justify-content: center !important;
-  gap: 3px !important;
-  cursor: pointer !important;
-  min-height: 92px !important;
-}
-
-.parakh-gold-card {
-  background-color: #FEF08A !important;
-  border: 1px solid #FDE047 !important;
-  border-radius: 18px !important;
-  padding: 12px 6px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  text-align: center !important;
-  justify-content: center !important;
-  gap: 3px !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
-  cursor: pointer !important;
-  min-height: 92px !important;
-  transition: all 0.15s ease !important;
-}
-
-.parakh-gold-card:active {
-  transform: scale(0.97) !important;
-}
-
-/* ================= 8. STRICT DESKTOP PRESERVATION (>= 1024px) ================= */
-@media (min-width: 1024px) {
-  .mobile-pill-nav,
-  .parakh-mobile-layout {
-    display: none !important;
-  }
-}
-
